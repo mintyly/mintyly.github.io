@@ -2,9 +2,13 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>kangelwebsite</title>
+    <title>TUCTF 2024</title>
+    <link rel="stylesheet" href="..\tomorrow-night-bright.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
     <link rel="icon" href="../images/face.png" type="image/png">
     <link rel="stylesheet" href="tuctf.css">
+    
 </head>
 <body>
     <div id="container">
@@ -97,53 +101,158 @@
                 </div>
                 <!--This is the main section's topbar!-->
                 <div id="bottomBarMargin">
-                    <h2 style="margin: 0; margin-bottom: 5px">arcane</h2>
+                    <h1 style="margin: 0; margin-bottom: 5px">arcane</h2>
                     <!--<p><strong>Please read this first!</strong></p>-->
 
-                    <p style="margin-top: 10px;">
-                        <strong>
-                            okay. this question is way too repetitive. I kinda gave up after doing level 4 and gave it to my teammate to finish.<br />
-                            You can see the rest of the solution here <a href="https://moon-sun.xyz/tu/">https://moon-sun.xyz/tu/</a>
-                            <br />
-                            <br />
-                            so for level 0, its basically just a simple hex decode. All i did for this is literally convert the hex into plaintext
-                        </strong>
-                        <div class="box"><pre><span class="inner-pre" style="font-size: 15px">
-    def solve_level0(self, hex_str):
+                        <p style="margin-top: 10px;">
+                            <strong>
+                                okay. this question is way too repetitive. I kinda gave up after doing level 4 and gave it to my teammate to finish.<br />
+                                You can see the rest of the solution here <a href="https://moon-sun.xyz/tu/">https://moon-sun.xyz/tu/</a>
+                                <br />
+ 
+                               
+                            </strong>
+                        </p>
+
+                        <h2>Level 0</h2>
+
+                        <p style="margin-top: 10px;">
+                            <strong>
+                                so for level 0, its basically just a simple hex decode. All i did for this is literally convert the hex into plaintext
+                                <br />
+ 
+                               
+                            </strong>
+                        </p>
+
+                         
+                        <div class="box"><pre><code><span class="inner-pre" style="font-size: 15px">    def solve_level0(self, hex_str):
         hex_clean = re.sub(r'[^0-9a-fA-F]', '', hex_str)
-        return bytes.fromhex(hex_clean).decode('utf-8')
-                        </span></pre></div>
-                    </p>
-
-                    <p style="margin-top: 10px;">
-                        <strong >
-                            <br />
-                            For level 1, things got slightly harder, but I figured out that the characters where shifted by 28. <br />
-
-                            and that seemed to work for the most part<br />
-                            <br />
-                            The characters near the end of the alphabet seemed to be wrong but its pretty obvious what they should be so i just hard coded them in :p<br />
-                            <br />
-                        </strong>
+        return bytes.fromhex(hex_clean).decode('utf-8')                        </span></pre></div></code>
                     
+        <h2>Level 1</h2>
+                        <p style="margin-top: 10px;">
+                            <strong >
+
+                                things got slightly harder, but I figured out that the characters where shifted by 28. <br />
+                                and that seemed to work for the most part<br />
+                                <br />
+                                The characters near the end of the alphabet seemed to be wrong but its pretty obvious what they should be so i just hard coded them in :p<br />
+                            </strong>
+                        </p>        
 
                         <div class="box">
-                            <pre><span class="inner-pre" style="font-size: 15px">
-    def solve_level1(self, hex_str):
-        hex_clean = re.sub(r'[^0-9a-fA-F]', '', hex_str)
-        adjusted = bytes([(int(hex_clean[i:i+2], 16) + 28) % 256
-        for i in range(0, len(hex_clean), 2)])
-        <strong># Decode and replace specific characters</strong>
-        decoded = adjusted.decode('utf-8', errors='replace')
-        decoded = decoded.replace('_', 'y').replace(']', 'w')
-        return decoded
-</span></pre></div>
-                    </p>
-                    
-
-
+                            <pre><code><span class="inner-pre" style="font-size: 15px">    def solve_level1(self, hex_str):
+                hex_clean = re.sub(r'[^0-9a-fA-F]', '', hex_str)
+                adjusted = bytes([(int(hex_clean[i:i+2], 16) + 28) % 256
+                for i in range(0, len(hex_clean), 2)])
+                <strong># Decode and replace specific characters</strong>
+                decoded = adjusted.decode('utf-8', errors='replace')
+                decoded = decoded.replace('_', 'y').replace(']', 'w')
+                return decoded</span></pre></code>
                 </div>
 
+                <h2>Level 2</h2>
+                <p style="margin-top: 10px;">
+                        <strong >
+ 
+                            I kinda bruteforced this one, i just mapped each character to its plaintext equivalent.<br />
+
+                            if it works i guess it works<br />
+  
+                        </strong>
+                 </p>
+
+                 <div class="box">
+                            <pre><code class="python"><span class="inner-pre" style="font-size: 15px">    def solve_level2(self, hex_str):
+        hex_values = hex_str.strip().split()
+        return ''.join([self.hex_to_char.get(h, '_') for h in hex_values])</span></pre></code>
+                </div>
+
+                <div class="box">
+                            <pre><code><span class="inner-pre" style="font-size: 15px">    self.hex_to_char = {
+            "b8": "A", "b9": "B", "ba": "C", "bb": "D", "bc": "E",
+            "bd": "F", "be": "G", "bf": "H", "b0": "I", "b1": "J",
+            "b2": "K", "b3": "L", "b4": "M", "b5": "N", "b6": "O",
+            "c7": "P", "c8": "Q", "c9": "R", "ca": "S", "cb": "T", 
+            "cc": "U", "cd": "V", "ce": "W", "cf": "X", "c0": "Y", 
+            "c1": "Z"
+        }</span></pre></code>
+                </div>
+                <h2>Level 3</h2>
+                <p style="margin-top: 10px;">
+                        <strong >
+
+                            it kinda gets tricky and it took a toll on my lovely mental health<br />
+
+                            like all ctf questions, you bruteforce the fuck out of it and i had no rhyme or reason for how i arrived at my solution<br />
+                            <br />
+                            It turned out to be a vigenere cipher when I put it into dcodefr. <br />
+                            I suspected there was a key involved because the previous levels there wasn't any keys<br />
+                            <br />
+                            And also if you watch the show (please go watch arcane i love my little lesbians) you know that Vi is short for her full name, Violet.<br />
+                            This will be our key for the cipher<br />
+                        </strong>
+                 </p>
+                 <div class="box">
+                            <pre><code><span class="inner-pre" style="font-size: 15px">    def solve_level3(self, hex_str):
+        # Convert hex to ASCII characters
+        encrypted_chars = [bytes.fromhex(h).decode('latin-1') for h in hex_str.strip().split()]
+        
+        # Decrypt using Vigenère cipher with key "VIOLET"
+        key = "VIOLET"
+        decrypted = []
+        for i, c in enumerate(encrypted_chars):
+            key_char = key[i % len(key)]
+            # Convert to 0-25 values
+            e_code = ord(c.upper()) - ord('A')
+            k_code = ord(key_char.upper()) - ord('A')
+            p_code = (e_code - k_code) % 26
+            decrypted.append(chr(p_code + ord('A')))
+        return ''.join(decrypted)
+        }</span></pre></code>
+                </div>
+                <h2>Level 4</h2>
+                <p style="margin-top: 10px;">
+                        <strong >
+                            Level 4 is where it ended for me. This took an embarrassing amount of time, and went to sleep after shortly after solving this<br />
+
+                             eventually found out that the encryption is as follows:<br />
+                            <br />
+                            The plaintext is split into 2. The start point is then determined based on the number of characters (n)<br />
+                            If n is even, start point is (n // 2) - 1<br />
+                            If n is odd, start point is ((n - 1) // 2) - 1<br />
+                            <br />
+                            The permutation is generated by decrementing from the start point and wrapping around the word going backwards.<br />
+                            If n=6, the letters are arranged like [2, 1, 0, 5, 4, 3]<br />
+                            If n=5, the letters are arranged like [1, 0, 4, 3, 2]
+                        </strong>
+                 </p>
+                 <div class="box">
+                            <pre><code><span class="inner-pre" style="font-size: 15px">    def solve_level4(self, hex_str):
+            hex_values = hex_str.strip().split()
+            encrypted = [bytes.fromhex(h).decode('latin-1') for h in hex_values]
+            n = len(encrypted)
+            # Generate permutation based on word length
+            if n % 2 == 0:
+                start = (n // 2) - 1  # Even: start at middle-1
+            else:
+                start = ((n - 1) // 2) - 1  # Odd: start at middle-2
+            permutation = []
+            current = start
+            for _ in range(n):
+                permutation.append(current)
+                current = (current - 1) % n
+            # Reorder encrypted characters using permutation
+            decrypted = [encrypted[i] for i in permutation]
+            return ''.join(decrypted)
+            }</span></pre></code>
+                </div>
+
+
+
+
+        </div>
                 <div id="bottombottoms">
                     <div class="rectangle"></div>
                     <div class="square"></div>

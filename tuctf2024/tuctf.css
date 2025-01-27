@@ -251,8 +251,7 @@ pre {
     background-color: #ead2ec;
     border: 1px solid #462DC6;
     max-width: 600px;
-    padding: 10px;
-    margin: 0;
+    margin-bottom: 25px;
 }
 
 .rectangle {
