@@ -6,7 +6,7 @@
         the images as variables */
 :root {
 /*    --header-image: url('images/banner_website_text.png');*/
-    --body-bg-image: url('images/Windose20-wallpaper.png');
+    --body-bg-image: url('../images/Windose20-wallpaper.png');
     /* colors */
     --content: #462DC6;
 }
@@ -25,7 +25,7 @@
 
 @font-face {
     font-family: 'CustomFont';
-    src: url('fonts/zpix.ttf') format('truetype');
+    src: url('../fonts/zpix.ttf') format('truetype');
     /* Add additional src declarations for other font formats if desired */
 }
 

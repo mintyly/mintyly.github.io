@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>kangelwebsite</title>
-    <link rel="icon" href="images/face.png" type="image/png">
+    <link rel="icon" href="../images/face.png" type="image/png">
     <link rel="stylesheet" href="tuctf.css">
 </head>
 <body>
@@ -13,13 +13,13 @@
                 <div id="topBar">
                     <div id="internaltopBar">
                         <div id="leftContent">
-                            <img src="images\windowbase_icon.png" />
+                            <img src="../images\windowbase_icon.png" />
                             <p>banner.jpg</p>
                         </div>
                         <div id="leftButtons">
-                            <img src="images\button_minimize.png" id="button" />
-                            <img src="images\button_maximize.png" id="button" />
-                            <img src="images\button_close.png" id="button" />
+                            <img src="../images\button_minimize.png" id="button" />
+                            <img src="../images\button_maximize.png" id="button" />
+                            <img src="../images\button_close.png" id="button" />
                         </div>
                     </div>
                     <!--You can put some text or images (or even a good old-fashioned marquee) up here!-->
@@ -27,7 +27,7 @@
 
                 <div id="headerArea">
                     <div id="internalheaderArea">
-                        <img src="images\banner_website_text.png" id="bannerimage" />
+                        <img src="../images\banner_website_text.png" id="bannerimage" />
 
                         <!--<nav id="navbar">
                         <ul>
@@ -54,20 +54,20 @@
                 <div id="topBar">
                     <div id="internaltopBar">
                         <div id="leftContent">
-                            <img src="images\windowbase_icon.png" />
+                            <img src="../images\windowbase_icon.png" />
                             <p>Webcam</p>
                         </div>
                         <div id="leftButtons">
-                            <img src="images\button_minimize.png" id="button" />
-                            <img src="images\button_maximize.png" id="button" />
-                            <img src="images\button_close.png" id="button" />
+                            <img src="../images\button_minimize.png" id="button" />
+                            <img src="../images\button_maximize.png" id="button" />
+                            <img src="../images\button_close.png" id="button" />
                         </div>
                     </div>
                 </div>
 
                 <div id="headerArea">
                     <div id="internalheaderArea">
-                        <img src="images\ame_gif.gif" id="amegif" />
+                        <img src="../images\ame_gif.gif" id="amegif" />
                     </div>
                 </div>
 
@@ -86,13 +86,13 @@
             <div id="content1" class="hoverable">
                 <div id="internaltopBar">
                     <div id="leftContent">
-                        <img src="images\windowbase_icon.png" />
+                        <img src="../images\windowbase_icon.png" />
                         <p>TUCTF 2024</p>
                     </div>
                     <div id="leftButtons">
-                        <img src="images\button_minimize.png" id="button" />
-                        <img src="images\button_maximize.png" id="button" />
-                        <img src="images\button_close.png" id="button" />
+                        <img src="../images\button_minimize.png" id="button" />
+                        <img src="../images\button_maximize.png" id="button" />
+                        <img src="../images\button_close.png" id="button" />
                     </div>
                 </div>
                 <!--This is the main section's topbar!-->
@@ -108,15 +108,14 @@
                             <br />
                             so for level 0, its basically just a simple hex decode. All i did for this is literally convert the hex into plaintext
                         </strong>
-                        <div class="box">
-                            <pre><span class="inner-pre" style="font-size: 15px">
+                        <div class="box"><pre><span class="inner-pre" style="font-size: 15px">
     def solve_level0(self, hex_str):
         hex_clean = re.sub(r'[^0-9a-fA-F]', '', hex_str)
         return bytes.fromhex(hex_clean).decode('utf-8')
-                        </span></pre>
-                        </div>
+                        </span></pre></div>
+                    </p>
 
-<p style="margin-top: 10px;">
+                    <p style="margin-top: 10px;">
                         <strong >
                             <br />
                             For level 1, things got slightly harder, but I figured out that the characters where shifted by 28. <br />
@@ -126,7 +125,7 @@
                             The characters near the end of the alphabet seemed to be wrong but its pretty obvious what they should be so i just hard coded them in :p<br />
                             <br />
                         </strong>
-                    </p>
+                    
 
                         <div class="box">
                             <pre><span class="inner-pre" style="font-size: 15px">
@@ -138,8 +137,8 @@
         decoded = adjusted.decode('utf-8', errors='replace')
         decoded = decoded.replace('_', 'y').replace(']', 'w')
         return decoded
-</span></pre>
-                        </div>
+</span></pre></div>
+                    </p>
                     
 
 
@@ -159,18 +158,18 @@
         <footer id="footer" class="hoverable">
             <div id="internaltopBar">
                 <div id="leftContent">
-                    <img src="images\windowbase_icon.png" />
+                    <img src="../images\windowbase_icon.png" />
                     <p>footer</p>
                 </div>
                 <div id="leftButtons">
-                    <img src="images\button_minimize.png" id="button" />
-                    <img src="images\button_maximize.png" id="button" />
-                    <img src="images\button_close.png" id="button" />
+                    <img src="../images\button_minimize.png" id="button" />
+                    <img src="../images\button_maximize.png" id="button" />
+                    <img src="../images\button_close.png" id="button" />
                 </div>
             </div>
 
             <div id="bottomBarMargin">
-                <a href="tuctf2024.html">homepage</a>
+                <a href="../">homepage</a>
             </div>
             <div id="bottombottoms">
                 <div class="rectangle"></div>
