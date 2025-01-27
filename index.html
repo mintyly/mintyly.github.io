@@ -1,25 +1,217 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>kangelwebsite</title>
     <link rel="icon" href="images/face.png" type="image/png">
-    <!-- Import CSS file -->
-    <link rel="stylesheet" href="loginstyles.css">
+    <link rel="stylesheet" href="homestyles.css">
 </head>
 <body>
-    <div class="card">
-        <div class="box">
-            <div class="login-icon">
-                <img src="images/face.png" alt="angelKawaii">
-                <h1>angelkawaii</h1>
-            </div>
-            <form name="search" action="home.html">
-                <input type="text" class="input" name="" value="" placeholder="password">
-                <div class="login">
-                    <button type="submit" class="login-button">Login</button>
+    <div id="container">
+        <div id="flex">
+            <div id="toppart" class="hoverable">
+                <div id="topBar">
+                    <div id="internaltopBar">
+                        <div id="leftContent">
+                            <img src="images\windowbase_icon.png" />
+                            <p>banner.jpg</p>
+                        </div>
+                        <div id="leftButtons">
+                            <img src="images\button_minimize.png" id="button" />
+                            <img src="images\button_maximize.png" id="button" />
+                            <img src="images\button_close.png" id="button" />
+                        </div>
+                    </div>
+                    <!--You can put some text or images (or even a good old-fashioned marquee) up here!-->
                 </div>
-            </form>
+
+                <div id="headerArea">
+                    <div id="internalheaderArea">
+                        <img src="images\banner_website_text.png" id="bannerimage" />
+
+                        <!--<nav id="navbar">
+                            <ul>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </nav>-->
+                    </div>
+                </div>
+                <div id="bottombottoms">
+                    <div class="rectangle"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                </div>
+            </div>
+
+
+            <div id="toppart" class="hoverable" style="margin-right: 0px;">
+                <div id="topBar">
+                    <div id="internaltopBar">
+                        <div id="leftContent">
+                            <img src="images\windowbase_icon.png" />
+                            <p>Webcam</p>
+                        </div>
+                        <div id="leftButtons">
+                            <img src="images\button_minimize.png" id="button" />
+                            <img src="images\button_maximize.png" id="button" />
+                            <img src="images\button_close.png" id="button" />
+                        </div>
+                    </div>
+                </div>
+
+                <div id="headerArea">
+                    <div id="internalheaderArea">
+                        <img src="images\ame_gif.gif" id="amegif" />
+                    </div>
+                </div>
+
+                <div id="bottombottoms">
+                    <div class="rectangle"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                </div>
+            </div>
         </div>
+
+        <div id="flex">
+            <div id="leftSidebar" class="hoverable">
+                <div id="internaltopBar">
+                    <div id="leftContent">
+                        <img src="images\windowbase_icon.png" />
+                        <p>about_me</p>
+                    </div>
+                    <div id="leftButtons">
+                        <img src="images\button_minimize.png" id="button" />
+                        <img src="images\button_maximize.png" id="button" />
+                        <img src="images\button_close.png" id="button" />
+                    </div>
+                </div>
+                <!--This is the left sidebar's topbar!-->
+                <div id="bottomBarMargin">
+                    <!--<h2 style="margin: 0; margin-bottom: 5px;">About me</h2>-->
+                    <div class="box">
+                        <div class="side-by-side">
+                            <img src="images\pfp.jpeg" />
+                            <ul style="padding-left:10px;">
+                                <h3>mintyly</h3>
+                                <li>18</li>
+                                <li>he/they</li>
+                                <li>cybersecurity</li>
+                                <!--<li>buried a kid in my backyard <a href="old.html" target="_blank">here</a></li>-->
+                            </ul>
+                        </div>
+                    </div>
+                    <h3>my stuff</h3>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/mintyly" target="">Github</a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/minty_ly" target="">Tweeter</a>
+                        </li>
+                        <li>
+                            <a href="https://steamcommunity.com/id/mintyly/" target="">Steam</a>
+                        </li>
+                        <!--<li>
+                            <a href="https://open.spotify.com/user/vue3cpvokvixm3aii66zx8n6e?si=643e80684cfa42d4" target="">Spotify</a>
+                        </li>-->
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="">Onlyfans</a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="bottombottoms">
+                    <div class="rectangle"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                </div>
+            </div>
+
+            <div id="content" class="hoverable">
+                <div id="internaltopBar">
+                    <div id="leftContent">
+                        <img src="images\windowbase_icon.png" />
+                        <p>main.txt</p>
+                    </div>
+                    <div id="leftButtons">
+                        <img src="images\button_minimize.png" id="button" />
+                        <img src="images\button_maximize.png" id="button" />
+                        <img src="images\button_close.png" id="button" />
+                    </div>
+                </div>
+                <!--This is the main section's topbar!-->
+                <div id="bottomBarMargin">
+                    <h2 style="margin: 0; margin-bottom: 5px">Welcome!</h2>
+                    <!--<p><strong>Please read this first!</strong></p>-->
+
+                    <p>
+                        <strong>
+                            Thank you for visiting my webpage! I'm interested in cybersecurity and programming.
+                        </strong>
+                    </p>
+
+                    <p>
+                        <strong>
+                            I also like to create websites and other things in my free time. <br />
+                            (hence kangelwebsite's existance.)
+                        </strong>
+                    </p>
+
+
+
+                    <h3>
+                        PLEASE NOTE:
+                    </h3>
+
+                    <p>
+                        This website is still under construction. I'm still working on it,
+                        so please don't expect anything too fancy.
+                    </p>
+                </div>
+
+                <div id="bottombottoms">
+                    <div class="rectangle"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer id="footer" class="hoverable">
+            <div id="internaltopBar">
+                <div id="leftContent">
+                    <img src="images\windowbase_icon.png" />
+                    <p>footer</p>
+                </div>
+                <div id="leftButtons">
+                    <img src="images\button_minimize.png" id="button" />
+                    <img src="images\button_maximize.png" id="button" />
+                    <img src="images\button_close.png" id="button" />
+                </div>
+            </div>
+
+            <div id="bottomBarMargin">
+                <p style="font-size: smaller;">placeholder footer!</p>
+                <!--<p>The self so tattered, torn to pieces Ripping the air, the voice unceases Imparted to flesh, the virgin soul To a world as known as sky's black hole Uncertain eyes, now what do they find? A crushing weight born of flitting mind Sacrifice, sacrifice, the subject Of illusory connect unchecked</p>-->
+            </div>
+            <div id="bottombottoms">
+                <div class="rectangle"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+            </div>
+        </footer>
     </div>
+    <!-- Import JS file -->
+    <script src="scripts\homescript.js"></script>
 </body>
 </html>
