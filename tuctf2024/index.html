@@ -126,7 +126,7 @@
                         </p>
 
                          
-                        <div class="box"><pre><code><span class="inner-pre" style="font-size: 15px">    def solve_level0(self, hex_str):
+                        <div class="box"><pre><code class="python"><span class="inner-pre" style="font-size: 15px">    def solve_level0(self, hex_str):
         hex_clean = re.sub(r'[^0-9a-fA-F]', '', hex_str)
         return bytes.fromhex(hex_clean).decode('utf-8')                        </span></pre></div></code>
                     
@@ -142,7 +142,7 @@
                         </p>        
 
                         <div class="box">
-                            <pre><code><span class="inner-pre" style="font-size: 15px">    def solve_level1(self, hex_str):
+                            <pre><code class="python"><span class="inner-pre" style="font-size: 15px">    def solve_level1(self, hex_str):
                 hex_clean = re.sub(r'[^0-9a-fA-F]', '', hex_str)
                 adjusted = bytes([(int(hex_clean[i:i+2], 16) + 28) % 256
                 for i in range(0, len(hex_clean), 2)])
@@ -195,7 +195,7 @@
                         </strong>
                  </p>
                  <div class="box">
-                            <pre><code><span class="inner-pre" style="font-size: 15px">    def solve_level3(self, hex_str):
+                            <pre><code class="python"><span class="inner-pre" style="font-size: 15px">    def solve_level3(self, hex_str):
         # Convert hex to ASCII characters
         encrypted_chars = [bytes.fromhex(h).decode('latin-1') for h in hex_str.strip().split()]
         
@@ -229,7 +229,7 @@
                         </strong>
                  </p>
                  <div class="box">
-                            <pre><code><span class="inner-pre" style="font-size: 15px">    def solve_level4(self, hex_str):
+                            <pre><code class="python"><span class="inner-pre" style="font-size: 15px">    def solve_level4(self, hex_str):
             hex_values = hex_str.strip().split()
             encrypted = [bytes.fromhex(h).decode('latin-1') for h in hex_values]
             n = len(encrypted)
