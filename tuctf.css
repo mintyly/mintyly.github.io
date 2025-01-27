@@ -241,10 +241,16 @@ strong {
     color: #462DC6;
 }
 
+pre {
+    /* this styles preformatted text */
+    
+}
+
 /* this is just a cool box, it's the darker colored one */
 .box {
     background-color: #ead2ec;
     border: 1px solid #462DC6;
+    max-width: 600px;
     padding: 10px;
     margin: 0;
 }

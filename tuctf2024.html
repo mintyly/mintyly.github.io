@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>kangelwebsite</title>
     <link rel="icon" href="images/face.png" type="image/png">
-    <link rel="stylesheet" href="homestyles.css">
+    <link rel="stylesheet" href="tuctf.css">
 </head>
 <body>
     <div id="container">
@@ -100,11 +100,47 @@
                     <h2 style="margin: 0; margin-bottom: 5px">arcane</h2>
                     <!--<p><strong>Please read this first!</strong></p>-->
 
-                    <p>
+                    <p style="margin-top: 10px;">
                         <strong>
-                            to be filled
+                            okay. this question is way too repetitive. I kinda gave up after doing level 4 and gave it to my teammate to finish.<br />
+                            You can see the rest of the solution here <a href="https://moon-sun.xyz/tu/">https://moon-sun.xyz/tu/</a>
+                            <br />
+                            <br />
+                            so for level 0, its basically just a simple hex decode. All i did for this is literally convert the hex into plaintext
+                        </strong>
+                        <div class="box">
+                            <pre><span class="inner-pre" style="font-size: 15px">
+    def solve_level0(self, hex_str):
+        hex_clean = re.sub(r'[^0-9a-fA-F]', '', hex_str)
+        return bytes.fromhex(hex_clean).decode('utf-8')
+                        </span></pre>
+                        </div>
+
+<p style="margin-top: 10px;">
+                        <strong >
+                            <br />
+                            For level 1, things got slightly harder, but I figured out that the characters where shifted by 28. <br />
+
+                            and that seemed to work for the most part<br />
+                            <br />
+                            The characters near the end of the alphabet seemed to be wrong but its pretty obvious what they should be so i just hard coded them in :p<br />
+                            <br />
                         </strong>
                     </p>
+
+                        <div class="box">
+                            <pre><span class="inner-pre" style="font-size: 15px">
+    def solve_level1(self, hex_str):
+        hex_clean = re.sub(r'[^0-9a-fA-F]', '', hex_str)
+        adjusted = bytes([(int(hex_clean[i:i+2], 16) + 28) % 256
+        for i in range(0, len(hex_clean), 2)])
+        <strong># Decode and replace specific characters</strong>
+        decoded = adjusted.decode('utf-8', errors='replace')
+        decoded = decoded.replace('_', 'y').replace(']', 'w')
+        return decoded
+</span></pre>
+                        </div>
+                    
 
 
                 </div>
