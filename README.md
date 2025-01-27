@@ -5,7 +5,7 @@
 
 https://mintyly.github.io/kangelwebsite/
 
-Welcome to kangelwebsite! This website is a fan creation inspired by Needy Streamer Overload, and the game's Windows 98-esque theme.
+Welcome to kangelwebsite! This website is a fan creation inspired by Needy Streamer Overload, and the game's Windows 95-esque theme.
 I plan to add more content in the future and fully flesh out the website eventually.
 
 ## TODO LIST
