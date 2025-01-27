@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/kangelwebsite/config/applicationhost.config
+/.vs/kangelwebsite/FileContentIndex/426d9358-0230-4edb-8051-2180155d528f.vsidx
+/.vs/kangelwebsite/FileContentIndex/67545bfb-49bc-4331-b5ae-0ad76eb2e22b.vsidx
+/.vs/kangelwebsite/FileContentIndex/96755257-cb84-4514-b0f6-58c708a3646e.vsidx
+/.vs/kangelwebsite/v17/.wsuo
