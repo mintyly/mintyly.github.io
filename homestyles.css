@@ -93,12 +93,12 @@ img {
     background-image: var(--header-image);
     background-position: center;
     height: 225px;
-    width: 700px;
+    width: auto;
 }
 
     #header img {
         height: 225px;
-        width: 700px;
+        width: auto;
     }
 
 
@@ -247,6 +247,7 @@ strong {
     border: 1px solid #462DC6;
     padding: 10px;
     margin: 0;
+
 }
 
 .rectangle {
@@ -425,6 +426,7 @@ strong {
     margin-right: 10px;
     margin-top: 10px;
     width: 400px;
+    width: auto;
     border: solid;
     border-color: #462DC6;
     border-width: 2px;
@@ -487,8 +489,28 @@ strong {
     flex-grow: 1;
 }
 
+.secrettext {
+    padding-left: 140px;
+    margin: 0;
 
+}
 
+.secreticon {
+    padding-left: 150px;
+    padding-top: 100px;
+}
+
+#secretsection {
+    opacity: 0;
+    visibility: hidden; /* Make sure it is hidden by default */
+    transition: opacity 0.5s ease, visibility 0s linear 0.5s; /* Transition for opacity and visibility */
+}
+
+#secretsection.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease;
+}
 
 
 /* BELOW THIS POINT IS MEDIA QUERY */
@@ -498,54 +520,86 @@ strong {
         and then subtrack it by 100. use this new number as the
         "max-width" value below
         */
-@media only screen and (max-width: 1000px) {
-    #flex {
-        flex-wrap: wrap;
-    }
+        @media only screen and (max-width: 1100px) {
 
-    /* the order of the items is adjusted here for responsiveness!
-          since the sidebars would be too small on a mobile device.
-          feel free to play around with the order!
-          */
-    #top {
-        order: 2;
-    }
+            /* the order of the items is adjusted here for responsiveness!
+                  since the sidebars would be too small on a mobile device.
+                  feel free to play around with the order!
+                  */
+            #top {
+                order: 2;
+            }
+        
+            #leftSidebar {
+                order: 1;
+            }
+        
+            #content {
+                order: 2;
+            }
+        
+            #navbar ul {
+                flex-wrap: wrap;
+            }
+        
+        
+            /* Add other mobile-specific styles here */
+        
+            #bannerimage {
+                max-height: 225px;
+                height: auto;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                vertical-align: middle;
+                object-fit: contain;
+        
+            }
+        
+            #amegif {
+                max-height: 225px;
+                height: auto;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                vertical-align: middle;
+                object-fit: contain;
+            }
+            
+        
+            #section1, #section2{
+                width: auto;
+                height: auto;
+                margin-top: 5px;
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+            
+            #leftSidebar, #leftSidebar1{
+                margin-left: 5px;
+            }
 
-    #leftSidebar {
-        order: 1;
-    }
-
-    #content {
-        order: 2;
-    }
-
-    #navbar ul {
-        flex-wrap: wrap;
-    }
-
-    #flex {
-        flex-direction: column; /* Stack elements vertically on mobile */
-    }
-
-    /* Add other mobile-specific styles here */
-
-    #bannerimage {
-        height: 115px;
-        width: auto;
-        margin: 0;
-        padding: 0;
-        vertical-align: middle;
-    }
-
-    #amegif {
-        height: 115px;
-        width: auto;
-        margin: 0;
-        padding: 0;
-        vertical-align: middle;
-    }
-
-
-
-
-}
+            #content, #content1 {
+                margin-right: 5px;
+            }
+        
+            #banners{
+                width: auto;
+                height: auto;
+            }
+        
+            #toppart {
+                margin-top: 5px;
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+        
+            #footer {
+                width: auto;
+                height: auto;
+                margin-top: 10px;
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+        
+        }

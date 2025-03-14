@@ -2,13 +2,13 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>kangelwebsite</title>
+    <title>mintyly</title>
     <link rel="icon" href="images/face.png" type="image/png">
     <link rel="stylesheet" href="homestyles.css">
 </head>
 <body>
-    <div id="container">
-        <div id="flex">
+    <div id="container" >
+        <div id="flex" class="banners">
             <div id="toppart" class="hoverable">
                 <div id="topBar">
                     <div id="internaltopBar">
@@ -50,7 +50,7 @@
             </div>
 
 
-            <div id="toppart" class="hoverable" style="margin-right: 0px;">
+            <div id="toppart" class="hoverable">
                 <div id="topBar">
                     <div id="internaltopBar">
                         <div id="leftContent">
@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        <div id="flex">
+        <div id="flex" class="section1">
             <div id="leftSidebar" class="hoverable">
                 <div id="internaltopBar">
                     <div id="leftContent">
@@ -108,7 +108,7 @@
                             </ul>
                         </div>
                     </div>
-
+                    <h3><a href="carrd">My carrd</a></h3>
                 </div>
                 <div id="bottombottoms">
                     <div class="rectangle"></div>
@@ -168,12 +168,12 @@
             </div>
         </div>
         <!-- 2nd one -->
-        <div id="flex">
+        <div id="flex" class="section2">
             <div id="leftSidebar1" class="hoverable">
                 <div id="internaltopBar">
                     <div id="leftContent">
                         <img src="images\windowbase_icon.png" />
-                        <p>ctf.txt</p>
+                        <p>Internet Overdose</p>
                     </div>
                     <div id="leftButtons">
                         <img src="images\button_minimize.png" id="button" />
@@ -183,10 +183,16 @@
                 </div>
                 <!--This is the left sidebar's topbar!-->
                 <div id="bottomBarMargin">
-                
-                <h2 style="margin: 0; margin-bottom: 5px">CTF Writeups</h2>
-                <!--<li>buried a kid in my backyard <a href="old.html" target="_blank">here</a></li>-->
-                <a href="tuctf2024">TUCTF 2024</a>
+                    <h2>
+                        The self so tattered, torn to pieces 
+                        <br />Ripping the air, the voice unceases 
+                        <br />Imparted to flesh, the virgin soul 
+                        <br />To a world as known as sky's black hole 
+                        <br />Uncertain eyes, now what do they find? 
+                        <br />A crushing weight born of flitting mind
+                        <br />Sacrifice, sacrifice, the subject 
+                        <br />Of illusory connect unchecked
+                    </h2>
                 </div>
                 <div id="bottombottoms">
                     <div class="rectangle"></div>
@@ -200,7 +206,7 @@
                 <div id="internaltopBar">
                     <div id="leftContent">
                         <img src="images\windowbase_icon.png" />
-                        <p>Internet Overdose</p>
+                        <p>ctf.txt</p>
                     </div>
                     <div id="leftButtons">
                         <img src="images\button_minimize.png" id="button" />
@@ -210,9 +216,8 @@
                 </div>
                 <!--This is the main section's topbar!-->
                 <div id="bottomBarMargin">
-                    <p>
-                        The self so tattered, torn to pieces <br />Ripping the air, the voice unceases <br />Imparted to flesh, the virgin soul <br />To a world as known as sky's black hole <br />Uncertain eyes, now what do they find? <br />A crushing weight born of flitting mind<br /> Sacrifice, sacrifice, the subject Of illusory connect unchecked
-                    </p>
+                    <h2 style="margin: 0; margin-bottom: 5px">CTF Writeups</h2>
+                    <a href="tuctf2024">TUCTF 2024</a>
                 </div>
 
                 <div id="bottombottoms">
@@ -254,4 +259,10 @@
         <!-- Import JS file -->
         <script src="scripts\homescript.js"></script>
 </body>
+<div onclick="showPopup()">
+    <img class="secreticon" src="images/icon_desktop_text.png">
+    <p class="secrettext">Secret.txt</p>
+</div>
+
+
 </html>
