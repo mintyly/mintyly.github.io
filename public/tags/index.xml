@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on mintyly.blog</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://mintyly.github.io/tags/</link>
     <description>Recent content in Tags on mintyly.blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 12 Nov 2023 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://mintyly.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Database</title>
-      <link>http://localhost:1313/tags/database/</link>
+      <link>https://mintyly.github.io/tags/database/</link>
       <pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/database/</guid>
+      <guid>https://mintyly.github.io/tags/database/</guid>
       <description></description>
     </item>
     <item>
       <title>Java</title>
-      <link>http://localhost:1313/tags/java/</link>
+      <link>https://mintyly.github.io/tags/java/</link>
       <pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/java/</guid>
+      <guid>https://mintyly.github.io/tags/java/</guid>
       <description></description>
     </item>
   </channel>
