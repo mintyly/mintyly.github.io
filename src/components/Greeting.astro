@@ -1,0 +1,45 @@
+---
+const greetings = ['Heya!', 'こんにちは!', '你好!', 'Salut!', 'Ciao!', '¡Hola!', 'Привет!'];
+const initialGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+---
+
+<span class="greeting" client:load data-greetings={JSON.stringify(greetings)}>
+  {initialGreeting} I'm June Ong
+</span>
+
+<script type="module">
+  const el = document.querySelector('.greeting');
+  const greetings = JSON.parse(el.dataset.greetings);
+  let index = greetings.indexOf(el.textContent.trim().replace(" I'm June Ong", ""));
+
+  const cycle = () => {
+    el.classList.add('fade-out');
+    setTimeout(() => {
+      index = (index + 1) % greetings.length;
+      el.textContent = `${greetings[index]} I'm June Ong`;
+      el.classList.remove('fade-out');
+      el.classList.add('fade-in');
+      setTimeout(() => el.classList.remove('fade-in'), 1000);
+    }, 500);
+  };
+
+  setInterval(cycle, 4000);
+</script>
+
+<style>
+  .greeting {
+    transition: opacity 0.5s ease-in-out;
+    font-weight: bold;
+    font-size: 2.8rem;
+    color: var(--accent);
+    display: inline-block;
+  }
+
+  .fade-out {
+    opacity: 0;
+  }
+
+  .fade-in {
+    opacity: 1;
+  }
+</style>

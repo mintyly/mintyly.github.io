@@ -1,0 +1,244 @@
+/* kangel.css - Clean retro pastel OS-style UI with scalable layout */
+
+:root {
+  --main-bg: #ead2ec;
+  --accent: #462DC6;
+  --highlight: #94f1e1;
+  --pinklight: #eb9fe7;
+  --text-color: #222;
+  --window-header: #e2e2e2;
+  --window-background: #f9eff9;
+  --font: 'CustomFont', 'Verdana', sans-serif;
+  font-size: 14px;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/zpix.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.greeting {
+  transition: opacity 1s ease-in-out;
+  font-weight: bold;
+  font-size: 2.8rem;
+  color: var(--accent);
+  display: inline-block;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.intro-flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.intro-flex p {
+  margin: 0;
+  padding: 0;
+}
+
+.pfp {
+  width: 160px;
+  height: 160px;
+  border-radius: 0%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: url('../assets/Windose20-wallpaper-crop.png') repeat;
+  color: var(--text-color);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+#container {
+  max-width: 62.5rem; /* 1000px */
+  margin: 2.5rem auto;
+  padding: 0.625rem;
+
+}
+
+#container2 {
+  position: relative;
+  border: 0.125rem solid var(--accent);
+  background: var(--main-bg);
+  padding: 0.25rem;
+  padding-bottom: 0rem;
+}
+
+#container2:has(.hoverable-window:hover) {
+  background: var(--highlight);
+}
+
+.window {
+  background: transparent;;
+}
+
+.title-bar {
+  border: 0.125rem solid var(--accent);
+  background: var(--window-header);
+  display: flex;
+  align-items: center;
+  padding: 0.4rem;
+  margin-bottom: 0.3rem;
+  border-bottom: 0.125rem solid var(--accent);
+  gap: 0.2rem;
+}
+
+.hoverable-window:hover .title-bar {
+  background: var(--main-bg);
+}
+
+.title {
+  font-weight: bold;
+  color: var(--accent);
+  font-family: var(--font);
+  flex-grow: 1;
+  text-align: left;
+  padding-left: 0.3rem;
+  font-size: 1.1rem;
+}
+
+.window-controls {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.btn {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 0.125rem solid var(--accent);
+  background: var(--highlight);
+}
+.btn.close {
+  background: #ff6b6b;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 0.125rem solid var(--accent);
+}
+
+.btn.minimize {
+  background: #ffcc00;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 0.125rem solid var(--accent);
+}
+
+.btn.maximize {
+  background: #00cc66;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 0.125rem solid var(--accent);
+}
+
+
+.btn.box {
+  margin-right: 0;
+  flex-shrink: 0;
+  border-radius: 0 !important;
+  background: var(--accent) !important;
+}
+
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* or center, as you prefer */
+  gap: 0.125rem; /* adds space between buttons */
+  padding-left: 0rem; /* optional: adds left padding */
+}
+
+.btmbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.125rem solid var(--accent);
+  background: var(--pinklight);
+
+}
+
+.btmbtn.main {
+  margin-top: 0.3rem;
+  width: 2.5rem;
+  height: 0.45rem;
+  border-bottom: none;
+}
+
+.btmbtn.small {
+  width: 0.125rem;
+  height: 0.125rem;
+  margin-top: 0.1rem;
+}
+
+.content {
+  padding: 1.5rem;
+  background: var(--window-background);
+  border: 0.125rem solid var(--accent);
+  font-size: 1rem;
+}
+
+h1, h2 {
+  color: var(--accent);
+  margin-top: 0;
+  font-family: var(--font);
+}
+
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.7rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+ul {
+  padding-left: 1.2em;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+a {
+  color: var(--accent);
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 1rem;
+}
+
+a:hover {
+  background: var(--highlight);
+  color: black;
+}
+
+@media (min-width: 768px) {
+  :root {
+    font-size: 16px;
+  }
+}
