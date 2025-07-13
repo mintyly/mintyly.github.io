@@ -8,6 +8,7 @@
   --text-color: #222;
   --window-header: #e2e2e2;
   --window-background: #f9eff9;
+  --shadow: #362177;
   --font: 'CustomFont', 'Verdana', sans-serif;
   font-size: 14px;
 }
@@ -55,6 +56,64 @@
   border: 2px solid var(--accent);
 }
 
+#side-navbar {
+  position: fixed;
+  top: 50%;
+  right: 14%;
+  transform: translateY(-50%);
+  background: var(--main-bg);
+  border: 0.125rem solid var(--accent);
+  padding: 0.25rem;
+  padding-bottom: 0rem;
+  z-index: 999;
+  font-family: var(--font);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+#side-navbar:has(.hoverable-window:hover) {
+  background: var(--highlight);
+}
+
+#side-navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+#side-navbar li {
+  margin: 0.5rem 0;
+}
+
+#side-navbar a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#side-navbar a:hover {
+  background: var(--highlight);
+  color: black;
+}
+
+/* Toggle Button for Mobile */
+#nav-toggle {
+  position: fixed;
+  width: 2rem;
+  height: 2rem;
+  bottom: 1rem;
+  right: 1rem;
+  background: url('../assets/icon_desktop_tooltip.png') no-repeat center center;
+  color: white;
+  font-size: 1.2rem;
+  z-index: 1000;
+  display: none;
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
 body {
   margin: 0;
   font-family: var(--font);
@@ -87,6 +146,7 @@ body {
   background: var(--main-bg);
   padding: 0.25rem;
   padding-bottom: 0rem;
+  box-shadow: 2px 2px 0 var(--shadow);
 }
 
 #container2:has(.hoverable-window:hover) {
@@ -172,6 +232,7 @@ body {
   justify-content: flex-start; /* or center, as you prefer */
   gap: 0.125rem; /* adds space between buttons */
   padding-left: 0rem; /* optional: adds left padding */
+  margin-left: 0%; /* optional: removes left margin */
 }
 
 .btmbtn {
@@ -191,8 +252,8 @@ body {
 }
 
 .btmbtn.small {
-  width: 0.125rem;
-  height: 0.125rem;
+  width: 0.13rem;
+  height: 0.13rem;
   margin-top: 0.1rem;
 }
 
@@ -237,13 +298,28 @@ a:hover {
   color: black;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 1000px) {
   :root {
     font-size: 16px;
   }
-}
 
-@media (max-width: 767px) {
+  #side-navbar {
+    transform: translateX(-150%) translateY(-50%);
+    opacity: 0;
+    pointer-events: none;
+    right: 1.5rem;
+  }
+
+  #side-navbar.open {
+    transform: translateX(0) translateY(-50%);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #nav-toggle {
+    display: block;
+  }
+
   .intro-flex {
     flex-direction: column;
     align-items: center;
