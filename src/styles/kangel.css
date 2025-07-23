@@ -298,6 +298,52 @@ a:hover {
   color: black;
 }
 
+pre {
+  background-color: var(--window-background); /* soft pastel background */
+  border: 0.125rem solid var(--accent);       /* matching your accent color border */
+  border-radius: 0.5rem;                       /* smooth rounded corners */
+  padding: 1rem 1.5rem;                        /* comfy padding */
+  font-family: 'CustomFont', monospace;       /* your custom font + monospace fallback */
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--text-color);                    /* base text color for readability */
+  overflow-x: auto;                            /* horizontal scroll on overflow */
+  box-shadow: 2px 2px 0 var(--shadow);        /* subtle shadow to match UI */
+  margin: 1.5rem 0;                            /* spacing above and below */
+}
+
+/* Remove any Shiki inline background colors that conflict */
+pre code {
+  background: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+}
+
+/* Optional: style inline code similarly */
+code {
+  background-color: var(--pinklight);
+  border-radius: 0.25rem;
+  padding: 0.15rem 0.3rem;
+  font-family: 'CustomFont', monospace;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Make sure scrollbar fits pastel aesthetic (for WebKit browsers) */
+pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: var(--window-background);
+  border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 4px;
+}
+
 @media (max-width: 1000px) {
   :root {
     font-size: 16px;
@@ -352,5 +398,9 @@ a:hover {
   .window-controls .btn {
     width: 1rem;
     height: 1rem;
+  }
+  pre {
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
   }
 }

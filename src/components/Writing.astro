@@ -1,9 +1,8 @@
 ---
-import pfp from '../assets/pfp.jpeg';
+import { getCollection } from 'astro:content';
 import '../styles/kangel.css';
-import Greeting from '../components/Greeting.astro';
+const posts = await getCollection('writing');
 ---
-
 
 <div id="container">
   <div id="container2">
@@ -19,8 +18,15 @@ import Greeting from '../components/Greeting.astro';
       </div>
 
       <div class="content">
-        <section id="">
-          <p>to be or not to be</p>
+        <section>
+          <ul>
+            {posts.map(post => (
+              <li>
+                <a href={`/writing/${post.slug}/`}>{post.data.title}</a>
+                <span> — {post.data.date}</span>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
 

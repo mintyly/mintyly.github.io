@@ -1,0 +1,57 @@
+---
+import { getCollection, getEntryBySlug } from 'astro:content';
+import '../../styles/kangel.css';
+
+// Import your Navbar component
+import Navbar from '../../components/Navbar.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('writing');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: {},
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getEntryBySlug('writing', slug);
+
+if (!post) {
+  throw new Error(`Post not found for slug: ${slug}`);
+}
+
+const { Content } = await post.render();
+---
+
+<!-- Include the Navbar at the top -->
+<Navbar />
+
+<div id="container">
+  <div id="container2">
+    <div class="window hoverable-window">
+      <div class="title-bar">
+        <div class="btn box"></div>
+        <div class="title">{post.data.title}.txt</div>
+        <div class="window-controls">
+          <div class="btn close"></div>
+          <div class="btn minimize"></div>
+          <div class="btn maximize"></div>
+        </div>
+      </div>
+
+      <div class="content">
+        <section>
+          <p><em>{post.data.date}</em></p>
+          <Content />
+        </section>
+      </div>
+
+      <div class="bottom-bar">
+        <div class="btmbtn main"></div>
+        <div class="btmbtn small"></div>
+        <div class="btmbtn small"></div>
+        <div class="btmbtn small"></div>
+      </div>
+    </div>
+  </div>
+</div>
