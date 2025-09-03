@@ -1,9 +1,9 @@
 ---
+layout: ../../layouts/MarkdownPostLayout.astro
 title: "prime (YCEP CCTF 2025)"
-date: "2025-09-3"
+date: "2025-09-03"
+categories: ["crypto", "ctf", "writeup", "medium"]
 ---
-
-# prime (YCEP CCTF 2025)
 
 Made this for YCEP CCTF 2025, we are given the 2 files `prime.py`, and `prime.txt` as shown below
 

@@ -41,7 +41,9 @@ const { Content } = await post.render();
 
       <div class="content">
         <section>
+          <h1>{post.data.title}</h1>
           <p><em>{post.data.date}</em></p>
+
           <Content />
         </section>
       </div>
