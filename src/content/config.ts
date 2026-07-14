@@ -1,4 +1,5 @@
 import { defineCollection, z } from 'astro:content';
+import { githubWriteups } from './loaders/githubWriteups';
 
 const writing = defineCollection({
   schema: z.object({
@@ -25,9 +26,23 @@ const welcome = defineCollection({
   }),
 });
 
+const writeups = defineCollection({
+  loader: githubWriteups(),
+  schema: z.object({
+    competition: z.string(),
+    challenge: z.string(),
+    category: z.string().nullable(),
+    difficulty: z.string().nullable(),
+    description: z.string().nullable(),
+    flag: z.string().nullable(),
+    sourceUrl: z.string(),
+  }),
+});
+
 export const collections = {
   writing,
   ctfblog,
   portfolio,
   welcome,
+  writeups,
 };

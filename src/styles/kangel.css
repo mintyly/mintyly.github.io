@@ -291,6 +291,14 @@ body {
   font-size: 1rem;
 }
 
+.content img:not(.pfp) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  border: 0.125rem solid var(--accent);
+}
+
 h1, h2 {
   color: var(--accent);
   margin-top: 0;
@@ -305,6 +313,31 @@ h1 {
 h2 {
   font-size: 1.5rem;
   margin-top: 1.5rem;
+}
+
+h3 {
+  color: var(--accent);
+  font-family: var(--font);
+  font-size: 1.15rem;
+  margin: 1.2rem 0 0.3rem;
+}
+
+.writeup-group ul {
+  margin-top: 0.25rem;
+}
+
+.tag {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.5rem;
+  border: 0.125rem solid var(--accent);
+  border-radius: 1rem;
+  background: var(--pinklight);
+  color: var(--text-color);
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  vertical-align: middle;
 }
 
 ul {

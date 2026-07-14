@@ -2,6 +2,14 @@
 import { getCollection } from 'astro:content';
 import '../styles/kangel.css';
 const posts = await getCollection('ctfblog');
+const writeups = await getCollection('writeups');
+
+const writeupsByCompetition = new Map<string, typeof writeups>();
+for (const writeup of writeups) {
+  const group = writeupsByCompetition.get(writeup.data.competition) ?? [];
+  group.push(writeup);
+  writeupsByCompetition.set(writeup.data.competition, group);
+}
 ---
 
 <div id="container">
@@ -27,6 +35,24 @@ const posts = await getCollection('ctfblog');
               </li>
             ))}
           </ul>
+        </section>
+
+        <section id="writeups">
+          <h2>Writeups</h2>
+          {[...writeupsByCompetition.entries()].map(([competition, entries]) => (
+            <div class="writeup-group">
+              <h3>{competition}</h3>
+              <ul>
+                {entries.map(writeup => (
+                  <li>
+                    <a href={`/ctfblog/writeups/${writeup.id}/`}>{writeup.data.challenge}</a>
+                    {writeup.data.category && <span class="tag">{writeup.data.category}</span>}
+                    {writeup.data.difficulty && <span class="tag">{writeup.data.difficulty}</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </section>
       </div>
 
