@@ -59,7 +59,7 @@
 #side-navbar {
   position: fixed;
   top: 50%;
-  right: 14%;
+  right: 1rem;
   transform: translateY(-50%);
   background: var(--main-bg);
   border: 0.125rem solid var(--accent);
@@ -69,6 +69,25 @@
   font-family: var(--font);
   transition: transform 0.3s ease, opacity 0.3s ease;
   box-shadow: 2px 2px 0 var(--shadow);
+}
+
+/* Docked position (set by sidebar.js once it measures the gap beside #container) is
+   applied via inline left/right styles. These rules handle the fallback-to-toggle
+   state when sidebar.js determines there isn't enough room to dock the navbar. */
+body.nav-collapsed #side-navbar {
+  transform: translateX(-150%) translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.nav-collapsed #side-navbar.open {
+  transform: translateX(0) translateY(-50%);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+body.nav-collapsed #nav-toggle {
+  display: block;
 }
 
 #side-navbar:has(.hoverable-window:hover) {
@@ -100,18 +119,26 @@
 /* Toggle Button for Mobile */
 #nav-toggle {
   position: fixed;
-  width: 2rem;
-  height: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
   bottom: 1rem;
   right: 1rem;
-  background: url('../assets/icon_desktop_tooltip.png') no-repeat center center;
-  color: white;
-  font-size: 1.2rem;
+  background-color: var(--window-header);
+  background-image: url('/assets/icon_desktop_tooltip.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 60%;
+  image-rendering: pixelated;
+  border: 0.125rem solid var(--accent);
+  box-shadow: 2px 2px 0 var(--shadow);
   z-index: 1000;
   display: none;
   outline: none;
-  box-shadow: none;
-  border: none;
+  cursor: pointer;
+}
+
+#nav-toggle:hover {
+  background-color: var(--main-bg);
 }
 
 body {
@@ -347,23 +374,6 @@ pre::-webkit-scrollbar-thumb {
 @media (max-width: 1000px) {
   :root {
     font-size: 16px;
-  }
-
-  #side-navbar {
-    transform: translateX(-150%) translateY(-50%);
-    opacity: 0;
-    pointer-events: none;
-    right: 1.5rem;
-  }
-
-  #side-navbar.open {
-    transform: translateX(0) translateY(-50%);
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  #nav-toggle {
-    display: block;
   }
 
   .intro-flex {

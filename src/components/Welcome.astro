@@ -2,6 +2,10 @@
 import pfp from '../assets/pfp.jpeg';
 import '../styles/kangel.css';
 import Greeting from '../components/Greeting.astro';
+import { getEntry, render } from 'astro:content';
+
+const welcomeEntry = await getEntry('welcome', 'welcome');
+const { Content } = await render(welcomeEntry);
 ---
 
 
@@ -24,28 +28,13 @@ import Greeting from '../components/Greeting.astro';
           <div>
             <h1><Greeting /></h1>
             <ul>
-              <li><strong>Y1 infosec student @ NUS</strong></li>
-              <li><strong>Recent Ngee Ann Polytechnic Cybersecurity and Digital Forensics Graduate</strong></li>
-              <li><strong>Former Singtel Cadet Scholar</strong></li>
+              {welcomeEntry.data.roles.map(role => (
+                <li><strong>{role}</strong></li>
+              ))}
             </ul>
           </div>
         </div>
-        <section id="intro">
-          <h2>Introduction</h2>
-          <p>Heya there! I like breaking things (ethically), fixing them, and overthinking every step of the process.</p>
-          <p>I got into tech when I was 14 where I started by picking apart discarded computers, and learning how it worked.
-          <p>Since then, I've participated, organized, and held a number of CTFs, and pulled all nighters along the way trying to finish my assignments.</p>
-
-        </section>
-
-        <section>
-          <h2>Contact</h2>
-          <p>
-            <a href="mailto:juneong0305@gmail.com">Email</a> | 
-            <a href="https://github.com/mintyly">GitHub</a> | 
-            <a href="https://www.linkedin.com/in/mintyly">LinkedIn</a>
-          </p>
-        </section>
+        <Content />
       </div>
 
       <div class="bottom-bar">

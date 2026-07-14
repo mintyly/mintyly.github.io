@@ -1,0 +1,34 @@
+---
+---
+
+- **2025**
+  - Diploma in Cybersecurity & Digital Forensics
+  - Diploma Plus Certificate in Advanced Computing Mathematics
+  - LNC 5.0 Challenge Creator
+- **2024**
+  - Edusave Merit Bursary (EMB)
+  - LNC 4.0 Challenge Creator
+- **2023**
+  - Singtel Cadet Scholar (Cyber)
+  - AWS Certified Cloud Practitioner
+  - AiSP Student Volunteer Recognition Programme Silver Award
+  - Sentinel Programme Workshop - Cyber Data Analysis
+- **2022**
+  - Lag and Crash 4th (fate fairy poultry)
+  - Curtin Singapore Hackathon - Mycological Mayhem
+- **2021**
+  - YCEP@TP - 3rd
+  - YCEP@NP - 4th
+  - YCEP@RP - 4th
+  - YCEP Online
+  - Edusave Award for achievements, good leadership, & Service (EAGLES)
+  - Cisco Introduction to Cybersecurity
+- **2020**
+  - Edusave Character Award (ECHA)
+  - Edusave Award for achievements, good leadership, & Service (EAGLES)
+  - YCEP@NP - 1st
+  - YCEP@Central - 3rd
+  - YCEP@RP - 10th
+  - YCEP@SP
+  - YCEP Online
+  - STACK the Flags

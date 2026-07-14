@@ -15,7 +15,19 @@ const ctfblog = defineCollection({
   }),
 });
 
+const portfolio = defineCollection({
+  schema: z.object({}),
+});
+
+const welcome = defineCollection({
+  schema: z.object({
+    roles: z.array(z.string()),
+  }),
+});
+
 export const collections = {
   writing,
   ctfblog,
+  portfolio,
+  welcome,
 };
