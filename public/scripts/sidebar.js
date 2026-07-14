@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const toggleButton = document.getElementById('nav-toggle');
   const sideNav = document.getElementById('side-navbar');
+  const ameWindow = document.getElementById('ame-window');
   const mainWindow = document.getElementById('container');
 
   if (toggleButton && sideNav) {
@@ -13,12 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!sideNav || !mainWindow) return;
 
   const GAP = 24; // space kept between the main window and the docked navbar
-  const EDGE_MARGIN = 16; // space kept between the navbar and the screen edge
+  const EDGE_MARGIN = 16; // space kept between a docked window and the screen edge
+  const AME_MIN_WIDTH = 208; // never shrink smaller than this
+  const AME_MAX_WIDTH = 700; // ame_gif.gif is 693x453 natively - beyond this it's just upscaled and blurry
 
   const updateNavLayout = () => {
-    const containerRight = mainWindow.getBoundingClientRect().right;
+    const containerRect = mainWindow.getBoundingClientRect();
     const navWidth = sideNav.getBoundingClientRect().width;
-    const desiredLeft = containerRight + GAP;
+    const desiredLeft = containerRect.right + GAP;
     const fits = desiredLeft + navWidth + EDGE_MARGIN <= window.innerWidth;
 
     if (fits) {
@@ -30,6 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
       sideNav.style.left = '';
       sideNav.style.right = '';
       document.body.classList.add('nav-collapsed');
+    }
+
+    if (ameWindow) {
+      // Fill the actual gutter to the left of the main window, not a guess.
+      const availableGutter = containerRect.left - EDGE_MARGIN - GAP;
+      const ameWidth = Math.min(AME_MAX_WIDTH, Math.max(AME_MIN_WIDTH, availableGutter));
+      ameWindow.style.width = `${ameWidth}px`;
     }
   };
 

@@ -1,0 +1,29 @@
+---
+import ameGif from '../assets/ame_gif.gif';
+import '../styles/kangel.css';
+---
+
+<div id="ame-window">
+  <div class="window hoverable-window">
+    <div class="title-bar">
+      <div class="btn box"></div>
+      <div class="title">ame.gif</div>
+      <div class="window-controls">
+        <div class="btn close"></div>
+        <div class="btn minimize"></div>
+        <div class="btn maximize"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <img src={ameGif.src} alt="" class="ame-gif" />
+    </div>
+
+    <div class="bottom-bar">
+      <div class="btmbtn main"></div>
+      <div class="btmbtn small"></div>
+      <div class="btmbtn small"></div>
+      <div class="btmbtn small"></div>
+    </div>
+  </div>
+</div>

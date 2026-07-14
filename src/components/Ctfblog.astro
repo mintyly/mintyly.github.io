@@ -10,6 +10,12 @@ for (const writeup of writeups) {
   group.push(writeup);
   writeupsByCompetition.set(writeup.data.competition, group);
 }
+
+// Newest competition year first (e.g. "Lag N Crash 2025" above "Lag N Crash 2024").
+const competitionYear = (name: string) => Number(name.match(/\d{4}/)?.[0] ?? 0);
+const sortedCompetitions = [...writeupsByCompetition.entries()].sort(
+  ([a], [b]) => competitionYear(b) - competitionYear(a) || a.localeCompare(b),
+);
 ---
 
 <div id="container">
@@ -39,7 +45,7 @@ for (const writeup of writeups) {
 
         <section id="writeups">
           <h2>Writeups</h2>
-          {[...writeupsByCompetition.entries()].map(([competition, entries]) => (
+          {sortedCompetitions.map(([competition, entries]) => (
             <div class="writeup-group">
               <h3>{competition}</h3>
               <ul>

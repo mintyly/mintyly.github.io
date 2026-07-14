@@ -56,6 +56,16 @@
   border: 2px solid var(--accent);
 }
 
+@keyframes float-navbar {
+  0%, 100% { transform: translateY(-50%) translateY(0); }
+  50% { transform: translateY(-50%) translateY(-10px); }
+}
+
+@keyframes float-ame {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
 #side-navbar {
   position: fixed;
   top: 50%;
@@ -67,17 +77,21 @@
   padding-bottom: 0rem;
   z-index: 999;
   font-family: var(--font);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: opacity 0.3s ease;
   box-shadow: 2px 2px 0 var(--shadow);
+  animation: float-navbar 4.5s ease-in-out infinite;
 }
 
 /* Docked position (set by sidebar.js once it measures the gap beside #container) is
    applied via inline left/right styles. These rules handle the fallback-to-toggle
-   state when sidebar.js determines there isn't enough room to dock the navbar. */
+   state when sidebar.js determines there isn't enough room to dock the navbar. The
+   floating animation is dropped here since it would fight the slide transform. */
 body.nav-collapsed #side-navbar {
+  animation: none;
   transform: translateX(-150%) translateY(-50%);
   opacity: 0;
   pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 body.nav-collapsed #side-navbar.open {
@@ -88,6 +102,46 @@ body.nav-collapsed #side-navbar.open {
 
 body.nav-collapsed #nav-toggle {
   display: block;
+}
+
+/* Free to overlap the main window. Width is set by sidebar.js, which measures the
+   actual gutter beside #container and fills it (up to a sane cap) - a CSS vw-based
+   guess can't know where the container really sits, so it either falls short on wide
+   screens or overflows on narrow ones. Hidden whenever the navbar is (body.nav-collapsed). */
+#ame-window {
+  position: fixed;
+  top: 15%;
+  left: 1rem;
+  box-sizing: border-box;
+  background: var(--main-bg);
+  border: 0.125rem solid var(--accent);
+  padding: 0.25rem;
+  padding-bottom: 0rem;
+  z-index: 999;
+  width: 18rem;
+  font-family: var(--font);
+  transition: opacity 0.3s ease;
+  box-shadow: 2px 2px 0 var(--shadow);
+  animation: float-ame 5.5s ease-in-out infinite;
+}
+
+#ame-window:has(.hoverable-window:hover) {
+  background: var(--highlight);
+}
+
+#ame-window .content {
+  padding: 0;
+}
+
+#ame-window .content img {
+  margin: 0;
+  border: none;
+}
+
+body.nav-collapsed #ame-window {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 #side-navbar:has(.hoverable-window:hover) {
@@ -331,10 +385,11 @@ h3 {
 }
 
 .tag-row {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  margin-top: 0.25rem;
+  vertical-align: middle;
+  margin-left: 0.5rem;
 }
 
 .tag {

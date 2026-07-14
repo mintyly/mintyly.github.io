@@ -4,6 +4,7 @@ import '../../styles/kangel.css';
 
 // Import your Navbar component
 import Navbar from '../../components/Navbar.astro';
+import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('ctfblog');
@@ -23,37 +24,39 @@ if (!post) {
 const { Content } = await post.render();
 ---
 
-<!-- Include the Navbar at the top -->
-<Navbar />
+<Layout>
+  <!-- Include the Navbar at the top -->
+  <Navbar />
 
-<div id="container">
-  <div id="container2">
-    <div class="window hoverable-window">
-      <div class="title-bar">
-        <div class="btn box"></div>
-        <div class="title">{post.data.title}.txt</div>
-        <div class="window-controls">
-          <div class="btn close"></div>
-          <div class="btn minimize"></div>
-          <div class="btn maximize"></div>
+  <div id="container">
+    <div id="container2">
+      <div class="window hoverable-window">
+        <div class="title-bar">
+          <div class="btn box"></div>
+          <div class="title">{post.data.title}.txt</div>
+          <div class="window-controls">
+            <div class="btn close"></div>
+            <div class="btn minimize"></div>
+            <div class="btn maximize"></div>
+          </div>
         </div>
-      </div>
 
-      <div class="content">
-        <section>
-          <h1>{post.data.title}</h1>
-          <p><em>{post.data.date}</em></p>
+        <div class="content">
+          <section>
+            <h1>{post.data.title}</h1>
+            <p><em>{post.data.date}</em></p>
 
-          <Content />
-        </section>
-      </div>
+            <Content />
+          </section>
+        </div>
 
-      <div class="bottom-bar">
-        <div class="btmbtn main"></div>
-        <div class="btmbtn small"></div>
-        <div class="btmbtn small"></div>
-        <div class="btmbtn small"></div>
+        <div class="bottom-bar">
+          <div class="btmbtn main"></div>
+          <div class="btmbtn small"></div>
+          <div class="btmbtn small"></div>
+          <div class="btmbtn small"></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</Layout>

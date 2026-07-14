@@ -109,18 +109,36 @@ async function loadChallengeMeta(challengeDir: string, entries: TreeEntry[], log
  *
  * Some of those broken paths contain literal parentheses (e.g. a folder named
  * "Audiophile (nothing added bro wtf)"), so the URL group can't stop at the first `)` -
- * it's anchored on the image extension instead, since every link here ends in one. */
+ * it's anchored on the image extension instead, since every link here ends in one.
+ *
+ * Writeups also sometimes embed a raw <img src="..."> tag instead of markdown image
+ * syntax (e.g. to set a width) - that needs its own pass since it doesn't match `![]()`. */
 function fixImageLinks(markdown: string, imageByBasename: Map<string, string>): string {
-  return markdown.replace(/!\[([^\]]*)\]\((.+?\.(?:png|jpe?g|gif|webp|svg))\)/gi, (match, alt, src) => {
+  const resolvePath = (src: string) => {
     let name = basename(src.trim());
     try {
       name = decodeURIComponent(name);
     } catch {
       // leave as-is if it's not validly percent-encoded
     }
-    const actualPath = imageByBasename.get(name);
-    return actualPath ? `![${alt}](${rawUrl(actualPath)})` : match;
-  });
+    return imageByBasename.get(name);
+  };
+
+  const withMarkdownImagesFixed = markdown.replace(
+    /!\[([^\]]*)\]\((.+?\.(?:png|jpe?g|gif|webp|svg))\)/gi,
+    (match, alt, src) => {
+      const actualPath = resolvePath(src);
+      return actualPath ? `![${alt}](${rawUrl(actualPath)})` : match;
+    },
+  );
+
+  return withMarkdownImagesFixed.replace(
+    /(<img\b[^>]*?\bsrc=)(["'])(.+?\.(?:png|jpe?g|gif|webp|svg))\2/gi,
+    (match, prefix, quote, src) => {
+      const actualPath = resolvePath(src);
+      return actualPath ? `${prefix}${quote}${rawUrl(actualPath)}${quote}` : match;
+    },
+  );
 }
 
 export function githubWriteups(): Loader {
