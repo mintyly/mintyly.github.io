@@ -40,10 +40,10 @@ const { Content } = await render(writeup);
       <div class="content">
         <section>
           <p><em>{writeup.data.competition}</em></p>
-          <p>
+          <div class="tag-row">
             {writeup.data.category && <span class="tag">{writeup.data.category}</span>}
             {writeup.data.difficulty && <span class="tag">{writeup.data.difficulty}</span>}
-          </p>
+          </div>
           {writeup.data.description && <p>{writeup.data.description}</p>}
 
           <Content />
@@ -62,3 +62,5 @@ const { Content } = await render(writeup);
     </div>
   </div>
 </div>
+
+<script type="module" src="/scripts/sidebar.js"></script>

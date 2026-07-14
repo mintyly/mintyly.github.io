@@ -326,9 +326,19 @@ h3 {
   margin-top: 0.25rem;
 }
 
+.writeup-group li {
+  margin-bottom: 0.5rem;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
 .tag {
   display: inline-block;
-  margin-left: 0.5rem;
   padding: 0.05rem 0.5rem;
   border: 0.125rem solid var(--accent);
   border-radius: 1rem;
@@ -445,5 +455,14 @@ pre::-webkit-scrollbar-thumb {
   pre {
     font-size: 0.85rem;
     padding: 0.75rem 1rem;
+  }
+
+  .tag {
+    font-size: 0.65rem;
+    padding: 0.02rem 0.4rem;
+  }
+
+  .tag-row {
+    gap: 0.25rem;
   }
 }

@@ -46,8 +46,10 @@ for (const writeup of writeups) {
                 {entries.map(writeup => (
                   <li>
                     <a href={`/ctfblog/writeups/${writeup.id}/`}>{writeup.data.challenge}</a>
-                    {writeup.data.category && <span class="tag">{writeup.data.category}</span>}
-                    {writeup.data.difficulty && <span class="tag">{writeup.data.difficulty}</span>}
+                    <div class="tag-row">
+                      {writeup.data.category && <span class="tag">{writeup.data.category}</span>}
+                      {writeup.data.difficulty && <span class="tag">{writeup.data.difficulty}</span>}
+                    </div>
                   </li>
                 ))}
               </ul>
