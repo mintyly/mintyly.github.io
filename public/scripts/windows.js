@@ -130,6 +130,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // #nav-toggle's CSS bottom offset was tuned for one specific taskbar height,
+  // but that height has changed many times since (normal/hide-windows/shrink
+  // states, plus repeated size tweaks) - a static value drifts out of sync and
+  // ends up sitting on top of window content instead of just above the
+  // taskbar. Measure the taskbar's actual current height instead of guessing.
+  function updateNavTogglePosition() {
+    const toggle = document.getElementById('nav-toggle');
+    const bar = document.getElementById('window-taskbar');
+    if (!toggle || !bar) return;
+    const gap = 16;
+    toggle.style.bottom = `${bar.getBoundingClientRect().height + gap}px`;
+  }
+
   function makeDraggable(item) {
     const { frame, titleBar, mode } = item;
     if (!titleBar) return;
@@ -207,6 +220,29 @@ document.addEventListener('DOMContentLoaded', () => {
   buildTaskbar();
   syncTaskbarButtonWidths();
   updateTaskbarLayout();
+  updateNavTogglePosition();
+
+  // The taskbar's height can still change after this (e.g. the custom pixel
+  // font finishing its async load and swapping in with different text
+  // metrics, shifting button sizes) with nothing else to trigger a re-check -
+  // react to the taskbar's actual size whenever it changes, for any reason,
+  // instead of trying to guess every possible cause of a late layout shift.
+  const taskbarEl = document.getElementById('window-taskbar');
+  if (taskbarEl && typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(() => updateNavTogglePosition()).observe(taskbarEl);
+  }
+
+  // Belt-and-suspenders: explicitly re-run everything once the custom font
+  // (zpix, loaded via @font-face) actually finishes loading, instead of
+  // relying solely on the ResizeObserver noticing the resulting size change.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      syncTaskbarButtonWidths();
+      updateTaskbarLayout();
+      updateNavTogglePosition();
+    });
+  }
+
   items.forEach((item) => {
     makeDraggable(item);
     if (item.closeBtn && !item.pinned) {
@@ -224,6 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
     taskbarResizeFrame = requestAnimationFrame(() => {
       syncTaskbarButtonWidths();
       updateTaskbarLayout();
+      updateNavTogglePosition();
     });
   });
 

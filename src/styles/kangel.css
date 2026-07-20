@@ -175,6 +175,8 @@ body.nav-collapsed #nav-toggle {
 #ame-window {
   position: fixed;
   top: 15%;
+  /* Fallback only, for the instant before sidebar.js measures #container's
+     actual left edge and docks GAP away from it (see updateNavLayout). */
   left: 1rem;
   box-sizing: border-box;
   background: var(--main-bg);
@@ -348,6 +350,8 @@ body.nav-collapsed #lastfm-window {
   position: fixed;
   width: 3.5rem;
   height: 3.5rem;
+  /* Fallback only, for the instant before windows.js measures the taskbar's
+     actual current height and overrides this - see updateNavTogglePosition(). */
   bottom: 5rem;
   right: 1rem;
   background-color: var(--window-header);

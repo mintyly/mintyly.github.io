@@ -23,14 +23,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateNavLayout = () => {
     const containerRect = mainWindow.getBoundingClientRect();
     const navWidth = sideNav.getBoundingClientRect().width;
-    const desiredLeft = containerRect.right + GAP;
-    const fits = desiredLeft + navWidth + EDGE_MARGIN <= window.innerWidth;
+    // Dock GAP away from the main window's own edge, not pinned to the outer
+    // screen edge - on a wide monitor the container is centered with a capped
+    // max-width, so anchoring to the viewport edge instead left these windows
+    // stranded far from the actual content. Hovering near the main section is
+    // the intent on both sides.
+    const desiredNavLeft = containerRect.right + GAP;
+    const fits = desiredNavLeft + navWidth + EDGE_MARGIN <= window.innerWidth;
 
     // Once the window-manager script (windows.js) has let the user drag this
     // element, it owns position/size from then on - don't snap it back on resize.
     if (!sideNav.classList.contains('win-user-positioned')) {
       if (fits) {
-        sideNav.style.left = `${desiredLeft}px`;
+        sideNav.style.left = `${desiredNavLeft}px`;
         sideNav.style.right = 'auto';
         document.body.classList.remove('nav-collapsed');
         sideNav.classList.remove('open');
@@ -47,12 +52,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // so they don't linger and override that CSS after a resize.
     if (ameWindow && !ameWindow.classList.contains('win-user-positioned')) {
       if (fits) {
-        // Fill the actual gutter to the left of the main window, not a guess.
+        // Fill the actual gutter to the left of the main window, not a guess,
+        // but capped at AME_MAX_WIDTH - once that cap kicks in on a really
+        // wide monitor, dock it GAP away from the container's left edge
+        // instead of leaving it pinned out at the screen's edge.
         const availableGutter = containerRect.left - EDGE_MARGIN - GAP;
         const ameWidth = Math.min(AME_MAX_WIDTH, Math.max(AME_MIN_WIDTH, availableGutter));
         ameWindow.style.width = `${ameWidth}px`;
+        ameWindow.style.left = `${containerRect.left - GAP - ameWidth}px`;
       } else {
         ameWindow.style.width = '';
+        ameWindow.style.left = '';
       }
     }
 
