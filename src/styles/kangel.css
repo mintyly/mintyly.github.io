@@ -645,12 +645,13 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* Integer px, not rem (0.125rem = 1.75px) - a fractional CSS pixel value
-     here rounds to a device pixel differently across browser builds/zoom
-     levels (confirmed: identical in Edge, off by 1px in Vivaldi, both
-     Chromium). Nothing fractional left in this component = nothing left to
-     round inconsistently. */
-  border: 2px solid var(--accent);
+  /* Same border as every other window chrome element (title-bar, #container2,
+     .content, etc.) so .btmbtn.main doesn't stick out with a mismatched
+     thickness. .btmbtn.small still overrides just the width below to stay a
+     flat 1px (needed for cross-browser rounding consistency) - only the
+     border-width longhand is overridden there, not this shorthand, so this
+     rem value never affects it. */
+  border: 0.125rem solid var(--accent);
   background: var(--pinklight);
 
 }
