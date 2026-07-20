@@ -358,7 +358,9 @@ body.nav-collapsed #lastfm-window {
   image-rendering: pixelated;
   border: 0.125rem solid var(--accent);
   box-shadow: 2px 2px 0 var(--shadow);
-  z-index: 1000;
+  /* Was 1000 - exactly windows.js's starting z-index counter, so the very
+     first window drag/click already covered it. Above nav.exe's 4000 tier. */
+  z-index: 4001;
   display: none;
   outline: none;
   cursor: pointer;
