@@ -4,6 +4,8 @@ import '../../styles/kangel.css';
 
 // Import your Navbar component
 import Navbar from '../../components/Navbar.astro';
+import AmeWindow from '../../components/AmeWindow.astro';
+import LastFmWindow from '../../components/LastFmWindow.astro';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -27,6 +29,8 @@ const { Content } = await post.render();
 <Layout>
   <!-- Include the Navbar at the top -->
   <Navbar />
+  <AmeWindow />
+  <LastFmWindow />
 
   <div id="container">
     <div id="container2">

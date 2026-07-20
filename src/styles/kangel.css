@@ -8,7 +8,13 @@
   --text-color: #222;
   --window-header: #e2e2e2;
   --window-background: #f9eff9;
-  --shadow: #362177;
+  --shadow: #bcaee9;
+  --scrollbar-track: #cfeaf9;
+  /* The one shared width for every main-content window (welcome/portfolio/ctf
+     blog/writing/posts/writeups, and lastfm.exe once it joins that column on
+     mobile) - #container and lastfm.exe both reference this instead of each
+     re-declaring the same number, which is what let them drift apart before. */
+  --window-max-width: 62.5rem;
   --font: 'CustomFont', 'Verdana', sans-serif;
   font-size: 14px;
 }
@@ -18,6 +24,56 @@
   src: url('/fonts/zpix.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+html, * {
+  box-sizing: border-box;
+}
+
+/* 2. Target Firefox ONLY. `-webkit-scrollbar` isn't a real CSS property (the
+   pseudo-ELEMENT `::-webkit-scrollbar` is a selector, not a property), so
+   `not (-webkit-scrollbar: width)` is always true - it never actually excludes
+   Chromium, meaning this block was firing there too and competing with the
+   webkit block below. `not selector(::-webkit-scrollbar)` is the correct
+   check: true only in browsers (Firefox) that don't support that selector at
+   all. Firefox's scrollbar-color only supports two flat colors - it cannot do
+   sharp corners or a bevel, no CSS trick changes that. */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: auto;
+    scrollbar-color: var(--pinklight) var(--scrollbar-track);
+    scrollbar-gutter: stable;
+  }
+}
+
+/* 3. Target Chrome, Safari, and Edge (Completely overrides native styling) */
+@supports selector(::-webkit-scrollbar) {
+  /* You MUST completely omit standard `scrollbar-width/color` inside this block */
+  
+  ::-webkit-scrollbar {
+    width: 0.6rem;
+    display: block;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 0 !important; /* Forces sharp 90-degree corners */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--pinklight);
+    border: 0.09rem solid var(--accent);
+    border-radius: 0 !important; /* Erases the rounded scrollwheel look */
+
+    /* Your 3D retro bevel effect */
+    box-shadow:
+      inset 0.06rem 0.06rem 0 #fdfdfd,
+      inset -0.06rem -0.06rem 0 var(--accent);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--highlight);
+  }
 }
 
 .greeting {
@@ -66,6 +122,11 @@
   50% { transform: translateY(-14px); }
 }
 
+@keyframes float-lastfm {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
 #side-navbar {
   position: fixed;
   top: 50%;
@@ -75,7 +136,10 @@
   border: 0.125rem solid var(--accent);
   padding: 0.25rem;
   padding-bottom: 0rem;
-  z-index: 999;
+  /* Deliberately above the taskbar (3000) - nav.exe stays on top of every
+     other window, always. windows.js also excludes it from the shared
+     z-index counter so dragging it never demotes it below this. */
+  z-index: 4000;
   font-family: var(--font);
   transition: opacity 0.3s ease;
   box-shadow: 2px 2px 0 var(--shadow);
@@ -144,6 +208,115 @@ body.nav-collapsed #ame-window {
   pointer-events: none;
 }
 
+/* Position (left/top/width) is set by sidebar.js to dock it directly beneath
+   #ame-window, matching its width and left edge. */
+#lastfm-window {
+  position: fixed;
+  box-sizing: border-box;
+  background: var(--main-bg);
+  border: 0.125rem solid var(--accent);
+  padding: 0.25rem;
+  padding-bottom: 0rem;
+  z-index: 998;
+  font-family: var(--font);
+  transition: opacity 0.3s ease;
+  box-shadow: 2px 2px 0 var(--shadow);
+  /* Deliberately its own keyframes/duration/phase (not float-ame) so it bobs
+     out of sync with #ame-window instead of moving in lockstep. */
+  animation: float-lastfm 4s ease-in-out infinite;
+  animation-delay: -1.4s;
+}
+
+#lastfm-window:has(.hoverable-window:hover) {
+  background: var(--highlight);
+}
+
+#lastfm-window .content {
+  padding: 0.5rem;
+}
+
+.lastfm-track-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.lastfm-track {
+  padding: 0.3rem 0;
+  border-bottom: 0.125rem solid var(--pinklight);
+}
+
+.lastfm-track:last-child {
+  border-bottom: none;
+}
+
+.lastfm-track-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.lastfm-now-playing-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+  padding: 0.5rem;
+  background: var(--main-bg);
+  border: 0.15rem solid var(--accent);
+}
+
+.lastfm-now-playing-box .tag.lastfm-now-playing {
+  align-self: flex-start;
+}
+
+.lastfm-now-playing-box .lastfm-track-art {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.lastfm-now-playing-box .lastfm-track-title {
+  font-size: 1.1rem;
+}
+
+#lastfm-window .lastfm-track-art {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 0.125rem solid var(--accent);
+}
+
+.lastfm-track-info {
+  min-width: 0;
+}
+
+.lastfm-track-title {
+  color: var(--accent);
+}
+
+.lastfm-track-artist {
+  color: var(--text-color);
+}
+
+.lastfm-now-playing {
+  margin-right: 0.4rem;
+}
+
+body.nav-collapsed #lastfm-window {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Set by windows.js the first time a window is dragged - it owns its own
+   position/size from then on, so the float bob and docking logic back off. */
+.win-user-positioned {
+  animation: none !important;
+}
+
 #side-navbar:has(.hoverable-window:hover) {
   background: var(--highlight);
 }
@@ -175,7 +348,7 @@ body.nav-collapsed #ame-window {
   position: fixed;
   width: 3.5rem;
   height: 3.5rem;
-  bottom: 1rem;
+  bottom: 5rem;
   right: 1rem;
   background-color: var(--window-header);
   background-image: url('/assets/icon_desktop_tooltip.png');
@@ -197,11 +370,140 @@ body.nav-collapsed #ame-window {
 
 body {
   margin: 0;
+  padding-bottom: 6rem;
   font-family: var(--font);
   background: url('../assets/Windose20-wallpaper-crop.png') repeat;
   color: var(--text-color);
   font-size: 1rem;
   line-height: 1.4;
+}
+
+.title-bar {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.title-bar.dragging {
+  cursor: grabbing;
+}
+
+.window-controls .btn.close {
+  cursor: pointer;
+}
+
+.win-closed {
+  display: none !important;
+}
+
+#window-taskbar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 4.05rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.76rem;
+  padding: 0.76rem 1.01rem;
+  background: var(--main-bg);
+  border-top: 0.126rem solid #fdfdfd;
+  box-shadow: 0 -2px 0 var(--shadow);
+  z-index: 3000;
+}
+
+.taskbar-start {
+  height: 2.79rem;
+  width: auto;
+  border: none;
+  display: block;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.taskbar-btn {
+  box-sizing: border-box;
+  height: 2.79rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-family: var(--font);
+  font-size: 1.12rem;
+  font-weight: bold;
+  color: var(--accent);
+  background: #edd8ef;
+  border-width: 0.15rem;
+  border-style: solid;
+  /* raised bevel: light top/left, dark bottom/right */
+  border-color: #fdfdfd #815cdd #815cdd #fdfdfd;
+  box-shadow: 2px 2px 0 var(--shadow);
+  padding: 0 1.2rem;
+  cursor: pointer;
+}
+
+.taskbar-btn-icon {
+  height: 1.2rem;
+  width: 1.2rem;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+}
+
+.taskbar-btn-label {
+  white-space: nowrap;
+}
+
+.taskbar-btn:hover {
+  background: #f7e0fa;
+}
+
+/* .active = the window is currently open - shown pressed-in, like a real
+   taskbar, by inverting the bevel and swapping the drop shadow for an inset one. */
+.taskbar-btn.active {
+  background: #f7e0fa;
+  border-color: #815cdd #fdfdfd #fdfdfd #815cdd;
+  box-shadow: inset 1px 1px 2px var(--shadow);
+  transform: translate(1px, 1px);
+}
+
+/* Non-interactive - only shown at mobile widths (see the max-width:1000px block). */
+.taskbar-mobile-notice {
+  display: none;
+  cursor: default;
+  margin-left: auto;
+}
+
+.taskbar-mobile-notice:hover {
+  background: #edd8ef;
+}
+
+/* Set by windows.js when the taskbar's row wraps onto 2 lines - drop the
+   window buttons first, keeping just the start button + the notice. */
+#window-taskbar.taskbar-hide-windows .taskbar-btn:not(.taskbar-mobile-notice) {
+  display: none;
+}
+
+/* If even just the start button + notice still wrap, shrink what's left. */
+#window-taskbar.taskbar-shrink {
+  min-height: 3rem;
+  padding: 0.5rem 0.75rem;
+  gap: 0.5rem;
+}
+
+#window-taskbar.taskbar-shrink .taskbar-start {
+  height: 2rem;
+}
+
+#window-taskbar.taskbar-shrink .taskbar-mobile-notice {
+  height: 2rem;
+  font-size: 0.9rem;
+  padding: 0 0.75rem;
 }
 
 #background {
@@ -215,10 +517,21 @@ body {
 }
 
 #container {
-  max-width: 62.5rem; /* 1000px */
+  max-width: var(--window-max-width);
   margin: 2.5rem auto;
   padding: 0.625rem;
 
+}
+
+/* Tighten the stack when one window (e.g. welcome.txt) is directly followed by
+   another (portfolio.txt) - zero the first one's bottom margin and give the
+   second a small top margin instead of the default 2.5rem on both sides. */
+#container:has(+ #container) {
+  margin-bottom: 0.75rem;
+}
+
+#container + #container {
+  margin-top: 0;
 }
 
 #container2 {
@@ -397,8 +710,8 @@ h3 {
   padding: 0.05rem 0.5rem;
   border: 0.125rem solid var(--accent);
   border-radius: 1rem;
-  background: var(--pinklight);
-  color: var(--text-color);
+  background: var(--accent);
+  color: #f9eff9;
   font-size: 0.75rem;
   font-weight: bold;
   text-transform: capitalize;
@@ -469,55 +782,138 @@ pre::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
 
-@media (max-width: 1000px) {
-  :root {
-    font-size: 16px;
-  }
+/* "Mobile view" is driven entirely by body.nav-collapsed (set by sidebar.js
+   whenever the navbar doesn't fit beside the main window and switches to the
+   hamburger toggle) instead of a raw viewport-width media query. That keeps
+   every mobile-only rule in sync with the moment the navbar actually
+   disappears, rather than two independently-thresholded systems potentially
+   disagreeing over a range of widths. */
+:root:has(body.nav-collapsed) {
+  font-size: 16px;
+}
 
-  .intro-flex {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+body.nav-collapsed .intro-flex {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 
-  .pfp {
-    width: 100px;
-    height: 100px;
-  }
+body.nav-collapsed .pfp {
+  width: 100px;
+  height: 100px;
+}
 
-  .greeting {
-    font-size: 2rem;
-  }
+body.nav-collapsed .greeting {
+  font-size: 2rem;
+}
 
-  h1 {
-    font-size: 2.2rem;
-  }
+body.nav-collapsed h1 {
+  font-size: 2.2rem;
+}
 
-  ul {
-    font-size: 0.95rem;
-    padding-left: 0;
-    list-style-position: inside;
-  }
+body.nav-collapsed ul {
+  font-size: 0.95rem;
+  padding-left: 0;
+  list-style-position: inside;
+  /* .intro-flex forces text-align:center above for the column layout, which
+     cascades down and centers welcome.txt's role list too - override it
+     back to left. (Other lists on the site aren't inside a centered
+     ancestor, so this is a no-op for them.) */
+  text-align: left;
+}
 
-  .content {
-    padding: 1rem;
-  }
+body.nav-collapsed .content {
+  padding: 1rem;
+}
 
-  .window-controls .btn {
-    width: 1rem;
-    height: 1rem;
-  }
-  pre {
-    font-size: 0.85rem;
-    padding: 0.75rem 1rem;
-  }
+body.nav-collapsed .window-controls .btn {
+  width: 1rem;
+  height: 1rem;
+}
 
-  .tag {
-    font-size: 0.65rem;
-    padding: 0.02rem 0.4rem;
-  }
+body.nav-collapsed pre {
+  font-size: 0.85rem;
+  padding: 0.75rem 1rem;
+}
 
-  .tag-row {
-    gap: 0.25rem;
-  }
+body.nav-collapsed .tag {
+  font-size: 0.65rem;
+  padding: 0.02rem 0.4rem;
+}
+
+body.nav-collapsed .tag-row {
+  gap: 0.25rem;
+}
+
+/* body becomes the shared layout parent for every top-level window on the
+   page (the taskbar is position:fixed and doesn't participate) so lastfm.exe
+   can be reordered after the main window(s) via `order`, without touching any
+   component's actual markup. A single flex column (not a 2-column grid) is
+   deliberate: nothing needs to sit side-by-side anymore now that ame.gif is
+   dropped entirely below, and 1fr grid tracks turned out to size unreliably
+   depending on a page's content (worked fine on some pages, badly overflowed
+   or shrank on others) - a plain column avoids that whole class of bug.
+   #container:has(+ #container) is welcome.txt specifically (only true when a
+   second #container - portfolio.txt - follows it); #container + #container is
+   that second one. On pages with only one main window, neither selector
+   matches, so it just keeps the default order (1) and lastfm.exe (order 3)
+   falls in beneath it. */
+body.nav-collapsed {
+  display: flex;
+  flex-direction: column;
+  /* The single source of truth for spacing between items. */
+  gap: 0.75rem;
+}
+
+body.nav-collapsed #container {
+  order: 1;
+  /* An auto margin on a flex item's cross-axis disables the default stretch
+     behavior, making it shrink-to-fit its own content instead of filling the
+     row - that's exactly what made this vary per page (~220px on a page with
+     short link text, ~980px on one with a wide code block). An explicit width
+     sidesteps that entirely; max-width + the auto margin still correctly
+     center it on the rare viewport wide enough for the cap to engage. */
+  width: 100%;
+  margin: 0 auto;
+  /* Flex items default to min-width:auto, which refuses to shrink below the
+     content's own intrinsic width (e.g. a wide <pre> block in a writeup) -
+     belt-and-suspenders alongside the explicit width above. */
+  min-width: 0;
+}
+
+body.nav-collapsed #container + #container {
+  /* portfolio.txt specifically - between welcome.txt (order 1) and lastfm.exe (order 3). */
+  order: 2;
+}
+
+/* ame.gif is dropped entirely in mobile view - not just repositioned, and
+   its taskbar entry (which would otherwise do nothing) goes with it. */
+body.nav-collapsed #ame-window {
+  display: none !important;
+}
+
+body.nav-collapsed .taskbar-btn-ame {
+  display: none;
+}
+
+body.nav-collapsed #lastfm-window {
+  order: 3;
+  position: static;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  animation: none !important;
+  /* #container has its own extra 0.625rem padding layer around the visible
+     bordered box (#container2) that lastfm.exe doesn't have - matching just
+     #container's outer max-width left its VISIBLE border 2x0.625rem wider
+     than welcome.txt/portfolio.txt's, because a flex item's width:auto just
+     stretches to fill the full cross-axis by default (max-width alone never
+     kicks in below that size). An explicit width narrower than 100% is what
+     actually reproduces #container's padding-driven inset. */
+  width: calc(100% - 1.25rem) !important;
+  max-width: calc(var(--window-max-width) - 1.25rem);
+  margin: 0 auto;
+}
+
+body.nav-collapsed .taskbar-mobile-notice {
+  display: flex;
 }

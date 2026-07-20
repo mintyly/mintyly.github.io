@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleButton = document.getElementById('nav-toggle');
   const sideNav = document.getElementById('side-navbar');
   const ameWindow = document.getElementById('ame-window');
+  const lastfmWindow = document.getElementById('lastfm-window');
   const mainWindow = document.getElementById('container');
 
   if (toggleButton && sideNav) {
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const EDGE_MARGIN = 16; // space kept between a docked window and the screen edge
   const AME_MIN_WIDTH = 208; // never shrink smaller than this
   const AME_MAX_WIDTH = 700; // ame_gif.gif is 693x453 natively - beyond this it's just upscaled and blurry
+  const LASTFM_GAP = 16; // space kept between ame-window and lastfm-window below it
 
   const updateNavLayout = () => {
     const containerRect = mainWindow.getBoundingClientRect();
@@ -24,22 +26,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const desiredLeft = containerRect.right + GAP;
     const fits = desiredLeft + navWidth + EDGE_MARGIN <= window.innerWidth;
 
-    if (fits) {
-      sideNav.style.left = `${desiredLeft}px`;
-      sideNav.style.right = 'auto';
-      document.body.classList.remove('nav-collapsed');
-      sideNav.classList.remove('open');
-    } else {
-      sideNav.style.left = '';
-      sideNav.style.right = '';
-      document.body.classList.add('nav-collapsed');
+    // Once the window-manager script (windows.js) has let the user drag this
+    // element, it owns position/size from then on - don't snap it back on resize.
+    if (!sideNav.classList.contains('win-user-positioned')) {
+      if (fits) {
+        sideNav.style.left = `${desiredLeft}px`;
+        sideNav.style.right = 'auto';
+        document.body.classList.remove('nav-collapsed');
+        sideNav.classList.remove('open');
+      } else {
+        sideNav.style.left = '';
+        sideNav.style.right = '';
+        document.body.classList.add('nav-collapsed');
+      }
     }
 
-    if (ameWindow) {
-      // Fill the actual gutter to the left of the main window, not a guess.
-      const availableGutter = containerRect.left - EDGE_MARGIN - GAP;
-      const ameWidth = Math.min(AME_MAX_WIDTH, Math.max(AME_MIN_WIDTH, availableGutter));
-      ameWindow.style.width = `${ameWidth}px`;
+    // Below the "fits" width, ame.gif/lastfm.exe switch to a CSS-driven mobile
+    // layout (see the max-width:1000px block in kangel.css) instead of docking
+    // beside the main window - clear any inline styles from a wider viewport
+    // so they don't linger and override that CSS after a resize.
+    if (ameWindow && !ameWindow.classList.contains('win-user-positioned')) {
+      if (fits) {
+        // Fill the actual gutter to the left of the main window, not a guess.
+        const availableGutter = containerRect.left - EDGE_MARGIN - GAP;
+        const ameWidth = Math.min(AME_MAX_WIDTH, Math.max(AME_MIN_WIDTH, availableGutter));
+        ameWindow.style.width = `${ameWidth}px`;
+      } else {
+        ameWindow.style.width = '';
+      }
+    }
+
+    if (lastfmWindow && ameWindow && !lastfmWindow.classList.contains('win-user-positioned')) {
+      if (fits) {
+        // Dock directly beneath ame-window, matching its (just-updated) width and left edge.
+        const ameRect = ameWindow.getBoundingClientRect();
+        lastfmWindow.style.width = `${ameRect.width}px`;
+        lastfmWindow.style.left = `${ameRect.left}px`;
+        lastfmWindow.style.top = `${ameRect.bottom + LASTFM_GAP}px`;
+      } else {
+        lastfmWindow.style.width = '';
+        lastfmWindow.style.left = '';
+        lastfmWindow.style.top = '';
+      }
     }
   };
 

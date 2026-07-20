@@ -2,6 +2,8 @@
 import { getCollection, getEntry, render } from 'astro:content';
 import '../../../styles/kangel.css';
 import Navbar from '../../../components/Navbar.astro';
+import AmeWindow from '../../../components/AmeWindow.astro';
+import LastFmWindow from '../../../components/LastFmWindow.astro';
 import Layout from '../../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -24,6 +26,8 @@ const { Content } = await render(writeup);
 
 <Layout>
   <Navbar />
+  <AmeWindow />
+  <LastFmWindow />
 
   <div id="container">
     <div id="container2">
