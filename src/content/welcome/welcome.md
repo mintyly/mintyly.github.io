@@ -1,17 +1,17 @@
 ---
 roles:
-  - "Y1 infosec student @ NUS"
-  - "Recent Ngee Ann Polytechnic Cybersecurity and Digital Forensics Graduate"
-  - "Former Singtel Cadet Scholar"
+  - "Cybersecurity Governance Intern @ Schneider Electric"
+  - "Y2 Information Security @ NUS"
+  - "YBN Head of PR"
 ---
 
 ## Introduction
 
 Heya there! I like breaking things (ethically), fixing them, and overthinking every step of the process.
 
-I got into tech when I was 14 where I started by picking apart discarded computers, and learning how it worked.
+Currently doing cybersecurity governance @ Schneider Electric EA Zone while working through my infosec degree at NUS doing undergrad research on LLM agents in autonomous red-teaming, and occasionally authoring crypto/misc CTF challenges for YBN.
 
-Since then, I've participated, organized, and held a number of CTFs, and pulled all nighters along the way trying to finish my assignments.
+I've spent the last few years participating in, organising, and pulling all-nighters over CTFs, while trying to finish school :p
 
 ## Contact
 

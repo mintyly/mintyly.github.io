@@ -636,7 +636,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start; /* or center, as you prefer */
-  gap: 0.125rem; /* adds space between buttons */
+  gap: 1px; /* adds space between buttons */
   padding-left: 0rem; /* optional: adds left padding */
   margin-left: 0%; /* optional: removes left margin */
 }
@@ -645,22 +645,35 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 0.125rem solid var(--accent);
+  /* Integer px, not rem (0.125rem = 1.75px) - a fractional CSS pixel value
+     here rounds to a device pixel differently across browser builds/zoom
+     levels (confirmed: identical in Edge, off by 1px in Vivaldi, both
+     Chromium). Nothing fractional left in this component = nothing left to
+     round inconsistently. */
+  border: 2px solid var(--accent);
   background: var(--pinklight);
 
 }
 
 .btmbtn.main {
-  margin-top: 0.3rem;
-  width: 2.5rem;
-  height: 0.45rem;
+  margin-top: 4px;
+  width: 35px;
+  height: 6px;
   border-bottom: none;
 }
 
 .btmbtn.small {
-  width: 0.13rem;
-  height: 0.13rem;
-  margin-top: 0.1rem;
+  /* The site's global box-sizing:border-box means width:1px + a 2px border
+     can't both fit - the browser clamps the content to 0 and the border
+     meets itself in the middle, rendering solid regardless of background.
+     content-box makes the 1px apply to content only, with the border added
+     on top, so there's an actual 1px gap for the transparent background. */
+  box-sizing: content-box;
+  width: 1px;
+  height: 1px;
+  border-width: 1px;
+  background: transparent;
+  margin-top: 1px;
 }
 
 .content {
