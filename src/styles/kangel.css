@@ -420,14 +420,20 @@ body {
   z-index: 3000;
 }
 
+.taskbar-start-link {
+  display: block;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
 .taskbar-start {
   height: 2.79rem;
   width: auto;
   border: none;
   display: block;
-  flex-shrink: 0;
   image-rendering: pixelated;
   box-shadow: 2px 2px 0 var(--shadow);
+  cursor: pointer;
 }
 
 .taskbar-btn {

@@ -54,11 +54,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const bar = document.createElement('div');
     bar.id = 'window-taskbar';
 
+    const startLink = document.createElement('a');
+    startLink.href = 'https://june.ong';
+    startLink.className = 'taskbar-start-link';
+
     const startBtn = document.createElement('img');
     startBtn.src = '/assets/button_start_juneong.png';
     startBtn.alt = 'Start';
     startBtn.className = 'taskbar-start';
-    bar.appendChild(startBtn);
+    startBtn.addEventListener('mousedown', () => {
+      startBtn.src = '/assets/button_start_closed_juneong.png';
+    });
+    startBtn.addEventListener('mouseup', () => {
+      startBtn.src = '/assets/button_start_juneong.png';
+    });
+
+    startLink.appendChild(startBtn);
+    bar.appendChild(startLink);
 
     items.forEach((item) => {
       if (item.pinned) return; // never listed - can't be closed, so nothing to restore
