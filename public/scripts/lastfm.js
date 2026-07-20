@@ -14,10 +14,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${encodeURIComponent(user)}&api_key=${encodeURIComponent(apiKey)}&format=json&limit=6`;
 
-  function youtubeSearchUrl(trackName, artistName) {
-    return `https://www.youtube.com/results?search_query=${encodeURIComponent(`${artistName} ${trackName}`)}`;
-  }
-
   function buildTrackRow(track) {
     const row = document.createElement('div');
     row.className = 'lastfm-track-row';
@@ -36,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const title = document.createElement('a');
     title.className = 'lastfm-track-title';
-    title.href = youtubeSearchUrl(track.name, track.artist['#text']);
+    title.href = track.url;
     title.target = '_blank';
     title.rel = 'noopener noreferrer';
     title.textContent = track.name;
