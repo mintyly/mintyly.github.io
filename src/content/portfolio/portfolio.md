@@ -9,11 +9,12 @@
   - Diploma Plus Certificate in Advanced Computing Mathematics
   - LNC 5.0 Challenge Author
   - YCEP CCTF Challenge Author
+  - Edusave Merit Bursary (top 25% of their institutions level and course in terms of academic performance)
 - **2024**
   - Associate Cybersecurity Consultant @ Singtel (Sep 2024 – Apr 2025)
   - YCEP Challenge Author
-  - Edusave Merit Bursary (EMB)
   - LNC 4.0 Challenge Author
+  - Edusave Merit Bursary (top 25% of their institutions level and course in terms of academic performance)
 - **2023**
   - Head of Tech @ NullSec (Mar 2023 – Mar 2024)
   - Singtel Cadet Scholar (Cyber)

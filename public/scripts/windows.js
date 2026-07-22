@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function findFrame(win) {
     const parent = win.parentElement;
-    if (parent && (parent.id === 'side-navbar' || parent.id === 'ame-window' || parent.id === 'lastfm-window')) {
+    if (parent && (parent.id === 'side-navbar' || parent.id === 'ame-window' || parent.id === 'lastfm-window' || parent.id === 'tip-window')) {
       return { frame: parent, mode: 'fixed' };
     }
     const grandparent = parent && parent.parentElement;
@@ -42,12 +42,38 @@ document.addEventListener('DOMContentLoaded', () => {
     frame.style.zIndex = String(++zTop);
   }
 
+  const CLOSE_ANIMATION_MS = 200;
+  const OPEN_ANIMATION_MS = 200;
+
   function setOpen(item, open) {
-    item.frame.classList.toggle('win-closed', !open);
     if (item.taskbarBtn) {
       item.taskbarBtn.classList.toggle('active', open);
     }
-    if (open) bringToFront(item.frame);
+
+    if (open) {
+      // Only pop in if it was actually closed - openAllForLowRes() calls this
+      // on every window (including already-open ones) on first mobile load,
+      // and those shouldn't suddenly animate for no visible reason.
+      const wasClosed = item.frame.classList.contains('win-closed');
+      item.frame.classList.remove('win-closing');
+      item.frame.classList.remove('win-closed');
+      if (wasClosed) {
+        item.frame.classList.add('win-opening');
+        window.setTimeout(() => {
+          item.frame.classList.remove('win-opening');
+        }, OPEN_ANIMATION_MS);
+      }
+      bringToFront(item.frame);
+      return;
+    }
+
+    // Play a quick scale/fade close animation (macOS-ish) before actually
+    // hiding it, instead of just vanishing instantly.
+    item.frame.classList.add('win-closing');
+    window.setTimeout(() => {
+      item.frame.classList.remove('win-closing');
+      item.frame.classList.add('win-closed');
+    }, CLOSE_ANIMATION_MS);
   }
 
   function buildTaskbar() {
@@ -83,6 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // taskbar entry would otherwise be a dead button there.
         btn.classList.add('taskbar-btn-ame');
       }
+      if (item.frame.id === 'tip-window') {
+        // Same deal - tip.txt is desktop-only and dropped entirely on mobile.
+        btn.classList.add('taskbar-btn-tip');
+      }
 
       const icon = document.createElement('img');
       icon.src = '/assets/windowbase_icon.png';
@@ -101,12 +131,50 @@ document.addEventListener('DOMContentLoaded', () => {
       bar.appendChild(btn);
     });
 
-    // Appended last + margin-left:auto (see kangel.css) pushes it to the far
-    // right of the row, past the window buttons - not just after the start button.
+    // Clock and notice share one tray wrapper (margin-left:auto lives on the
+    // wrapper, see kangel.css) so they're always a single bunched-together
+    // group at the far right, in this fixed order, regardless of which of
+    // the two is currently hidden - two independent auto-margins here would
+    // each grab their own share of the free space and split the pair apart
+    // instead of keeping them adjacent.
+    const tray = document.createElement('div');
+    tray.className = 'taskbar-tray';
+    bar.appendChild(tray);
+
+    // Clock/date, second-from-right (system-tray style) - reuses the same
+    // "pressed-in" bevel .active already gives an open window's taskbar
+    // button, just never toggled off, so it always reads as permanently
+    // down. Unlike the notice, this is allowed to disappear under
+    // updateTaskbarLayout()'s last-resort "still no space" stage.
+    const clockBtn = document.createElement('div');
+    clockBtn.className = 'taskbar-btn taskbar-clock active';
+    tray.appendChild(clockBtn);
+
+    // Always the rightmost element, and never hidden by the responsive
+    // hide/shrink cascade in updateTaskbarLayout() - see kangel.css.
     const mobileNotice = document.createElement('span');
     mobileNotice.className = 'taskbar-btn taskbar-mobile-notice';
     mobileNotice.textContent = 'best viewed on desktop!';
-    bar.appendChild(mobileNotice);
+    tray.appendChild(mobileNotice);
+
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Singapore',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+    const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Singapore',
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+    });
+    function updateClock() {
+      const now = new Date();
+      clockBtn.textContent = `${timeFormatter.format(now)}  ${dateFormatter.format(now)}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
 
     document.body.appendChild(bar);
   }
@@ -126,14 +194,18 @@ document.addEventListener('DOMContentLoaded', () => {
     return visible.some((el) => Math.abs(el.getBoundingClientRect().top - firstTop) > 1);
   }
 
-  // Too narrow for everything on one row: first drop the window buttons
-  // (keep just the start button + "best viewed on desktop!"), then if even
-  // THAT still wraps, shrink the remaining pieces down too.
+  // Too narrow for everything on one row: drop the clock first, then if it's
+  // still wrapped drop the window buttons too (keep just the start button +
+  // notice), then if even THAT still wraps, shrink what's left - the notice
+  // is exempt from every stage here, it always stays.
   function updateTaskbarLayout() {
     const bar = document.getElementById('window-taskbar');
     if (!bar) return;
-    bar.classList.remove('taskbar-hide-windows', 'taskbar-shrink');
+    bar.classList.remove('taskbar-hide-clock', 'taskbar-hide-windows', 'taskbar-shrink');
 
+    if (isTaskbarWrapped(bar)) {
+      bar.classList.add('taskbar-hide-clock');
+    }
     if (isTaskbarWrapped(bar)) {
       bar.classList.add('taskbar-hide-windows');
     }
@@ -233,6 +305,10 @@ document.addEventListener('DOMContentLoaded', () => {
   syncTaskbarButtonWidths();
   updateTaskbarLayout();
   updateNavTogglePosition();
+  // sidebar.js positions ame.gif relative to the taskbar's real height, but
+  // runs independently of this script - let it know the taskbar now actually
+  // exists with its final layout, instead of it having to guess/re-poll.
+  window.dispatchEvent(new CustomEvent('taskbar:ready'));
 
   // The taskbar's height can still change after this (e.g. the custom pixel
   // font finishing its async load and swapping in with different text
@@ -256,7 +332,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   items.forEach((item) => {
-    makeDraggable(item);
+    if (item.pinned) {
+      // Can't be closed, so it shouldn't be movable either - it's an anchored
+      // part of the page layout, not an app window. Marked with a class (not
+      // just skipping makeDraggable) so kangel.css can drop the grab cursor too.
+      item.win.classList.add('win-pinned');
+    } else {
+      makeDraggable(item);
+    }
     if (item.closeBtn && !item.pinned) {
       item.closeBtn.addEventListener('click', () => setOpen(item, false));
     }

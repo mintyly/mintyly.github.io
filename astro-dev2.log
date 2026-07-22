@@ -1,0 +1,147 @@
+
+> astro-sample@0.0.1 dev
+> astro dev --port 4321
+
+13:45:48 [types] Generated 2ms
+13:45:50 [content] Syncing content
+13:45:50 [github-writeups-loader] Fetching CTF writeups from mintyly/ctf-questions-writeups...
+13:45:50 [WARN] [github-writeups-loader] Could not parse Lag N Crash 2024/Audiophile/chall.yaml (bad indentation of a mapping entry (9:167)
+
+  6 |  ... 
+  7 |  ... 
+  8 |  ... 
+  9 |  ... d and larger? Many people can't hear the difference but I cer ...
+-----------------------------------------^
+ 10 |  ... 
+ 11 |  ... ); falling back to partial metadata extraction.
+13:45:52 [WARN] [github-writeups-loader] Could not parse Lag N Crash 2024/The Elusive Red Herring/chall.yaml (bad indentation of a mapping entry (9:186)
+
+  6 |  ... 
+  7 |  ... 
+  8 |  ... 
+  9 |  ... rusied QR code attached on it's skin? I don't assume it could ...
+-----------------------------------------^
+ 10 |  ... 
+ 11 |  ... ); falling back to partial metadata extraction.
+13:45:52 [WARN] [github-writeups-loader] Could not parse Lag N Crash 2024/Unknown Lingo/chall.yaml (bad indentation of a mapping entry (30:67)
+
+ 27 |  ... 
+ 28 |  ... 
+ 29 |  ... 
+ 30 |  ...  encoded whatsoever, this isn't a crypto question, think outs ...
+-----------------------------------------^
+ 31 |  ... 
+ 32 |  ... ); falling back to partial metadata extraction.
+13:45:54 [github-writeups-loader] Loaded 9 CTF writeup(s) from mintyly/ctf-questions-writeups.
+13:45:54 [content] Synced content
+
+ astro  v5.13.5 ready in 8751 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+13:45:54 watching for file changes...
+13:46:51 [200] / 48ms
+13:46:51 [200] /ctfblog/prime 10ms
+13:50:02 [200] / 7ms
+13:50:41 [200] / 6ms
+13:52:41 [200] / 6ms
+13:53:35 [200] / 5ms
+13:54:01 [200] / 7ms
+13:55:13 [200] / 4ms
+13:55:48 [200] / 5ms
+13:55:49 [200] / 4ms
+13:56:24 [200] / 4ms
+13:56:25 [200] / 5ms
+13:57:02 [200] / 5ms
+13:57:02 [200] / 5ms
+13:57:03 [200] / 3ms
+13:57:03 [200] / 3ms
+13:57:04 [200] / 4ms
+13:57:04 [200] / 4ms
+13:57:33 [200] / 5ms
+13:57:34 [200] / 6ms
+13:57:34 [200] / 4ms
+13:57:35 [200] / 4ms
+13:57:35 [200] / 3ms
+13:57:35 [200] / 5ms
+13:57:36 [200] / 4ms
+13:57:36 [200] / 5ms
+13:57:36 [200] / 3ms
+13:57:58 [200] / 3ms
+13:57:59 [200] / 4ms
+14:02:59 [200] / 3ms
+14:03:08 [200] / 6ms
+14:03:56 [200] / 4ms
+14:04:35 [200] / 4ms
+14:05:10 [200] /ctfblog 4ms
+14:05:12 [200] /writing 4ms
+14:05:13 [200] / 3ms
+14:07:20 [watch] /src/styles/kangel.css
+14:07:21 [200] / 20ms
+14:07:40 [watch] /src/styles/kangel.css
+14:07:41 [200] / 18ms
+14:08:01 [watch] /src/styles/kangel.css
+14:08:02 [200] / 13ms
+14:09:42 [200] / 5ms
+14:13:09 [200] / 5ms
+14:19:42 [200] / 6ms
+14:20:31 [200] / 6ms
+14:22:15 [watch] /src/styles/kangel.css
+14:22:15 [200] / 19ms
+14:22:26 [watch] /src/styles/kangel.css
+14:22:27 [200] / 15ms
+14:22:38 [200] / 3ms
+14:23:33 [200] / 3ms
+14:24:15 [200] / 5ms
+14:27:27 [watch] /src/styles/kangel.css
+14:27:27 [200] / 16ms
+14:28:45 [watch] /src/styles/kangel.css
+14:28:45 [200] / 12ms
+14:29:05 [watch] /src/styles/kangel.css
+14:29:05 [200] / 10ms
+14:29:19 [200] / 5ms
+14:29:48 [200] / 5ms
+14:30:25 [watch] /src/styles/kangel.css
+14:30:25 [200] / 15ms
+14:30:41 [200] / 5ms
+14:31:17 [200] / 5ms
+14:32:08 [200] / 4ms
+14:34:57 [200] / 6ms
+14:36:10 [glob-loader] Reloaded data from portfolio.md
+14:36:11 [200] / 37ms
+14:36:11 [200] / 31ms
+14:36:50 [200] / 5ms
+14:37:21 [watch] /src/styles/kangel.css
+14:37:21 [200] / 18ms
+14:37:21 [200] / 19ms
+14:37:32 [200] / 14ms
+14:37:32 [200] / 14ms
+14:41:59 [200] / 4ms
+14:44:26 [200] / 4ms
+14:45:12 [200] / 3ms
+14:46:07 [200] / 6ms
+14:49:54 [200] / 6ms
+14:50:00 [200] / 4ms
+14:50:17 [200] / 5ms
+14:51:02 [200] / 5ms
+14:51:55 [200] / 4ms
+14:55:16 [200] / 5ms
+14:55:49 [200] / 5ms
+14:56:25 [200] / 5ms
+14:59:27 [watch] /src/styles/kangel.css
+14:59:27 [200] / 14ms
+14:59:27 [200] / 5ms
+14:59:46 [watch] /src/styles/kangel.css
+14:59:46 [200] / 13ms
+14:59:46 [200] / 6ms
+15:00:10 [200] / 4ms
+15:02:37 [200] / 5ms
+15:03:13 [200] / 4ms
+15:03:16 [watch] /src/styles/kangel.css
+15:03:16 [200] / 15ms
+15:03:16 [200] / 5ms
+15:03:30 [200] / 4ms
+15:03:37 [200] / 4ms
+15:03:56 [200] / 5ms
+15:04:05 [200] / 4ms

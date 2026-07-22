@@ -112,11 +112,6 @@ html, * {
   border: 2px solid var(--accent);
 }
 
-@keyframes float-navbar {
-  0%, 100% { transform: translateY(-50%) translateY(0); }
-  50% { transform: translateY(-50%) translateY(-10px); }
-}
-
 @keyframes float-ame {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-14px); }
@@ -125,6 +120,11 @@ html, * {
 @keyframes float-lastfm {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
+}
+
+@keyframes float-tip {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-11px); }
 }
 
 #side-navbar {
@@ -143,15 +143,13 @@ html, * {
   font-family: var(--font);
   transition: opacity 0.3s ease;
   box-shadow: 2px 2px 0 var(--shadow);
-  animation: float-navbar 4.5s ease-in-out infinite;
 }
 
-/* Docked position (set by sidebar.js once it measures the gap beside #container) is
-   applied via inline left/right styles. These rules handle the fallback-to-toggle
-   state when sidebar.js determines there isn't enough room to dock the navbar. The
-   floating animation is dropped here since it would fight the slide transform. */
+/* Docked position/width (set by sidebar.js once it measures the gap beside
+   #container) is applied via inline left/width styles. These rules handle
+   the fallback-to-toggle state when sidebar.js determines there isn't enough
+   room to dock the navbar. */
 body.nav-collapsed #side-navbar {
-  animation: none;
   transform: translateX(-150%) translateY(-50%);
   opacity: 0;
   pointer-events: none;
@@ -205,6 +203,47 @@ body.nav-collapsed #nav-toggle {
 }
 
 body.nav-collapsed #ame-window {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Desktop-only hint window. Position is set by sidebar.js: docked GAP above
+   ame.gif on the left when there's room, or above nav.exe on the right when
+   there isn't (but the navbar still fits), or hidden entirely on mobile. */
+#tip-window {
+  position: fixed;
+  top: 0;
+  left: 1rem;
+  box-sizing: border-box;
+  background: var(--main-bg);
+  border: 0.125rem solid var(--accent);
+  padding: 0.25rem;
+  padding-bottom: 0rem;
+  z-index: 999;
+  width: 14rem;
+  font-family: var(--font);
+  transition: opacity 0.3s ease;
+  box-shadow: 2px 2px 0 var(--shadow);
+  animation: float-tip 5s ease-in-out infinite;
+  animation-delay: -2.3s;
+}
+
+#tip-window:has(.hoverable-window:hover) {
+  background: var(--highlight);
+}
+
+#tip-window .content {
+  /* Matches #side-navbar a's font-size (inherited from the base .content rule). */
+  font-size: 1rem;
+  padding: 0.75rem;
+}
+
+#tip-window .content p {
+  margin: 0;
+}
+
+body.nav-collapsed #tip-window {
   animation: none;
   opacity: 0;
   pointer-events: none;
@@ -269,10 +308,6 @@ body.nav-collapsed #ame-window {
   border: 0.15rem solid var(--accent);
 }
 
-.lastfm-now-playing-box .tag.lastfm-now-playing {
-  align-self: flex-start;
-}
-
 .lastfm-now-playing-box .lastfm-track-art {
   width: 3.5rem;
   height: 3.5rem;
@@ -303,8 +338,10 @@ body.nav-collapsed #ame-window {
   color: var(--text-color);
 }
 
+/* Now sits outside/above .lastfm-now-playing-box, not inside its padding. */
 .lastfm-now-playing {
-  margin-right: 0.4rem;
+  display: inline-block;
+  margin-bottom: 0.3rem;
 }
 
 body.nav-collapsed #lastfm-window {
@@ -317,6 +354,58 @@ body.nav-collapsed #lastfm-window {
    position/size from then on, so the float bob and docking logic back off. */
 .win-user-positioned {
   animation: none !important;
+}
+
+/* Closing animation (set by windows.js), roughly macOS-esque: scale down and
+   fade rather than just vanishing. Needs !important + the compound selector
+   below to win over .win-user-positioned's own !important animation:none for
+   a window that's been dragged before being closed. */
+@keyframes window-close {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+}
+
+.win-closing {
+  animation: window-close 0.2s ease forwards !important;
+  pointer-events: none;
+}
+
+.win-user-positioned.win-closing {
+  animation: window-close 0.2s ease forwards !important;
+}
+
+/* Reopening animation (set by windows.js), the reverse of window-close - a
+   quick pop/fade in instead of just snapping back into view. */
+@keyframes window-open {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.win-opening {
+  animation: window-open 0.2s ease forwards !important;
+}
+
+.win-user-positioned.win-opening {
+  animation: window-open 0.2s ease forwards !important;
+}
+
+/* Set by windows.js on any pinned (non-closable) window - it's an anchored
+   part of the page layout now, not a draggable app window, so drop the
+   misleading grab cursor. */
+.win-pinned .title-bar {
+  cursor: default;
 }
 
 #side-navbar:has(.hoverable-window:hover) {
@@ -484,11 +573,25 @@ body {
   transform: translate(1px, 1px);
 }
 
+/* Holds the clock + notice together as one bunched-up group, always pushed
+   to the far right via its own single margin-left:auto - keeping the auto
+   margin here (instead of on each child) means the pair stays adjacent no
+   matter which of the two is currently hidden. */
+.taskbar-tray {
+  display: flex;
+  align-items: center;
+  gap: 0.76rem;
+  margin-left: auto;
+}
+
 /* Non-interactive - only shown at mobile widths (see the max-width:1000px block). */
 .taskbar-mobile-notice {
   display: none;
   cursor: default;
-  margin-left: auto;
+}
+
+.taskbar-clock {
+  cursor: default;
 }
 
 .taskbar-mobile-notice:hover {
@@ -497,7 +600,7 @@ body {
 
 /* Set by windows.js when the taskbar's row wraps onto 2 lines - drop the
    window buttons first, keeping just the start button + the notice. */
-#window-taskbar.taskbar-hide-windows .taskbar-btn:not(.taskbar-mobile-notice) {
+#window-taskbar.taskbar-hide-windows .taskbar-btn:not(.taskbar-mobile-notice):not(.taskbar-clock) {
   display: none;
 }
 
@@ -516,6 +619,18 @@ body {
   height: 2rem;
   font-size: 0.9rem;
   padding: 0 0.75rem;
+}
+
+#window-taskbar.taskbar-shrink .taskbar-clock {
+  height: 2rem;
+  font-size: 0.9rem;
+  padding: 0 0.75rem;
+}
+
+/* Last-resort stage: even shrunk, start+tray still wrap - drop the clock so
+   just the notice (never hidden, always the rightmost thing) survives. */
+#window-taskbar.taskbar-hide-clock .taskbar-clock {
+  display: none;
 }
 
 #background {
@@ -919,6 +1034,16 @@ body.nav-collapsed #ame-window {
 }
 
 body.nav-collapsed .taskbar-btn-ame {
+  display: none;
+}
+
+/* tip.txt is desktop-only messaging - dropped entirely in mobile view, same
+   treatment as ame.gif. */
+body.nav-collapsed #tip-window {
+  display: none !important;
+}
+
+body.nav-collapsed .taskbar-btn-tip {
   display: none;
 }
 

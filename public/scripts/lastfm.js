@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!apiKey) {
     root.textContent = 'Last.fm API key not set.';
+    window.dispatchEvent(new CustomEvent('lastfm:loaded'));
     return;
   }
 
@@ -54,6 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!tracks.length) {
       root.textContent = 'No recent tracks found.';
+      window.dispatchEvent(new CustomEvent('lastfm:loaded'));
       return;
     }
 
@@ -63,14 +65,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fragment = document.createDocumentFragment();
 
     if (nowPlayingTrack) {
-      const box = document.createElement('div');
-      box.className = 'lastfm-now-playing-box';
-
       const label = document.createElement('span');
       label.className = 'tag lastfm-now-playing';
       label.textContent = 'now playing';
+      fragment.appendChild(label);
 
-      box.append(label, buildTrackRow(nowPlayingTrack));
+      const box = document.createElement('div');
+      box.className = 'lastfm-now-playing-box';
+      box.appendChild(buildTrackRow(nowPlayingTrack));
       fragment.appendChild(box);
     }
 
@@ -89,7 +91,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     root.replaceChildren(fragment);
+    window.dispatchEvent(new CustomEvent('lastfm:loaded'));
   } catch (err) {
     root.textContent = 'Could not load Last.fm data.';
+    window.dispatchEvent(new CustomEvent('lastfm:loaded'));
   }
 });

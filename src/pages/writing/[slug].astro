@@ -6,6 +6,7 @@ import '../../styles/kangel.css';
 import Navbar from '../../components/Navbar.astro';
 import AmeWindow from '../../components/AmeWindow.astro';
 import LastFmWindow from '../../components/LastFmWindow.astro';
+import TipWindow from '../../components/TipWindow.astro';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -31,6 +32,7 @@ const { Content } = await post.render();
   <Navbar />
   <AmeWindow />
   <LastFmWindow />
+  <TipWindow />
 
   <div id="container">
     <div id="container2">
