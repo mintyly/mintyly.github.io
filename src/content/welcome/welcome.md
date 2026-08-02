@@ -1,7 +1,7 @@
 ---
 roles:
   - "Cybersecurity Governance Intern @ Schneider Electric"
-  - "Y2 Information Security @ NUS"
+  - "Penultimate Information Security @ NUS"
   - "YBN Head of PR"
 ---
 
