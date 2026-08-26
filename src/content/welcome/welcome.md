@@ -15,4 +15,4 @@ I've spent the last few years participating in, organising, and pulling all-nigh
 
 ## Contact
 
-[Email](mailto:juneong0305@gmail.com) | [GitHub](https://github.com/mintyly) | [LinkedIn](https://www.linkedin.com/in/mintyly)
+<p><a href="mailto:contact@june.ong">contact@june.ong</a> | <a href="https://github.com/mintyly">GitHub</a> | <a href="https://www.linkedin.com/in/mintyly">LinkedIn</a></p>
