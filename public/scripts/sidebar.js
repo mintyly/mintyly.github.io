@@ -34,6 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const rightGutter = window.innerWidth - containerRect.right - GAP - EDGE_MARGIN;
     const fits = rightGutter >= NAV_MIN_WIDTH;
 
+    // Set below once the right-side (tip.txt+links.exe) stack's total height
+    // is known, so the left-side (ame.gif+lastfm.exe) block can shrink
+    // ame.gif's width until its own stack matches that length.
+    let targetLeftStackHeight = null;
+
     // Once the window-manager script (windows.js) has let the user drag this
     // element, it owns position/size from then on - don't snap it back on resize.
     if (!sideNav.classList.contains('win-user-positioned')) {
@@ -78,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tipStacked) {
           tipWindow.style.top = `${navTop - tipHeight - TIP_GAP}px`;
         }
+
+        targetLeftStackHeight = tipHeight + TIP_GAP + navHeight;
       } else {
         sideNav.style.width = '';
         sideNav.style.left = '';
@@ -103,8 +110,35 @@ document.addEventListener('DOMContentLoaded', () => {
         // wide monitor, dock it GAP away from the container's left edge
         // instead of leaving it pinned out at the screen's edge.
         const leftGutter = containerRect.left - EDGE_MARGIN - GAP;
-        const ameWidth = Math.min(AME_MAX_WIDTH, Math.max(AME_MIN_WIDTH, leftGutter));
+        const maxAmeWidth = Math.min(AME_MAX_WIDTH, Math.max(AME_MIN_WIDTH, leftGutter));
+        let ameWidth = maxAmeWidth;
         ameWindow.style.width = `${ameWidth}px`;
+
+        // Match ame.gif's own height to tip.txt+links.exe's combined height,
+        // by shrinking ame.gif's width (its rendered height follows, since
+        // the image keeps its aspect ratio) - lastfm.exe docks below it
+        // separately and isn't part of this target. The relationship between
+        // ame-window's width and offsetHeight is affine, not proportional -
+        // the title bar, bottom bar, borders and padding around the image add
+        // a fixed offset that isn't part of the image's own aspect ratio - so
+        // it's derived from two measured points instead of assuming that
+        // ratio here.
+        if (targetLeftStackHeight != null) {
+          const targetAmeHeight = targetLeftStackHeight;
+          const w1 = ameWidth;
+          const h1 = ameWindow.offsetHeight;
+          const w2 = AME_MIN_WIDTH;
+          ameWindow.style.width = `${w2}px`;
+          const h2 = ameWindow.offsetHeight;
+
+          if (h1 !== h2 && targetAmeHeight > 0 && targetAmeHeight < h1) {
+            const slope = (h1 - h2) / (w1 - w2);
+            const solvedWidth = w2 + (targetAmeHeight - h2) / slope;
+            ameWidth = Math.min(maxAmeWidth, Math.max(AME_MIN_WIDTH, solvedWidth));
+          }
+          ameWindow.style.width = `${ameWidth}px`;
+        }
+
         ameWindow.style.left = `${containerRect.left - GAP - ameWidth}px`;
 
         // Vertical position: default to 15% down the viewport (the original
@@ -115,9 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const taskbarEl = document.getElementById('window-taskbar');
         const taskbarHeight = taskbarEl ? taskbarEl.getBoundingClientRect().height : 0;
         const defaultTop = window.innerHeight * 0.15;
-        // offsetHeight reflects the width we just set (ame.gif keeps its
-        // aspect ratio), and is unaffected by the float-ame bob animation's
-        // transform, unlike getBoundingClientRect().
+        // offsetHeight reflects the width we just settled on (ame.gif keeps
+        // its aspect ratio), and is unaffected by the float-ame bob
+        // animation's transform, unlike getBoundingClientRect().
         const ameHeight = ameWindow.offsetHeight;
         const lastfmHeight = lastfmWindow ? lastfmWindow.offsetHeight : 0;
         const stackHeight = ameHeight + (lastfmWindow ? LASTFM_GAP + lastfmHeight : 0);
