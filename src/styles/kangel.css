@@ -972,6 +972,15 @@ body.nav-collapsed .window-controls .btn {
   height: 1rem;
 }
 
+/* Windows aren't draggable in mobile view (windows.js bails out of its
+   pointerdown handler under nav-collapsed) - so no grab cursor, and let
+   touches on a title bar scroll the page instead of being swallowed by
+   .title-bar's touch-action:none. */
+body.nav-collapsed .title-bar {
+  cursor: default;
+  touch-action: auto;
+}
+
 body.nav-collapsed pre {
   font-size: 0.85rem;
   padding: 0.75rem 1rem;

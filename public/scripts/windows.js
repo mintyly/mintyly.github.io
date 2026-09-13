@@ -239,6 +239,14 @@ document.addEventListener('DOMContentLoaded', () => {
     titleBar.addEventListener('pointerdown', (e) => {
       if (e.target.closest('.window-controls')) return;
 
+      // Mobile view (body.nav-collapsed, set by sidebar.js) stacks every
+      // window in a fixed flow layout - dragging one out of that column just
+      // breaks the layout, so windows aren't movable there at all.
+      if (document.body.classList.contains('nav-collapsed')) {
+        bringToFront(frame);
+        return;
+      }
+
       if (!frame.classList.contains('win-user-positioned')) {
         const rect = frame.getBoundingClientRect();
         frame.classList.add('win-user-positioned');
