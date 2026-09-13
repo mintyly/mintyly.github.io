@@ -38,6 +38,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<script type="module" src="/scripts/sidebar.js"></script>
 		<script type="module" src="/scripts/windows.js"></script>
 		<script type="module" src="/scripts/lastfm.js"></script>
+		<!-- Deferred classic script + module script execute in document order once
+		     parsing is done, so window.FRAMES exists before bonsai.js runs. -->
+		<script is:inline defer src="/scripts/bonsai-frames.js"></script>
+		<script type="module" src="/scripts/bonsai.js"></script>
 	</body>
 </html>
 

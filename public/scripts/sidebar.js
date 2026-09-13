@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ameWindow = document.getElementById('ame-window');
   const lastfmWindow = document.getElementById('lastfm-window');
   const tipWindow = document.getElementById('tip-window');
+  const bonsaiWindow = document.getElementById('bonsai-window');
   const mainWindow = document.getElementById('container');
 
   if (toggleButton && sideNav) {
@@ -22,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const LASTFM_GAP = 16; // space kept between ame-window and lastfm-window below it
   const NAV_MIN_WIDTH = 140; // never shrink smaller than this
   const NAV_MAX_WIDTH = 260; // never grow wider than this - it's just a short link list
-  const TIP_GAP = 16; // space kept between tip-window and nav.exe below it
+  const TIP_GAP = 16; // space kept between nav.exe and tip-window below it
+  const BONSAI_GAP = 16; // space kept between bonsai-window and nav.exe below it
 
   const updateNavLayout = () => {
     const containerRect = mainWindow.getBoundingClientRect();
@@ -47,9 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('nav-collapsed');
         sideNav.classList.remove('open');
 
-        // tip.txt shares nav.exe's width so it can dock flush above it - set
-        // this before measuring tip's height below, since its wrap/height
-        // depends on the width it's actually rendered at.
+        // bonsai.exe and tip.txt share nav.exe's width so they can dock flush
+        // above and below it - set this before measuring their heights below,
+        // since tip's wrap/height depends on the width it's actually rendered
+        // at. (bonsai's canvas is a CSS square, width:100% + aspect-ratio:1,
+        // so its height follows from the width just set with no JS pass to
+        // race against.)
         const tipStacked = tipWindow && !tipWindow.classList.contains('win-user-positioned');
         if (tipStacked) {
           tipWindow.style.width = `${navWidth}px`;
@@ -57,26 +62,39 @@ document.addEventListener('DOMContentLoaded', () => {
           tipWindow.style.right = 'auto';
           tipWindow.style.display = '';
         }
+        const bonsaiStacked = bonsaiWindow && !bonsaiWindow.classList.contains('win-user-positioned');
+        if (bonsaiStacked) {
+          bonsaiWindow.style.width = `${navWidth}px`;
+          bonsaiWindow.style.left = `${containerRect.right + GAP}px`;
+          bonsaiWindow.style.right = 'auto';
+          bonsaiWindow.style.display = '';
+        }
 
-        // Vertical position: default to vertical-center (mirrors the old
-        // static top:50%/translateY(-50%) rule), but on a shorter screen
-        // shift up as needed so the tip.txt+nav.exe stack still fits above
-        // the taskbar - never higher than welcome.txt's own top, same rule
-        // as ame.gif/lastfm.exe on the left.
+        // Vertical position: the column's top lines up with ame.gif's on the
+        // left - same rule as there: default to 15% down the viewport, but on
+        // a shorter screen shift up as needed so the whole
+        // bonsai.exe+nav.exe+tip.txt stack still fits above the taskbar,
+        // never higher than welcome.txt's own top. Using the identical
+        // formula (not just the same default) is what keeps the two columns
+        // level whenever both fit.
         const taskbarEl = document.getElementById('window-taskbar');
         const taskbarHeight = taskbarEl ? taskbarEl.getBoundingClientRect().height : 0;
         const navHeight = sideNav.offsetHeight;
-        const tipHeight = tipStacked ? tipWindow.offsetHeight : 0;
-        const defaultNavTop = (window.innerHeight - navHeight) / 2;
+        const bonsaiBlock = bonsaiStacked ? bonsaiWindow.offsetHeight + BONSAI_GAP : 0;
+        const tipBlock = tipStacked ? TIP_GAP + tipWindow.offsetHeight : 0;
+        const stackHeight = bonsaiBlock + navHeight + tipBlock;
+        const defaultTop = window.innerHeight * 0.15;
         const bottomLimit = window.innerHeight - taskbarHeight - EDGE_MARGIN;
-        const neededTop = bottomLimit - navHeight;
-        const minNavTop = containerRect.top + (tipStacked ? TIP_GAP + tipHeight : 0);
-        const navTop = Math.max(minNavTop, Math.min(defaultNavTop, neededTop));
+        const stackTop = Math.max(containerRect.top, Math.min(defaultTop, bottomLimit - stackHeight));
+        const navTop = stackTop + bonsaiBlock;
         sideNav.style.top = `${navTop}px`;
         sideNav.style.transform = 'none';
 
+        if (bonsaiStacked) {
+          bonsaiWindow.style.top = `${stackTop}px`;
+        }
         if (tipStacked) {
-          tipWindow.style.top = `${navTop - tipHeight - TIP_GAP}px`;
+          tipWindow.style.top = `${navTop + navHeight + TIP_GAP}px`;
         }
       } else {
         sideNav.style.width = '';
@@ -88,6 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (tipWindow && !tipWindow.classList.contains('win-user-positioned')) {
           tipWindow.style.display = 'none';
+        }
+        if (bonsaiWindow && !bonsaiWindow.classList.contains('win-user-positioned')) {
+          bonsaiWindow.style.display = 'none';
         }
       }
     }

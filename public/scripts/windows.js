@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function findFrame(win) {
     const parent = win.parentElement;
-    if (parent && (parent.id === 'side-navbar' || parent.id === 'ame-window' || parent.id === 'lastfm-window' || parent.id === 'tip-window')) {
+    if (parent && (parent.id === 'side-navbar' || parent.id === 'ame-window' || parent.id === 'lastfm-window' || parent.id === 'tip-window' || parent.id === 'bonsai-window')) {
       return { frame: parent, mode: 'fixed' };
     }
     const grandparent = parent && parent.parentElement;
@@ -112,6 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (item.frame.id === 'tip-window') {
         // Same deal - tip.txt is desktop-only and dropped entirely on mobile.
         btn.classList.add('taskbar-btn-tip');
+      }
+      if (item.frame.id === 'bonsai-window') {
+        // Likewise - bonsai.exe is decoration docked beside the desktop layout.
+        btn.classList.add('taskbar-btn-bonsai');
       }
 
       const icon = document.createElement('img');

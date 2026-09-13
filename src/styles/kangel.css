@@ -127,6 +127,11 @@ html, * {
   50% { transform: translateY(-11px); }
 }
 
+@keyframes float-bonsai {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
 #side-navbar {
   position: fixed;
   top: 50%;
@@ -208,9 +213,9 @@ body.nav-collapsed #ame-window {
   pointer-events: none;
 }
 
-/* Desktop-only hint window. Position is set by sidebar.js: docked GAP above
-   ame.gif on the left when there's room, or above nav.exe on the right when
-   there isn't (but the navbar still fits), or hidden entirely on mobile. */
+/* Desktop-only hint window. Position is set by sidebar.js: docked flush
+   beneath nav.exe on the right (bonsai.exe / nav.exe / tip.txt form one
+   column), or hidden entirely on mobile. */
 #tip-window {
   position: fixed;
   top: 0;
@@ -247,6 +252,59 @@ body.nav-collapsed #tip-window {
   animation: none;
   opacity: 0;
   pointer-events: none;
+}
+
+/* Decorative bonsai animation, docked by sidebar.js flush above nav.exe at
+   the same width (bonsai.exe / nav.exe / tip.txt form one right-hand column).
+   Hidden on mobile like tip.txt. The tree itself is painted by bonsai.js. */
+#bonsai-window {
+  position: fixed;
+  top: 0;
+  right: 1rem;
+  box-sizing: border-box;
+  background: var(--main-bg);
+  border: 0.125rem solid var(--accent);
+  padding: 0.25rem;
+  padding-bottom: 0rem;
+  z-index: 999;
+  width: 14rem;
+  font-family: var(--font);
+  transition: opacity 0.3s ease;
+  box-shadow: 2px 2px 0 var(--shadow);
+  animation: float-bonsai 6s ease-in-out infinite;
+  animation-delay: -3.7s;
+}
+
+#bonsai-window:has(.hoverable-window:hover) {
+  background: var(--highlight);
+}
+
+#bonsai-window .content {
+  padding: 0;
+  /* The canvas paints its own background edge to edge. */
+  line-height: 0;
+}
+
+body.nav-collapsed #bonsai-window {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* A CSS-sized square: the width follows whatever sidebar.js docks the window
+   at and the height follows from aspect-ratio, so the window's height is
+   correct at layout time - bonsai.js only sets the bitmap size to match. */
+.bonsai {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  image-rendering: pixelated;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #bonsai-window {
+    animation: none;
+  }
 }
 
 /* Position (left/top/width) is set by sidebar.js to dock it directly beneath
@@ -1053,6 +1111,15 @@ body.nav-collapsed #tip-window {
 }
 
 body.nav-collapsed .taskbar-btn-tip {
+  display: none;
+}
+
+/* bonsai.exe too - decoration for the docked desktop layout only. */
+body.nav-collapsed #bonsai-window {
+  display: none !important;
+}
+
+body.nav-collapsed .taskbar-btn-bonsai {
   display: none;
 }
 
