@@ -470,17 +470,35 @@ body.nav-collapsed #lastfm-window {
   background: var(--highlight);
 }
 
-#side-navbar ul {
-  list-style: none;
+/* links.exe lays its nav out as `tree` output. The box-drawing prefixes only
+   line up if the whitespace survives verbatim, hence <pre> rather than a list.
+   The global `pre` rule is meant for code blocks inside posts (bordered card,
+   its own background/padding/margin/shadow) - none of that belongs in the
+   navbar window, so it all gets unset here. */
+#side-navbar .nav-tree {
   margin: 0;
   padding: 0;
-  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  /* 'CustomFont', monospace - deliberately NOT var(--font), which ends in
+     sans-serif and would swallow the fallback before monospace was ever
+     reached. A flat one-level tree stays aligned in any font (every row
+     carries the same 4-char prefix), but if the pixel font fails to load, a
+     real monospace is what keeps the box-drawing prefixes in column - same
+     chain the global `pre` rule uses. */
+  font-family: 'CustomFont', monospace;
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: bold;
+  color: var(--accent);
 }
 
-#side-navbar li {
-  margin: 0.5rem 0;
-}
-
+/* The whole tree is bold now, so the links match everything around them -
+   kept explicit here so they stay bold independently of the block's weight.
+   Hover is what marks them out as interactive. */
 #side-navbar a {
   color: var(--accent);
   text-decoration: none;

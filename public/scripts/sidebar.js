@@ -19,22 +19,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const GAP = 24; // space kept between the main window and the docked navbar
   const EDGE_MARGIN = 16; // space kept between a docked window and the screen edge
   const AME_MIN_WIDTH = 208; // never shrink smaller than this
-  const AME_MAX_WIDTH = 700; // ame_gif.gif is 693x453 natively - beyond this it's just upscaled and blurry
   const LASTFM_GAP = 16; // space kept between ame-window and lastfm-window below it
   const NAV_MIN_WIDTH = 140; // never shrink smaller than this
-  const NAV_MAX_WIDTH = 260; // never grow wider than this - it's just a short link list
+  const NAV_MAX_WIDTH = 325; // never grow wider than this (25% more than the original 260)
+  // Capped to the right column's own max width (not ame_gif.gif's native
+  // 693px) - on an ultrawide monitor the left gutter is much wider than the
+  // right one, and letting ame.gif fill all of it left the two columns
+  // wildly out of balance.
+  const AME_MAX_WIDTH = NAV_MAX_WIDTH;
   const TIP_GAP = 16; // space kept between nav.exe and tip-window below it
   const BONSAI_GAP = 16; // space kept between bonsai-window and nav.exe below it
 
   const updateNavLayout = () => {
+    // #container's own CSS changes shape under body.nav-collapsed (a mobile
+    // flex item filling 100% width, instead of a centered block capped at
+    // --window-max-width) - measuring it while already collapsed would
+    // measure that mobile width instead, which can wrongly satisfy (or fail)
+    // the fits check below and get stuck collapsed even once the viewport
+    // widens back out past where it should un-collapse. Measure assuming the
+    // desktop layout; the logic below re-applies the class correctly either way.
+    const wasCollapsed = document.body.classList.contains('nav-collapsed');
+    if (wasCollapsed) document.body.classList.remove('nav-collapsed');
     const containerRect = mainWindow.getBoundingClientRect();
+    if (wasCollapsed) document.body.classList.add('nav-collapsed');
+
     // Dock GAP away from the main window's own edge, not pinned to the outer
     // screen edge - on a wide monitor the container is centered with a capped
     // max-width, so anchoring to the viewport edge instead left these windows
     // stranded far from the actual content. Hovering near the main section is
     // the intent on both sides.
-    const rightGutter = window.innerWidth - containerRect.right - GAP - EDGE_MARGIN;
-    const fits = rightGutter >= NAV_MIN_WIDTH;
+    // clientWidth, not innerWidth: innerWidth includes the classic scrollbar's
+    // width, but #container is centered inside the content box that excludes
+    // it - so measuring the right gutter against innerWidth over-measures it
+    // by the scrollbar width, making the right column that much wider than the
+    // left one (and pushing it that much closer to the edge) on any browser
+    // that doesn't use overlay scrollbars.
+    const viewportWidth = document.documentElement.clientWidth;
+    const rightGutter = viewportWidth - containerRect.right - GAP - EDGE_MARGIN;
+    const leftGutter = containerRect.left - EDGE_MARGIN - GAP;
+    // Both sides have to have room, not just the right - a narrow-but-not-
+    // mobile viewport can starve the left gutter while the right still
+    // fits, which used to dock ame.gif at its floor width anyway and push
+    // it off-screen instead of collapsing the whole layout to mobile.
+    const fits = rightGutter >= NAV_MIN_WIDTH && leftGutter >= AME_MIN_WIDTH;
 
     // Once the window-manager script (windows.js) has let the user drag this
     // element, it owns position/size from then on - don't snap it back on resize.
@@ -123,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // but capped at AME_MAX_WIDTH - once that cap kicks in on a really
         // wide monitor, dock it GAP away from the container's left edge
         // instead of leaving it pinned out at the screen's edge.
-        const leftGutter = containerRect.left - EDGE_MARGIN - GAP;
         const ameWidth = Math.min(AME_MAX_WIDTH, Math.max(AME_MIN_WIDTH, leftGutter));
         ameWindow.style.width = `${ameWidth}px`;
         ameWindow.style.left = `${containerRect.left - GAP - ameWidth}px`;
