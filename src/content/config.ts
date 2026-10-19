@@ -9,6 +9,7 @@ const blog = defineCollection({
     seoTitle: z.string().optional(),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD'),
     description: z.string().optional(),
+    excerpt: z.string().optional(),
     cover: z.string().optional(),
     coverAlt: z.string().optional(),
   }),

@@ -37,7 +37,7 @@ const posts = (await getCollection('blog')).sort(
                   <div class="post-details">
                     <a href={`/blog/${post.id}/`}>{post.data.title}</a>
                     <p class="post-date"><time datetime={post.data.date}>{post.data.date}</time></p>
-                    {post.data.description && <p>{post.data.description}</p>}
+                    {(post.data.excerpt ?? post.data.description) && <p class="post-description">{post.data.excerpt ?? post.data.description}</p>}
                   </div>
                 </li>
               ))}
@@ -97,6 +97,12 @@ const posts = (await getCollection('blog')).sort(
 
   .post-date {
     margin: 0.4rem 0 0;
+  }
+
+  .post-description {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin: 0.65rem 0 0;
   }
 
   @media (max-width: 480px) {
