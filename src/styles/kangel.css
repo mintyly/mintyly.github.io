@@ -26,6 +26,14 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Zpix Monospace Fixed';
+  src: url('/fonts/zpix_monospace_fixed.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 html, * {
   box-sizing: border-box;
 }
@@ -969,7 +977,9 @@ pre {
   border: 0.125rem solid var(--accent);       /* matching your accent color border */
   border-radius: 0.5rem;                       /* smooth rounded corners */
   padding: 1rem 1.5rem;                        /* comfy padding */
-  font-family: 'CustomFont', monospace;       /* your custom font + monospace fallback */
+  font-family: 'Zpix Monospace Fixed', monospace;
+  font-variant-ligatures: none;
+  tab-size: 4;
   font-size: 0.95rem;
   line-height: 1.4;
   color: var(--text-color);                    /* base text color for readability */
@@ -990,7 +1000,8 @@ code {
   background-color: var(--pinklight);
   border-radius: 0.25rem;
   padding: 0.15rem 0.3rem;
-  font-family: 'CustomFont', monospace;
+  font-family: 'Zpix Monospace Fixed', monospace;
+  font-variant-ligatures: none;
   font-weight: 600;
   color: var(--accent);
 }
