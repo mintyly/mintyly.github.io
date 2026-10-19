@@ -42,6 +42,23 @@ All commands run from the project root:
 
 ## Content
 
+- **Main blog** (`/blog/`): add Markdown files to `src/content/blog/`. The filename becomes the URL (for example, `hello.md` becomes `/blog/hello/`). Posts appear newest first. Use this frontmatter; the page supplies the title, so start the body without a duplicate heading:
+
+  ```md
+  ---
+  title: "A post title"
+  date: "2026-10-18"
+  description: "An optional short summary."
+  ---
+
+  Write your post here.
+  ```
+
+- **CTF section** stays at `/ctfblog/`, with links to the main blog and writeups for challenges I created or solved. Existing `/ctfblog/...` and `/writing/...` URLs are preserved.
+- **Blog covers** default to `/images/blog-placeholder.svg` on the listing and post page. To replace one, put an image in `public/images/` and add `cover: "/images/your-photo.jpg"` and `coverAlt: "A description of the photo"` to the post's frontmatter.
+- **CTF categories**: local posts in `src/content/ctfblog/` use `type: "created"` for challenges I made or `type: "solved"` for challenges I solved (including future Flare-On writeups). The default is `solved`. Prime and the challenge-authoring repository writeups appear under created challenges. Post URLs stay the same when their type changes. General posts go in the main blog.
+- **Directory links** use `src/components/DirectoryLinks.astro` immediately below the page heading, before dates, descriptions, and body text. Creative writing titles are supplied by the page template.
+
 - **Portfolio** (`src/content/portfolio`) and **welcome blurb** (`src/content/welcome`) are plain Markdown.
 - **CTF writeups** are pulled at build time from GitHub via `src/content/loaders/githubWriteups.ts`, grouped by competition.
-- **Writing/blog posts** live in `src/content/writing`.
+- **Creative writing** (`/writing/`) lives in `src/content/writing`.

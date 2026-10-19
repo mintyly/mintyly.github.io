@@ -3,7 +3,6 @@ title: "Razor"
 date: "2023-11-16"
 ---
 
-# Razor
 
 a dimly lit chamber, and a bare luminescent glow irradiating from beneath the antique oak door, its bronze round handle oxidated from years of use. 
 

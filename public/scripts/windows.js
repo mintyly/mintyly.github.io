@@ -238,6 +238,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     titleBar.addEventListener('pointerdown', (e) => {
       if (e.target.closest('.window-controls')) return;
+      // In the collapsed/mobile layout every remaining window (lastfm.exe) is
+      // static flow content stacked under the main column - dragging would
+      // set inline position:fixed and rip it out of that flow.
+      if (document.body.classList.contains('nav-collapsed')) return;
 
       if (!frame.classList.contains('win-user-positioned')) {
         const rect = frame.getBoundingClientRect();

@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import '../styles/kangel.css';
+import DirectoryLinks from './DirectoryLinks.astro';
+import BlogCover from './BlogCover.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.localeCompare(a.data.date),
+);
+---
+
+<div id="container">
+  <div id="container2">
+    <div class="window hoverable-window">
+      <div class="title-bar">
+        <div class="btn box"></div>
+        <div class="title">blog.txt</div>
+        <div class="window-controls">
+          <div class="btn close"></div>
+          <div class="btn minimize"></div>
+          <div class="btn maximize"></div>
+        </div>
+      </div>
+      <main class="content">
+        <h1>blog</h1>
+        <DirectoryLinks />
+        <p>A place for whatever I feel like writing about, once in a while.</p>
+        <section aria-labelledby="posts-heading">
+          <h2 id="posts-heading">Posts</h2>
+          {posts.length > 0 ? (
+            <ul class="post-list">
+              {posts.map(post => (
+                <li class="post-entry">
+                  <a class="post-thumbnail" href={`/blog/${post.id}/`} aria-label={`Read ${post.data.title}`}>
+                    <BlogCover src={post.data.cover} alt={post.data.coverAlt} />
+                  </a>
+                  <div class="post-details">
+                    <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+                    <p class="post-date"><time datetime={post.data.date}>{post.data.date}</time></p>
+                    {post.data.description && <p>{post.data.description}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No posts yet. Something will turn up here eventually.</p>
+          )}
+        </section>
+      </main>
+      <div class="bottom-bar">
+        <div class="btmbtn main"></div>
+        <div class="btmbtn small"></div>
+        <div class="btmbtn small"></div>
+        <div class="btmbtn small"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .post-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .post-entry {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .post-thumbnail {
+    display: block;
+    flex: 0 0 20rem;
+  }
+
+  .post-thumbnail :global(.blog-cover-frame) {
+    margin: 0;
+  }
+
+  .post-details {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 1.15rem;
+    line-height: 1.5;
+  }
+
+  .post-details > a {
+    font-size: 1.5rem;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .post-date {
+    margin: 0.4rem 0 0;
+  }
+
+  @media (max-width: 480px) {
+    .post-thumbnail { flex-basis: auto; width: min(100%, 20rem); }
+    .post-entry { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  }
+</style>

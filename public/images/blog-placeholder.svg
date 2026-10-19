@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#bcaee9" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <path fill="#ead2ec" d="M0 0h960v360H0z"/>
+  <path fill="url(#grid)" d="M0 0h960v360H0z"/>
+  <g stroke="#462dc6" stroke-width="4" stroke-linejoin="miter">
+    <path fill="#bcaee9" d="M392 88h192v192H392z"/>
+    <path fill="#f9eff9" d="M380 76h192v192H380z"/>
+    <path fill="#94f1e1" d="M396 92h160v160H396z"/>
+    <circle fill="#eb9fe7" cx="516" cy="132" r="20"/>
+    <path fill="#bcaee9" d="m396 224 52-64 44 52 28-32 36 44v28H396z"/>
+  </g>
+  <text x="480" y="318" text-anchor="middle" font-family="monospace" font-size="18" fill="#462dc6">image coming soon</text>
+</svg>

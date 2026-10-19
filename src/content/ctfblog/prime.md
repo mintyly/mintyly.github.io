@@ -1,5 +1,5 @@
 ---
-layout: ../../layouts/MarkdownPostLayout.astro
+type: "created"
 title: "prime (YCEP CCTF 2025)"
 date: "2025-09-03"
 categories: ["crypto", "ctf", "writeup", "medium"]

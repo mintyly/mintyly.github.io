@@ -1,10 +1,19 @@
 ---
 import banner from '../assets/banner_website.png';
 
-const title = 'June Ong';
-const description = "June Ong's personal site! portfolio, CTF writeups, and blog.";
+interface Props {
+  title?: string;
+  description?: string;
+  type?: 'website' | 'article';
+}
+const {
+  title = 'June Ong',
+  description = "June Ong's personal site! portfolio, CTF writeups, and blog.",
+  type = 'website',
+} = Astro.props;
 const ogImage = new URL(banner.src, Astro.site);
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/$/, '')}/`;
+const canonicalURL = new URL(canonicalPath, Astro.site);
 ---
 
 <!doctype html>
@@ -18,8 +27,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<title>{title}</title>
 		<meta name="description" content={description} />
 
-		<meta property="og:type" content="website" />
-		<meta property="og:site_name" content={title} />
+		<meta property="og:type" content={type} />
+		<meta property="og:site_name" content="June Ong" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalURL} />
@@ -31,6 +40,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImage} />
+		<slot name="head" />
 	</head>
 
 	<body>

@@ -1,0 +1,20 @@
+---
+interface Props {
+  links?: { href: string; label: string }[];
+}
+const { links = [
+  { href: '/blog/', label: 'main blog' },
+  { href: '/ctfblog/', label: 'ctf' },
+  { href: '/writing/', label: 'writing' },
+] } = Astro.props;
+---
+
+<nav class="directory-links" aria-label="Page directory">
+  {links.map((link, index) => (
+    <>{index > 0 && <span aria-hidden="true"> / </span>}<a href={link.href}>{link.label}</a></>
+  ))}
+</nav>
+
+<style>
+  .directory-links { margin: 0 0 1rem; overflow-wrap: anywhere; }
+</style>

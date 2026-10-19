@@ -1,7 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import '../styles/kangel.css';
-const posts = await getCollection('ctfblog');
+import DirectoryLinks from './DirectoryLinks.astro';
+const posts = (await getCollection('ctfblog')).sort(
+  (a, b) => Date.parse(b.data.date) - Date.parse(a.data.date),
+);
 const writeups = await getCollection('writeups');
 
 const writeupsByCompetition = new Map<string, typeof writeups>();
@@ -32,19 +35,23 @@ const sortedCompetitions = [...writeupsByCompetition.entries()].sort(
       </div>
 
       <div class="content">
-        <section>
+        <h1>ctf</h1>
+        <DirectoryLinks links={[
+          { href: '/blog/', label: 'main blog' },
+          { href: '/writing/', label: 'writing' },
+          { href: '#created', label: 'challenge author' },
+          { href: '#solved', label: 'solved challenges' },
+        ]} />
+        <p>Writeups for challenges I created and challenges I solved.</p>
+
+        <div id="writeups">
+          <section id="created" aria-labelledby="created-heading">
+          <h2 id="created-heading">Writeups - Challenge author</h2>
           <ul>
-            {posts.map(post => (
-              <li>
-                <a href={`/ctfblog/${post.slug}/`}>{post.data.title}</a>
-                <span> — {post.data.date}</span>
-              </li>
+            {posts.filter(post => post.data.type === 'created').map(post => (
+              <li><a href={`/ctfblog/${post.slug}/`}>{post.data.title}</a> — {post.data.date}</li>
             ))}
           </ul>
-        </section>
-
-        <section id="writeups">
-          <h2>Writeups</h2>
           {sortedCompetitions.map(([competition, entries]) => (
             <div class="writeup-group">
               <h3>{competition}</h3>
@@ -61,7 +68,18 @@ const sortedCompetitions = [...writeupsByCompetition.entries()].sort(
               </ul>
             </div>
           ))}
-        </section>
+          </section>
+          <section id="solved" aria-labelledby="solved-heading">
+            <h2 id="solved-heading">Writeups - Solved Challenges</h2>
+            {posts.some(post => post.data.type === 'solved') ? (
+              <ul>
+                {posts.filter(post => post.data.type === 'solved').map(post => (
+                  <li><a href={`/ctfblog/${post.slug}/`}>{post.data.title}</a> — {post.data.date}</li>
+                ))}
+              </ul>
+            ) : <p>No writeups here yet.</p>}
+          </section>
+        </div>
       </div>
 
       <div class="bottom-bar">

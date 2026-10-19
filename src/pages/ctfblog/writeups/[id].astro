@@ -6,6 +6,7 @@ import AmeWindow from '../../../components/AmeWindow.astro';
 import LastFmWindow from '../../../components/LastFmWindow.astro';
 import TipWindow from '../../../components/TipWindow.astro';
 import Layout from '../../../layouts/Layout.astro';
+import DirectoryLinks from '../../../components/DirectoryLinks.astro';
 
 export async function getStaticPaths() {
   const writeups = await getCollection('writeups');
@@ -46,6 +47,12 @@ const { Content } = await render(writeup);
 
         <div class="content">
           <section>
+            <h1>{writeup.data.challenge}</h1>
+            <DirectoryLinks links={[
+              { href: '/ctfblog/#created', label: 'back to ctf' },
+              { href: '/blog/', label: 'main blog' },
+              { href: '/writing/', label: 'writing' },
+            ]} />
             <p><em>{writeup.data.competition}</em></p>
             <div class="tag-row">
               {writeup.data.category && <span class="tag">{writeup.data.category}</span>}

@@ -8,6 +8,7 @@ import AmeWindow from '../../components/AmeWindow.astro';
 import LastFmWindow from '../../components/LastFmWindow.astro';
 import TipWindow from '../../components/TipWindow.astro';
 import Layout from '../../layouts/Layout.astro';
+import DirectoryLinks from '../../components/DirectoryLinks.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('writing');
@@ -49,6 +50,8 @@ const { Content } = await post.render();
 
         <div class="content">
           <section>
+            <h1>{post.data.title}</h1>
+            <DirectoryLinks />
             <p><em>{post.data.date}</em></p>
             <Content />
           </section>

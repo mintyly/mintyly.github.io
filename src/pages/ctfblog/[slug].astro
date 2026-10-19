@@ -8,6 +8,7 @@ import AmeWindow from '../../components/AmeWindow.astro';
 import LastFmWindow from '../../components/LastFmWindow.astro';
 import TipWindow from '../../components/TipWindow.astro';
 import Layout from '../../layouts/Layout.astro';
+import DirectoryLinks from '../../components/DirectoryLinks.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('ctfblog');
@@ -50,6 +51,11 @@ const { Content } = await post.render();
         <div class="content">
           <section>
             <h1>{post.data.title}</h1>
+            <DirectoryLinks links={[
+              { href: `/ctfblog/#${post.data.type}`, label: 'back to ctf' },
+              { href: '/blog/', label: 'main blog' },
+              { href: '/writing/', label: 'writing' },
+            ]} />
             <p><em>{post.data.date}</em></p>
 
             <Content />

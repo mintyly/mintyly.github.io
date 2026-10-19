@@ -1,5 +1,18 @@
 import { defineCollection, z } from 'astro:content';
 import { githubWriteups } from './loaders/githubWriteups';
+import { glob } from 'astro/loaders';
+
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    seoTitle: z.string().optional(),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD'),
+    description: z.string().optional(),
+    cover: z.string().optional(),
+    coverAlt: z.string().optional(),
+  }),
+});
 
 const writing = defineCollection({
   schema: z.object({
@@ -12,7 +25,7 @@ const ctfblog = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.string(),
-    // add any other fields specific to CTF blog if you want
+    type: z.enum(['created', 'solved']).default('solved'),
   }),
 });
 
@@ -40,6 +53,7 @@ const writeups = defineCollection({
 });
 
 export const collections = {
+  blog,
   writing,
   ctfblog,
   portfolio,
