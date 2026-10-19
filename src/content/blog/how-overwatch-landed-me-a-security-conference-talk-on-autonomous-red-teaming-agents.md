@@ -7,13 +7,13 @@ description: "How I built Sombra, an open-source LLM red teaming harness at NUS,
 
 So. I presented at my first con. *explosions*
 
-this was a pretty big first for me, and it feels like a pretty suitable place to start this blog.
-
+this was a pretty big first for me, and it feels like a pretty suitable place to start this blog. 
+ 
 To the uninitiated, hi! I'm June. I gave my first conference talk at STANDCON 2026, **How to Train Your Mythos: A Field Guide on Creating Autonomous Red-Team Agents**. It was about [Sombra](https://github.com/mintyly/Sombra), an open-source harness I built at NUS for running LLM-driven red-team agents against cyber ranges.
 
 ## Why I called it Sombra
 
-I play a lot of Overwatch, and enough that, when I needed a name for the red teaming agent I was building, I named it after Sombra, the ~~DPS~~ support character who looks like the most generic hacker in media.
+I play a lot of Overwatch, and enough of it that, when I needed a name for the red teaming agent I was building, I named it after Sombra, the ~~DPS~~ support character who looks like the most generic hacker in media.
 
 Sombra felt appropriate for an agent that was supposed to explore a network and break into things. That project eventually became the subject of my STANDCON talk.
 

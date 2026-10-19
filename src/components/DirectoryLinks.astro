@@ -3,7 +3,8 @@ interface Props {
   links?: { href: string; label: string }[];
 }
 const { links = [
-  { href: '/blog/', label: 'main blog' },
+  { href: '/', label: 'home' },
+  { href: '/blog/', label: 'blog' },
   { href: '/ctfblog/', label: 'ctf' },
   { href: '/writing/', label: 'writing' },
 ] } = Astro.props;

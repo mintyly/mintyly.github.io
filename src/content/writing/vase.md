@@ -1,6 +1,7 @@
 ---
 title: "Vase"
 date: "2024-4-4"
+spatial: true
 ---
 
 
@@ -12,12 +13,13 @@ the  jagged   shards              of porcelain
            scattered
  as I       try                    desperately
    reconstruct             the pieces
-                         missing                                    definitely     missing
+                         missing                                    definitely    
+                                                                                            missing
               a             few
     and  yet,                 it’s almost    like                 
                    they  didn’t       exist.               defeated,
    I  put    them                          together
-                the rough             shape of a                           vase
+                the rough             shape of a          vase
    glue the             pieces     together
            give them         a new breath   of life
 the vase is     crude, but     holds water
@@ -26,4 +28,9 @@ the vase is     crude, but     holds water
 sigh,      as                 the vase   
            is                     broken
      once               more,
-   into             further               tiny             shards       of                    misery.
+                                                                                            into
+further              
+                               tiny
+                                                                                            shards
+                                            of                   
+                                                                                                            misery.

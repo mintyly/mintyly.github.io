@@ -9,7 +9,7 @@ import LastFmWindow from '../../components/LastFmWindow.astro';
 import TipWindow from '../../components/TipWindow.astro';
 import BonsaiWindow from '../../components/BonsaiWindow.astro';
 import Layout from '../../layouts/Layout.astro';
-import DirectoryLinks from '../../components/DirectoryLinks.astro';
+import PostWindow from '../../components/PostWindow.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('ctfblog');
@@ -37,40 +37,7 @@ const { Content } = await post.render();
   <TipWindow />
   <BonsaiWindow />
 
-  <div id="container">
-    <div id="container2">
-      <div class="window hoverable-window">
-        <div class="title-bar">
-          <div class="btn box"></div>
-          <div class="title">{post.data.title}.txt</div>
-          <div class="window-controls">
-            <div class="btn close"></div>
-            <div class="btn minimize"></div>
-            <div class="btn maximize"></div>
-          </div>
-        </div>
-
-        <div class="content">
-          <section>
-            <h1>{post.data.title}</h1>
-            <DirectoryLinks links={[
-              { href: `/ctfblog/#${post.data.type}`, label: 'back to ctf' },
-              { href: '/blog/', label: 'main blog' },
-              { href: '/writing/', label: 'writing' },
-            ]} />
-            <p><em>{post.data.date}</em></p>
-
-            <Content />
-          </section>
-        </div>
-
-        <div class="bottom-bar">
-          <div class="btmbtn main"></div>
-          <div class="btmbtn small"></div>
-          <div class="btmbtn small"></div>
-          <div class="btmbtn small"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <PostWindow title={post.data.title} date={post.data.date}>
+    <Content />
+  </PostWindow>
 </Layout>

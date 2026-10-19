@@ -8,7 +8,7 @@ import LastFmWindow from '../../components/LastFmWindow.astro';
 import TipWindow from '../../components/TipWindow.astro';
 import BonsaiWindow from '../../components/BonsaiWindow.astro';
 import Layout from '../../layouts/Layout.astro';
-import DirectoryLinks from '../../components/DirectoryLinks.astro';
+import PostWindow from '../../components/PostWindow.astro';
 import BlogCover from '../../components/BlogCover.astro';
 
 export async function getStaticPaths() {
@@ -52,85 +52,8 @@ const articleSchema = {
   <LastFmWindow />
   <TipWindow />
   <BonsaiWindow />
-  <div id="container">
-    <div id="container2">
-      <div class="window hoverable-window">
-        <div class="title-bar">
-          <div class="btn box"></div>
-          <div class="title">{post.data.title}.txt</div>
-          <div class="window-controls">
-            <div class="btn close"></div>
-            <div class="btn minimize"></div>
-            <div class="btn maximize"></div>
-          </div>
-        </div>
-        <main class="content">
-          <article class="blog-article">
-            <h1>{post.data.title}</h1>
-            <DirectoryLinks />
-            <p>By <a href="/" rel="author">June Ong</a> · <time datetime={post.data.date}>{post.data.date}</time></p>
-            <BlogCover src={post.data.cover} alt={post.data.coverAlt} />
-            <Content />
-          </article>
-        </main>
-        <div class="bottom-bar">
-          <div class="btmbtn main"></div>
-          <div class="btmbtn small"></div>
-          <div class="btmbtn small"></div>
-          <div class="btmbtn small"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <PostWindow title={post.data.title} date={post.data.date}>
+    <BlogCover src={post.data.cover} alt={post.data.coverAlt} />
+    <Content />
+  </PostWindow>
 </Layout>
-
-<style>
-  .title-bar .title {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .title-bar .window-controls { flex-shrink: 0; }
-
-  .blog-article > h1 {
-    line-height: 1.25;
-    text-wrap: balance;
-    overflow-wrap: break-word;
-  }
-
-  @media (max-width: 700px) {
-    :global(body.nav-collapsed) .blog-article > h1 {
-      font-size: 1.5rem;
-      line-height: 1.3;
-    }
-  }
-
-  .blog-article :global(table) {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    table-layout: auto;
-    overflow-wrap: anywhere;
-  }
-
-  .blog-article :global(th),
-  .blog-article :global(td) {
-    border: 1px solid var(--accent);
-    padding: 0.65rem 0.8rem;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .blog-article :global(th) {
-    background: var(--main-bg);
-    color: var(--accent);
-  }
-
-  .blog-article :global(th:first-child),
-  .blog-article :global(td:first-child) {
-    width: 1%;
-    white-space: nowrap;
-  }
-</style>

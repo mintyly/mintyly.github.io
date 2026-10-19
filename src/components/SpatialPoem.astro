@@ -1,0 +1,60 @@
+---
+interface Props { text: string; }
+const { text } = Astro.props;
+const lines = text.trim().split(/\r?\n/).map(line => {
+  const indent = line.match(/^\s*/)?.[0].length ?? 0;
+  const pieces = line.trim().split(/([\u2003\t]+| {2,})/);
+  let gap = 0;
+  const fragments: { text: string; gap: number }[] = [];
+  for (const piece of pieces) {
+    if (/^\s+$/.test(piece)) gap += piece.length;
+    else if (piece) { fragments.push({ text: piece, gap }); gap = 0; }
+  }
+  return { indent, fragments };
+});
+---
+
+<div class="spatial-poem">
+  <div class="poem-original desktop-original" tabindex="0" role="region" aria-label="Poem with original spacing"><div class="poem-text">{text.trim()}</div></div>
+  <div class="poem-mobile">
+    <div class="poem-reflow">
+      {lines.map(line => (
+        <div class="poem-line" style={`--indent: ${line.indent}`}>
+          {line.fragments.map((fragment, index) => (
+            <Fragment>{index > 0 && ' '}<span style={`--gap: ${fragment.gap}`}>{fragment.text}</span></Fragment>
+          ))}
+        </div>
+      ))}
+    </div>
+    <details>
+      <summary>Original spacing ↔</summary>
+      <div class="poem-original" tabindex="0" role="region" aria-label="Poem with original spacing; scroll horizontally"><div class="poem-text">{text.trim()}</div></div>
+    </details>
+  </div>
+</div>
+
+<style>
+  .spatial-poem { margin-top: 1.5rem; min-width: 0; }
+  .poem-original { max-width: 100%; overflow-x: auto; padding-bottom: 0.75rem; }
+  .poem-text { white-space: pre; font-family: var(--font); line-height: 1.7; }
+  .poem-mobile { display: none; }
+  .poem-original:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (max-width: 700px) {
+    .desktop-original { display: none; }
+    .poem-mobile { display: block; }
+    .poem-line {
+      padding-left: min(22%, calc(var(--indent) * 0.5%));
+      min-height: 1.7em;
+      line-height: 1.7;
+      margin-bottom: 0.55rem;
+    }
+    .poem-line span {
+      margin-left: clamp(0ch, calc(var(--gap) * 0.14ch), 2ch);
+      overflow-wrap: break-word;
+    }
+    .poem-line span:first-child { margin-left: 0; }
+    details { margin-top: 1.5rem; }
+    summary { cursor: pointer; color: var(--accent); }
+    details .poem-original { margin-top: 1rem; }
+  }
+</style>

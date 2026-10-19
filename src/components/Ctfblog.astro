@@ -36,12 +36,7 @@ const sortedCompetitions = [...writeupsByCompetition.entries()].sort(
 
       <div class="content">
         <h1>ctf</h1>
-        <DirectoryLinks links={[
-          { href: '/blog/', label: 'main blog' },
-          { href: '/writing/', label: 'writing' },
-          { href: '#created', label: 'challenge author' },
-          { href: '#solved', label: 'solved challenges' },
-        ]} />
+        <DirectoryLinks />
         <p>Writeups for challenges I created and challenges I solved.</p>
 
         <div id="writeups">

@@ -18,6 +18,7 @@ const writing = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.string(),
+    spatial: z.boolean().optional(),
   }),
 });
 

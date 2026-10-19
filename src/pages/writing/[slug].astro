@@ -9,7 +9,8 @@ import LastFmWindow from '../../components/LastFmWindow.astro';
 import TipWindow from '../../components/TipWindow.astro';
 import BonsaiWindow from '../../components/BonsaiWindow.astro';
 import Layout from '../../layouts/Layout.astro';
-import DirectoryLinks from '../../components/DirectoryLinks.astro';
+import PostWindow from '../../components/PostWindow.astro';
+import SpatialPoem from '../../components/SpatialPoem.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('writing');
@@ -37,35 +38,7 @@ const { Content } = await post.render();
   <TipWindow />
   <BonsaiWindow />
 
-  <div id="container">
-    <div id="container2">
-      <div class="window hoverable-window">
-        <div class="title-bar">
-          <div class="btn box"></div>
-          <div class="title">{post.data.title}.txt</div>
-          <div class="window-controls">
-            <div class="btn close"></div>
-            <div class="btn minimize"></div>
-            <div class="btn maximize"></div>
-          </div>
-        </div>
-
-        <div class="content">
-          <section>
-            <h1>{post.data.title}</h1>
-            <DirectoryLinks />
-            <p><em>{post.data.date}</em></p>
-            <Content />
-          </section>
-        </div>
-
-        <div class="bottom-bar">
-          <div class="btmbtn main"></div>
-          <div class="btmbtn small"></div>
-          <div class="btmbtn small"></div>
-          <div class="btmbtn small"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <PostWindow title={post.data.title} date={post.data.date}>
+    {post.data.spatial ? <SpatialPoem text={post.body} /> : <Content />}
+  </PostWindow>
 </Layout>

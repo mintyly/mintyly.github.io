@@ -7,7 +7,7 @@ import LastFmWindow from '../../../components/LastFmWindow.astro';
 import TipWindow from '../../../components/TipWindow.astro';
 import BonsaiWindow from '../../../components/BonsaiWindow.astro';
 import Layout from '../../../layouts/Layout.astro';
-import DirectoryLinks from '../../../components/DirectoryLinks.astro';
+import PostWindow from '../../../components/PostWindow.astro';
 
 export async function getStaticPaths() {
   const writeups = await getCollection('writeups');
@@ -34,27 +34,7 @@ const { Content } = await render(writeup);
   <TipWindow />
   <BonsaiWindow />
 
-  <div id="container">
-    <div id="container2">
-      <div class="window hoverable-window">
-        <div class="title-bar">
-          <div class="btn box"></div>
-          <div class="title">{writeup.data.challenge}.txt</div>
-          <div class="window-controls">
-            <div class="btn close"></div>
-            <div class="btn minimize"></div>
-            <div class="btn maximize"></div>
-          </div>
-        </div>
-
-        <div class="content">
-          <section>
-            <h1>{writeup.data.challenge}</h1>
-            <DirectoryLinks links={[
-              { href: '/ctfblog/#created', label: 'back to ctf' },
-              { href: '/blog/', label: 'main blog' },
-              { href: '/writing/', label: 'writing' },
-            ]} />
+  <PostWindow title={writeup.data.challenge}>
             <p><em>{writeup.data.competition}</em></p>
             <div class="tag-row">
               {writeup.data.category && <span class="tag">{writeup.data.category}</span>}
@@ -66,16 +46,5 @@ const { Content } = await render(writeup);
 
             {writeup.data.flag && <p>Flag: <code>{writeup.data.flag}</code></p>}
             <p><a href={writeup.data.sourceUrl} target="_blank" rel="noopener noreferrer">View challenge source on GitHub</a></p>
-          </section>
-        </div>
-
-        <div class="bottom-bar">
-          <div class="btmbtn main"></div>
-          <div class="btmbtn small"></div>
-          <div class="btmbtn small"></div>
-          <div class="btmbtn small"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </PostWindow>
 </Layout>

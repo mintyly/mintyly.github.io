@@ -21,7 +21,7 @@
 
 @font-face {
   font-family: 'CustomFont';
-  src: url('/fonts/zpix.ttf') format('truetype');
+  src: url('/fonts/zpix.ttf?v=2') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -869,10 +869,21 @@ body {
 }
 
 .content {
+  font-family: var(--font);
   padding: 1.5rem;
   background: var(--window-background);
   border: 0.125rem solid var(--accent);
   font-size: 1rem;
+}
+
+/* Keep interface labels and headings in the original site font. */
+.content :is(h1, h2, h3, h4, h5, h6),
+.content :is(strong, b, a, th),
+.content .directory-links,
+.content .post-details > a,
+.content .tag,
+#side-navbar .content {
+  font-family: var(--font);
 }
 
 .content img:not(.pfp) {

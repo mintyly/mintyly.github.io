@@ -20,7 +20,7 @@ bafflingly, the figure made no attempt to staunch the leaking. With each passing
 
 what seemed like tears, dribbled down the figure’s face, as the embrace of death greeted it with warm arms, the figure wearing a unnoticeable grimace.
 
-the figure finds solace in its death, the cosmos with its unrelenting barrages, even when the figure has conceded.
+the figure finds solace in its death, free from the cosmos with its unrelenting barrages, at last after the figure has conceded.
 
 seemingly smiling, as the figure closes its eyes,
 

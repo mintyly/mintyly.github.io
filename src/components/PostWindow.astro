@@ -1,0 +1,86 @@
+---
+import DirectoryLinks from './DirectoryLinks.astro';
+interface Props { title: string; date?: string; }
+const { title, date } = Astro.props;
+---
+
+<div id="container">
+  <div id="container2">
+    <div class="window hoverable-window">
+      <div class="title-bar">
+        <div class="btn box"></div>
+        <div class="title">{title}.txt</div>
+        <div class="window-controls">
+          <div class="btn close"></div>
+          <div class="btn minimize"></div>
+          <div class="btn maximize"></div>
+        </div>
+      </div>
+      <main class="content">
+        <article class="post-article">
+          <h1>{title}</h1>
+          <DirectoryLinks />
+          <p>By <a href="/" rel="author">June Ong</a>{date && <> · <time datetime={date}>{date}</time></>}</p>
+          <slot />
+        </article>
+      </main>
+      <div class="bottom-bar">
+        <div class="btmbtn main"></div>
+        <div class="btmbtn small"></div>
+        <div class="btmbtn small"></div>
+        <div class="btmbtn small"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .title-bar .title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .title-bar .window-controls { flex-shrink: 0; }
+
+  .post-article > h1 {
+    line-height: 1.25;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  @media (max-width: 700px) {
+    :global(body.nav-collapsed) .post-article > h1 {
+      font-size: 1.5rem;
+      line-height: 1.3;
+    }
+  }
+
+  .post-article :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    table-layout: auto;
+    overflow-wrap: anywhere;
+  }
+
+  .post-article :global(th),
+  .post-article :global(td) {
+    border: 1px solid var(--accent);
+    padding: 0.65rem 0.8rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .post-article :global(th) {
+    background: var(--main-bg);
+    color: var(--accent);
+  }
+
+  .post-article :global(th:first-child),
+  .post-article :global(td:first-child) {
+    width: 1%;
+    white-space: nowrap;
+  }
+</style>
