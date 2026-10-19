@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function findFrame(win) {
     const parent = win.parentElement;
-    if (parent && (parent.id === 'side-navbar' || parent.id === 'ame-window' || parent.id === 'lastfm-window' || parent.id === 'tip-window')) {
+    if (parent && (parent.id === 'side-navbar' || parent.id === 'ame-window' || parent.id === 'lastfm-window' || parent.id === 'tip-window' || parent.id === 'bonsai-window')) {
       return { frame: parent, mode: 'fixed' };
     }
     const grandparent = parent && parent.parentElement;
@@ -112,6 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (item.frame.id === 'tip-window') {
         // Same deal - tip.txt is desktop-only and dropped entirely on mobile.
         btn.classList.add('taskbar-btn-tip');
+      }
+      if (item.frame.id === 'bonsai-window') {
+        // Likewise - bonsai.exe is decoration docked beside the desktop layout.
+        btn.classList.add('taskbar-btn-bonsai');
       }
 
       const icon = document.createElement('img');
@@ -242,6 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // static flow content stacked under the main column - dragging would
       // set inline position:fixed and rip it out of that flow.
       if (document.body.classList.contains('nav-collapsed')) return;
+
+      // Mobile view (body.nav-collapsed, set by sidebar.js) stacks every
+      // window in a fixed flow layout - dragging one out of that column just
+      // breaks the layout, so windows aren't movable there at all.
+      if (document.body.classList.contains('nav-collapsed')) {
+        bringToFront(frame);
+        return;
+      }
 
       if (!frame.classList.contains('win-user-positioned')) {
         const rect = frame.getBoundingClientRect();

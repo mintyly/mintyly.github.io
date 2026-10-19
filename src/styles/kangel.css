@@ -127,6 +127,11 @@ html, * {
   50% { transform: translateY(-11px); }
 }
 
+@keyframes float-bonsai {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
 #side-navbar {
   position: fixed;
   top: 50%;
@@ -208,9 +213,9 @@ body.nav-collapsed #ame-window {
   pointer-events: none;
 }
 
-/* Desktop-only hint window. Position is set by sidebar.js: docked GAP above
-   ame.gif on the left when there's room, or above nav.exe on the right when
-   there isn't (but the navbar still fits), or hidden entirely on mobile. */
+/* Desktop-only hint window. Position is set by sidebar.js: docked flush
+   beneath nav.exe on the right (bonsai.exe / nav.exe / tip.txt form one
+   column), or hidden entirely on mobile. */
 #tip-window {
   position: fixed;
   top: 0;
@@ -247,6 +252,59 @@ body.nav-collapsed #tip-window {
   animation: none;
   opacity: 0;
   pointer-events: none;
+}
+
+/* Decorative bonsai animation, docked by sidebar.js flush above nav.exe at
+   the same width (bonsai.exe / nav.exe / tip.txt form one right-hand column).
+   Hidden on mobile like tip.txt. The tree itself is painted by bonsai.js. */
+#bonsai-window {
+  position: fixed;
+  top: 0;
+  right: 1rem;
+  box-sizing: border-box;
+  background: var(--main-bg);
+  border: 0.125rem solid var(--accent);
+  padding: 0.25rem;
+  padding-bottom: 0rem;
+  z-index: 999;
+  width: 14rem;
+  font-family: var(--font);
+  transition: opacity 0.3s ease;
+  box-shadow: 2px 2px 0 var(--shadow);
+  animation: float-bonsai 6s ease-in-out infinite;
+  animation-delay: -3.7s;
+}
+
+#bonsai-window:has(.hoverable-window:hover) {
+  background: var(--highlight);
+}
+
+#bonsai-window .content {
+  padding: 0;
+  /* The canvas paints its own background edge to edge. */
+  line-height: 0;
+}
+
+body.nav-collapsed #bonsai-window {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* A CSS-sized square: the width follows whatever sidebar.js docks the window
+   at and the height follows from aspect-ratio, so the window's height is
+   correct at layout time - bonsai.js only sets the bitmap size to match. */
+.bonsai {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  image-rendering: pixelated;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #bonsai-window {
+    animation: none;
+  }
 }
 
 /* Position (left/top/width) is set by sidebar.js to dock it directly beneath
@@ -412,17 +470,35 @@ body.nav-collapsed #lastfm-window {
   background: var(--highlight);
 }
 
-#side-navbar ul {
-  list-style: none;
+/* links.exe lays its nav out as `tree` output. The box-drawing prefixes only
+   line up if the whitespace survives verbatim, hence <pre> rather than a list.
+   The global `pre` rule is meant for code blocks inside posts (bordered card,
+   its own background/padding/margin/shadow) - none of that belongs in the
+   navbar window, so it all gets unset here. */
+#side-navbar .nav-tree {
   margin: 0;
   padding: 0;
-  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  /* 'CustomFont', monospace - deliberately NOT var(--font), which ends in
+     sans-serif and would swallow the fallback before monospace was ever
+     reached. A flat one-level tree stays aligned in any font (every row
+     carries the same 4-char prefix), but if the pixel font fails to load, a
+     real monospace is what keeps the box-drawing prefixes in column - same
+     chain the global `pre` rule uses. */
+  font-family: 'CustomFont', monospace;
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: bold;
+  color: var(--accent);
 }
 
-#side-navbar li {
-  margin: 0.5rem 0;
-}
-
+/* The whole tree is bold now, so the links match everything around them -
+   kept explicit here so they stay bold independently of the block's weight.
+   Hover is what marks them out as interactive. */
 #side-navbar a {
   color: var(--accent);
   text-decoration: none;
@@ -972,6 +1048,15 @@ body.nav-collapsed .window-controls .btn {
   height: 1rem;
 }
 
+/* Windows aren't draggable in mobile view (windows.js bails out of its
+   pointerdown handler under nav-collapsed) - so no grab cursor, and let
+   touches on a title bar scroll the page instead of being swallowed by
+   .title-bar's touch-action:none. */
+body.nav-collapsed .title-bar {
+  cursor: default;
+  touch-action: auto;
+}
+
 body.nav-collapsed pre {
   font-size: 0.85rem;
   padding: 0.75rem 1rem;
@@ -1044,6 +1129,15 @@ body.nav-collapsed #tip-window {
 }
 
 body.nav-collapsed .taskbar-btn-tip {
+  display: none;
+}
+
+/* bonsai.exe too - decoration for the docked desktop layout only. */
+body.nav-collapsed #bonsai-window {
+  display: none !important;
+}
+
+body.nav-collapsed .taskbar-btn-bonsai {
   display: none;
 }
 

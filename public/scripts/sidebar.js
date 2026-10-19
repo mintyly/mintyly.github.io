@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ameWindow = document.getElementById('ame-window');
   const lastfmWindow = document.getElementById('lastfm-window');
   const tipWindow = document.getElementById('tip-window');
+  const bonsaiWindow = document.getElementById('bonsai-window');
   const mainWindow = document.getElementById('container');
 
   if (toggleButton && sideNav) {
@@ -18,26 +19,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const GAP = 24; // space kept between the main window and the docked navbar
   const EDGE_MARGIN = 16; // space kept between a docked window and the screen edge
   const AME_MIN_WIDTH = 208; // never shrink smaller than this
-  const AME_MAX_WIDTH = 700; // ame_gif.gif is 693x453 natively - beyond this it's just upscaled and blurry
   const LASTFM_GAP = 16; // space kept between ame-window and lastfm-window below it
   const NAV_MIN_WIDTH = 140; // never shrink smaller than this
-  const NAV_MAX_WIDTH = 260; // never grow wider than this - it's just a short link list
-  const TIP_GAP = 16; // space kept between tip-window and nav.exe below it
+  const NAV_MAX_WIDTH = 325; // never grow wider than this (25% more than the original 260)
+  // Capped to the right column's own max width (not ame_gif.gif's native
+  // 693px) - on an ultrawide monitor the left gutter is much wider than the
+  // right one, and letting ame.gif fill all of it left the two columns
+  // wildly out of balance.
+  const AME_MAX_WIDTH = NAV_MAX_WIDTH;
+  const TIP_GAP = 16; // space kept between nav.exe and tip-window below it
+  const BONSAI_GAP = 16; // space kept between bonsai-window and nav.exe below it
 
   const updateNavLayout = () => {
+    // #container's own CSS changes shape under body.nav-collapsed (a mobile
+    // flex item filling 100% width, instead of a centered block capped at
+    // --window-max-width) - measuring it while already collapsed would
+    // measure that mobile width instead, which can wrongly satisfy (or fail)
+    // the fits check below and get stuck collapsed even once the viewport
+    // widens back out past where it should un-collapse. Measure assuming the
+    // desktop layout; the logic below re-applies the class correctly either way.
+    const wasCollapsed = document.body.classList.contains('nav-collapsed');
+    if (wasCollapsed) document.body.classList.remove('nav-collapsed');
     const containerRect = mainWindow.getBoundingClientRect();
+    if (wasCollapsed) document.body.classList.add('nav-collapsed');
+
     // Dock GAP away from the main window's own edge, not pinned to the outer
     // screen edge - on a wide monitor the container is centered with a capped
     // max-width, so anchoring to the viewport edge instead left these windows
     // stranded far from the actual content. Hovering near the main section is
     // the intent on both sides.
-    const rightGutter = window.innerWidth - containerRect.right - GAP - EDGE_MARGIN;
-    const fits = rightGutter >= NAV_MIN_WIDTH;
-
-    // Set below once the right-side (tip.txt+links.exe) stack's total height
-    // is known, so the left-side (ame.gif+lastfm.exe) block can shrink
-    // ame.gif's width until its own stack matches that length.
-    let targetLeftStackHeight = null;
+    // clientWidth, not innerWidth: innerWidth includes the classic scrollbar's
+    // width, but #container is centered inside the content box that excludes
+    // it - so measuring the right gutter against innerWidth over-measures it
+    // by the scrollbar width, making the right column that much wider than the
+    // left one (and pushing it that much closer to the edge) on any browser
+    // that doesn't use overlay scrollbars.
+    const viewportWidth = document.documentElement.clientWidth;
+    const rightGutter = viewportWidth - containerRect.right - GAP - EDGE_MARGIN;
+    const leftGutter = containerRect.left - EDGE_MARGIN - GAP;
+    // Both sides have to have room, not just the right - a narrow-but-not-
+    // mobile viewport can starve the left gutter while the right still
+    // fits, which used to dock ame.gif at its floor width anyway and push
+    // it off-screen instead of collapsing the whole layout to mobile.
+    const fits = rightGutter >= NAV_MIN_WIDTH && leftGutter >= AME_MIN_WIDTH;
 
     // Once the window-manager script (windows.js) has let the user drag this
     // element, it owns position/size from then on - don't snap it back on resize.
@@ -52,9 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('nav-collapsed');
         sideNav.classList.remove('open');
 
-        // tip.txt shares nav.exe's width so it can dock flush above it - set
-        // this before measuring tip's height below, since its wrap/height
-        // depends on the width it's actually rendered at.
+        // bonsai.exe and tip.txt share nav.exe's width so they can dock flush
+        // above and below it - set this before measuring their heights below,
+        // since tip's wrap/height depends on the width it's actually rendered
+        // at. (bonsai's canvas is a CSS square, width:100% + aspect-ratio:1,
+        // so its height follows from the width just set with no JS pass to
+        // race against.)
         const tipStacked = tipWindow && !tipWindow.classList.contains('win-user-positioned');
         if (tipStacked) {
           tipWindow.style.width = `${navWidth}px`;
@@ -62,29 +89,40 @@ document.addEventListener('DOMContentLoaded', () => {
           tipWindow.style.right = 'auto';
           tipWindow.style.display = '';
         }
+        const bonsaiStacked = bonsaiWindow && !bonsaiWindow.classList.contains('win-user-positioned');
+        if (bonsaiStacked) {
+          bonsaiWindow.style.width = `${navWidth}px`;
+          bonsaiWindow.style.left = `${containerRect.right + GAP}px`;
+          bonsaiWindow.style.right = 'auto';
+          bonsaiWindow.style.display = '';
+        }
 
-        // Vertical position: default to vertical-center (mirrors the old
-        // static top:50%/translateY(-50%) rule), but on a shorter screen
-        // shift up as needed so the tip.txt+nav.exe stack still fits above
-        // the taskbar - never higher than welcome.txt's own top, same rule
-        // as ame.gif/lastfm.exe on the left.
+        // Vertical position: the column's top lines up with ame.gif's on the
+        // left - same rule as there: default to 15% down the viewport, but on
+        // a shorter screen shift up as needed so the whole
+        // bonsai.exe+nav.exe+tip.txt stack still fits above the taskbar,
+        // never higher than welcome.txt's own top. Using the identical
+        // formula (not just the same default) is what keeps the two columns
+        // level whenever both fit.
         const taskbarEl = document.getElementById('window-taskbar');
         const taskbarHeight = taskbarEl ? taskbarEl.getBoundingClientRect().height : 0;
         const navHeight = sideNav.offsetHeight;
-        const tipHeight = tipStacked ? tipWindow.offsetHeight : 0;
-        const defaultNavTop = (window.innerHeight - navHeight) / 2;
+        const bonsaiBlock = bonsaiStacked ? bonsaiWindow.offsetHeight + BONSAI_GAP : 0;
+        const tipBlock = tipStacked ? TIP_GAP + tipWindow.offsetHeight : 0;
+        const stackHeight = bonsaiBlock + navHeight + tipBlock;
+        const defaultTop = window.innerHeight * 0.15;
         const bottomLimit = window.innerHeight - taskbarHeight - EDGE_MARGIN;
-        const neededTop = bottomLimit - navHeight;
-        const minNavTop = containerRect.top + (tipStacked ? TIP_GAP + tipHeight : 0);
-        const navTop = Math.max(minNavTop, Math.min(defaultNavTop, neededTop));
+        const stackTop = Math.max(containerRect.top, Math.min(defaultTop, bottomLimit - stackHeight));
+        const navTop = stackTop + bonsaiBlock;
         sideNav.style.top = `${navTop}px`;
         sideNav.style.transform = 'none';
 
-        if (tipStacked) {
-          tipWindow.style.top = `${navTop - tipHeight - TIP_GAP}px`;
+        if (bonsaiStacked) {
+          bonsaiWindow.style.top = `${stackTop}px`;
         }
-
-        targetLeftStackHeight = tipHeight + TIP_GAP + navHeight;
+        if (tipStacked) {
+          tipWindow.style.top = `${navTop + navHeight + TIP_GAP}px`;
+        }
       } else {
         sideNav.style.width = '';
         sideNav.style.left = '';
@@ -95,6 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (tipWindow && !tipWindow.classList.contains('win-user-positioned')) {
           tipWindow.style.display = 'none';
+        }
+        if (bonsaiWindow && !bonsaiWindow.classList.contains('win-user-positioned')) {
+          bonsaiWindow.style.display = 'none';
         }
       }
     }
@@ -109,36 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // but capped at AME_MAX_WIDTH - once that cap kicks in on a really
         // wide monitor, dock it GAP away from the container's left edge
         // instead of leaving it pinned out at the screen's edge.
-        const leftGutter = containerRect.left - EDGE_MARGIN - GAP;
-        const maxAmeWidth = Math.min(AME_MAX_WIDTH, Math.max(AME_MIN_WIDTH, leftGutter));
-        let ameWidth = maxAmeWidth;
+        const ameWidth = Math.min(AME_MAX_WIDTH, Math.max(AME_MIN_WIDTH, leftGutter));
         ameWindow.style.width = `${ameWidth}px`;
-
-        // Match ame.gif's own height to tip.txt+links.exe's combined height,
-        // by shrinking ame.gif's width (its rendered height follows, since
-        // the image keeps its aspect ratio) - lastfm.exe docks below it
-        // separately and isn't part of this target. The relationship between
-        // ame-window's width and offsetHeight is affine, not proportional -
-        // the title bar, bottom bar, borders and padding around the image add
-        // a fixed offset that isn't part of the image's own aspect ratio - so
-        // it's derived from two measured points instead of assuming that
-        // ratio here.
-        if (targetLeftStackHeight != null) {
-          const targetAmeHeight = targetLeftStackHeight;
-          const w1 = ameWidth;
-          const h1 = ameWindow.offsetHeight;
-          const w2 = AME_MIN_WIDTH;
-          ameWindow.style.width = `${w2}px`;
-          const h2 = ameWindow.offsetHeight;
-
-          if (h1 !== h2 && targetAmeHeight > 0 && targetAmeHeight < h1) {
-            const slope = (h1 - h2) / (w1 - w2);
-            const solvedWidth = w2 + (targetAmeHeight - h2) / slope;
-            ameWidth = Math.min(maxAmeWidth, Math.max(AME_MIN_WIDTH, solvedWidth));
-          }
-          ameWindow.style.width = `${ameWidth}px`;
-        }
-
         ameWindow.style.left = `${containerRect.left - GAP - ameWidth}px`;
 
         // Vertical position: default to 15% down the viewport (the original
@@ -149,9 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const taskbarEl = document.getElementById('window-taskbar');
         const taskbarHeight = taskbarEl ? taskbarEl.getBoundingClientRect().height : 0;
         const defaultTop = window.innerHeight * 0.15;
-        // offsetHeight reflects the width we just settled on (ame.gif keeps
-        // its aspect ratio), and is unaffected by the float-ame bob
-        // animation's transform, unlike getBoundingClientRect().
+        // offsetHeight reflects the width we just set (ame.gif keeps its
+        // aspect ratio), and is unaffected by the float-ame bob animation's
+        // transform, unlike getBoundingClientRect().
         const ameHeight = ameWindow.offsetHeight;
         const lastfmHeight = lastfmWindow ? lastfmWindow.offsetHeight : 0;
         const stackHeight = ameHeight + (lastfmWindow ? LASTFM_GAP + lastfmHeight : 0);
