@@ -4,22 +4,61 @@ const initialGreeting = greetings[Math.floor(Math.random() * greetings.length)];
 ---
 
 <span class="greeting" client:load data-greetings={JSON.stringify(greetings)}>
-  {initialGreeting} I'm June Ong
+  <span class="greeting-word">{initialGreeting}</span><span class="greeting-name">I'm June Ong</span>
 </span>
 
 <script type="module">
   const el = document.querySelector('.greeting');
   const greetings = JSON.parse(el.dataset.greetings);
-  let index = greetings.indexOf(el.textContent.trim().replace(" I'm June Ong", ""));
+  const word = el.querySelector('.greeting-word');
+  const heading = el.parentElement;
+  const measure = () => {
+    const probe = el.cloneNode(false);
+    probe.removeAttribute('data-greetings');
+    probe.setAttribute('aria-hidden', 'true');
+    Object.assign(probe.style, { position: 'absolute', visibility: 'hidden', whiteSpace: 'nowrap', width: 'max-content', pointerEvents: 'none' });
+    heading.append(probe);
+    probe.textContent = "I'm June Ong";
+    const nameWidth = probe.getBoundingClientRect().width;
+    const wordWidth = Math.max(...greetings.map(greeting => {
+      probe.textContent = greeting;
+      return probe.getBoundingClientRect().width;
+    }));
+    const intro = el.closest('.intro-flex');
+    if (intro) {
+      const gap = parseFloat(getComputedStyle(intro).columnGap) || 0;
+      const available = intro.clientWidth - Math.max(nameWidth, wordWidth) - gap - 2;
+      intro.style.setProperty('--profile-size', `${document.body.classList.contains('nav-collapsed') ? Math.max(0, Math.min(160, Math.floor(available))) : 160}px`);
+    }
+    const spacing = parseFloat(getComputedStyle(el).fontSize) * 0.25;
+    el.classList.toggle('greeting-stacked', wordWidth + nameWidth + spacing + 2 > heading.clientWidth);
+    probe.remove();
+  };
+  let frame;
+  const scheduleMeasure = () => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(measure);
+  };
+  let previousWidth = -1;
+  new ResizeObserver(entries => {
+    const width = entries[0].contentRect.width;
+    if (width !== previousWidth) { previousWidth = width; scheduleMeasure(); }
+  }).observe(heading);
+  new MutationObserver(scheduleMeasure).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  document.fonts.ready.then(scheduleMeasure);
+  window.addEventListener('resize', scheduleMeasure);
+  scheduleMeasure();
+  let index = greetings.indexOf(word.textContent.trim());
 
   const cycle = () => {
-    el.classList.add('fade-out');
+    const animated = el.classList.contains('greeting-stacked') ? word : el;
+    animated.classList.add('fade-out');
     setTimeout(() => {
       index = (index + 1) % greetings.length;
-      el.textContent = `${greetings[index]} I'm June Ong`;
-      el.classList.remove('fade-out');
-      el.classList.add('fade-in');
-      setTimeout(() => el.classList.remove('fade-in'), 1000);
+      word.textContent = greetings[index];
+      animated.classList.remove('fade-out');
+      animated.classList.add('fade-in');
+      setTimeout(() => animated.classList.remove('fade-in'), 1000);
     }, 500);
   };
 
@@ -27,12 +66,20 @@ const initialGreeting = greetings[Math.floor(Math.random() * greetings.length)];
 </script>
 
 <style>
+  .greeting-word, .greeting-name { display: inline-block; white-space: nowrap; text-align: left; }
+  .greeting-word {
+    text-align: left;
+    transition: opacity 0.5s ease-in-out;
+  }
+  .greeting-stacked { flex-direction: column; align-items: flex-start; }
+  .greeting-stacked .greeting-word { text-align: left; }
   .greeting {
     transition: opacity 0.5s ease-in-out;
     font-weight: bold;
     font-size: 2.8rem;
     color: var(--accent);
-    display: inline-block;
+    display: inline-flex;
+    gap: 0.25em;
   }
 
   .fade-out {

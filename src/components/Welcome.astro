@@ -29,7 +29,7 @@ const { Content } = await render(welcomeEntry);
             <h1><Greeting /></h1>
             <ul>
               {welcomeEntry.data.roles.map(role => (
-                <li><strong>{role}</strong></li>
+                <li><strong>{role.includes(' @ ') ? <><span>{role.split(' @ ')[0]}</span>{' '}<span class="role-organization">@ {role.split(' @ ')[1]}</span></> : role}</strong></li>
               ))}
             </ul>
           </div>
@@ -47,4 +47,43 @@ const { Content } = await render(welcomeEntry);
   </div>
 </div>
 
+<style>
+  .intro-flex .pfp {
+    width: var(--profile-size, 160px);
+    height: auto;
+    aspect-ratio: 1;
+    flex-shrink: 0;
+  }
+  .intro-flex > div { flex: 1; min-width: 0; }
+  .intro-flex h1 { line-height: 1.2; }
+  :global(body.nav-collapsed) .intro-flex .pfp {
+    width: var(--profile-size, 100px);
+    height: auto;
+  }
+  :global(body.nav-collapsed) .intro-flex {
+    display: grid;
+    grid-template-columns: var(--profile-size, 100px) minmax(0, 1fr);
+    align-items: center;
+    text-align: left;
+  }
+  :global(body.nav-collapsed) .intro-flex > div { display: contents; }
+  :global(body.nav-collapsed) .intro-flex h1 { margin-bottom: 0; }
+  .role-organization { white-space: nowrap; }
+  .intro-flex li { text-wrap: balance; }
 
+  :global(body.nav-collapsed) .intro-flex > div { width: 100%; min-width: 0; }
+  :global(body.nav-collapsed) .intro-flex h1 { line-height: 1.35; }
+  :global(body.nav-collapsed) .intro-flex ul {
+    grid-column: 1 / -1;
+    width: auto;
+    margin: 1rem 0 0 1.5rem;
+    padding-left: 0;
+    list-style: disc outside;
+    line-height: 1.5;
+    text-align: left;
+    text-align-last: auto;
+  }
+  :global(body.nav-collapsed) .intro-flex li { text-wrap: wrap; }
+  :global(body.nav-collapsed) .role-organization { display: inline; }
+  :global(body.nav-collapsed) .intro-flex li + li { margin-top: 0.6rem; }
+</style>

@@ -91,3 +91,61 @@ const sortedCompetitions = [...writeupsByCompetition.entries()].sort(
     </div>
   </div>
 </div>
+
+<style>
+  /* Keep the marker outside the text column so wrapped tags line up with
+     the question text even in the mobile layout's inside-marker lists. */
+  #writeups .writeup-group ul {
+    padding-left: 1.2em;
+    list-style-position: outside;
+  }
+
+  #writeups.tags-below .tag-row {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0.35rem 0 0;
+  }
+</style>
+
+<script>
+  const writeups = document.querySelector<HTMLElement>('#writeups');
+  if (writeups) {
+    let frame = 0;
+    const updateTags = () => {
+      // Measure the natural inline layout each time so widening the window
+      // can bring every tag row back alongside its question.
+      writeups.classList.remove('tags-below');
+      const wrapped = [...writeups.querySelectorAll<HTMLElement>('.writeup-group li')].some(item => {
+        const title = item.querySelector('a');
+        const row = item.querySelector<HTMLElement>('.tag-row');
+        if (!title || !row || !row.children.length) return false;
+        const titleLines = title.getClientRects();
+        const lastLine = titleLines[titleLines.length - 1];
+        const tags = [...row.children].map(tag => tag.getBoundingClientRect());
+        return !!lastLine && (
+          row.getBoundingClientRect().top >= lastLine.bottom - 1 ||
+          tags.some(tag => tag.top > tags[0].top + 1)
+        );
+      });
+      writeups.classList.toggle('tags-below', wrapped);
+    };
+    const scheduleUpdate = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateTags);
+    };
+    // Watch width only: moving tags changes height and must not trigger a loop.
+    let previousWidth = -1;
+    new ResizeObserver(entries => {
+      const width = entries[0].contentRect.width;
+      if (width !== previousWidth) {
+        previousWidth = width;
+        scheduleUpdate();
+      }
+    }).observe(writeups);
+    new MutationObserver(scheduleUpdate).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    document.fonts.ready.then(scheduleUpdate);
+    window.addEventListener('resize', scheduleUpdate);
+    scheduleUpdate();
+  }
+</script>

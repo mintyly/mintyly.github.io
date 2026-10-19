@@ -5,13 +5,17 @@ interface Props {
   title?: string;
   description?: string;
   type?: 'website' | 'article';
+  image?: string;
+  imageAlt?: string;
 }
 const {
   title = 'June Ong',
   description = "June Ong's personal site! portfolio, CTF writeups, and blog.",
   type = 'website',
+  image,
+  imageAlt = 'June Ong',
 } = Astro.props;
-const ogImage = new URL(banner.src, Astro.site);
+const ogImage = new URL(image ?? banner.src, Astro.site);
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/$/, '')}/`;
 const canonicalURL = new URL(canonicalPath, Astro.site);
 ---
@@ -33,13 +37,17 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalURL} />
 		<meta property="og:image" content={ogImage} />
-		<meta property="og:image:width" content={String(banner.width)} />
-		<meta property="og:image:height" content={String(banner.height)} />
+		<meta property="og:image:alt" content={imageAlt} />
+		{!image && <>
+			<meta property="og:image:width" content={String(banner.width)} />
+			<meta property="og:image:height" content={String(banner.height)} />
+		</>}
 
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content={imageAlt} />
 		<slot name="head" />
 	</head>
 

@@ -24,6 +24,8 @@ interface Props {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const articleURL = new URL(`/blog/${post.id}/`, Astro.site).href;
+const cover = post.data.cover && !new URL(post.data.cover, Astro.site).pathname.endsWith('/blog-placeholder.svg')
+  ? post.data.cover : undefined;
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -34,12 +36,11 @@ const articleSchema = {
   datePublished: post.data.date,
   author: { '@type': 'Person', name: 'June Ong', url: new URL('/', Astro.site).href },
   inLanguage: 'en',
-  ...(post.data.cover && !post.data.cover.endsWith('blog-placeholder.svg')
-    ? { image: new URL(post.data.cover, Astro.site).href } : {}),
+  ...(cover ? { image: new URL(cover, Astro.site).href } : {}),
 };
 ---
 
-<Layout title={`${post.data.seoTitle ?? post.data.title} | June Ong`} description={post.data.description ?? post.data.title} type="article">
+<Layout title={`${post.data.seoTitle ?? post.data.title} | June Ong`} description={post.data.description ?? post.data.title} type="article" image={cover} imageAlt={cover ? post.data.coverAlt ?? post.data.title : undefined}>
   <Fragment slot="head">
     <meta name="author" content="June Ong" />
     <meta property="article:published_time" content={post.data.date} />
@@ -84,6 +85,28 @@ const articleSchema = {
 </Layout>
 
 <style>
+  .title-bar .title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .title-bar .window-controls { flex-shrink: 0; }
+
+  .blog-article > h1 {
+    line-height: 1.25;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  @media (max-width: 700px) {
+    :global(body.nav-collapsed) .blog-article > h1 {
+      font-size: 1.5rem;
+      line-height: 1.3;
+    }
+  }
+
   .blog-article :global(table) {
     width: 100%;
     border-collapse: collapse;
