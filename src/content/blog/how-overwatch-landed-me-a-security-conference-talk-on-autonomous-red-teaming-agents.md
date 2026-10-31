@@ -1,6 +1,8 @@
 ---
 title: "How  Overwatch Landed Me A Security Conference Talk On Autonomous Red Teaming Agents"
 date: "2026-10-19"
+cover: "/images/standcon-2026-sombra-pink.png"
+coverAlt: "Hand-drawn illustration of a speaker presenting a cube diagram at a conference."
 seoTitle: "Sombra: Autonomous Red Teaming Agents at STANDCON 2026"
 description: "How I built Sombra, an open-source LLM red teaming harness at NUS, and presented my first conference talk on autonomous red teaming agents at STANDCON 2026."
 ---

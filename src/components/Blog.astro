@@ -33,7 +33,7 @@ const posts = (await getCollection('blog')).sort(
           <p>A place for whatever I feel like writing about, once in a while.</p>
         </>}
         <section class:list={{ 'recent-posts': recent }} aria-labelledby="posts-heading">
-          {recent ? <h1 id="posts-heading">Recent Posts</h1> : <h2 id="posts-heading">Posts</h2>}
+          <h2 id="posts-heading">{recent ? 'Recent Posts' : 'Posts'}</h2>
           {posts.length > 0 ? (
             <ul class="post-list">
               {posts.map(post => (
@@ -66,6 +66,10 @@ const posts = (await getCollection('blog')).sort(
 </div>
 
 <style>
+  .recent-posts > h2 {
+    margin-top: 0;
+  }
+
   .post-list {
     list-style: none;
     padding: 0;
