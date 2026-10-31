@@ -5,6 +5,8 @@ roles:
   - "YBN Head of PR"
 ---
 
+<section class="welcome-introduction" aria-labelledby="introduction">
+
 ## Introduction
 
 Heya there! I like breaking things (ethically), fixing them, and overthinking every step of the process.
@@ -13,6 +15,12 @@ Currently doing cybersecurity @ Schneider Electric EA Zone while working through
 
 I've spent the last few years participating in, organising, and pulling all-nighters over CTFs, while trying to finish school :p
 
+</section>
+
+<section class="welcome-contact" aria-labelledby="contact">
+
 ## Contact
 
 <p><a href="mailto:contact@june.ong">contact@june.ong</a> | <a href="https://github.com/mintyly">GitHub</a> | <a href="https://www.linkedin.com/in/mintyly">LinkedIn</a></p>
+
+</section>

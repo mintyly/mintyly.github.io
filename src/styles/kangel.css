@@ -717,6 +717,11 @@ body {
   display: none;
 }
 
+#window-taskbar.taskbar-hide-notice .taskbar-mobile-notice,
+#window-taskbar.taskbar-hide-notice.taskbar-hide-clock .taskbar-tray {
+  display: none;
+}
+
 #background {
   position: fixed;
   top: 0;
@@ -1029,6 +1034,24 @@ pre::-webkit-scrollbar-thumb {
    disagreeing over a range of widths. */
 :root:has(body.nav-collapsed) {
   font-size: 16px;
+}
+
+body.nav-collapsed .welcome-body {
+  display: flex;
+  flex-direction: column;
+}
+
+body.nav-collapsed .welcome-body > .welcome-contact {
+  order: -1;
+}
+
+body.nav-collapsed .welcome-contact p {
+  white-space: nowrap;
+  font-size: clamp(0.65rem, 3.4vw, 0.875rem);
+}
+
+body.nav-collapsed .welcome-contact a {
+  font-size: inherit;
 }
 
 body.nav-collapsed .intro-flex {

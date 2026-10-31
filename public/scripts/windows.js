@@ -200,12 +200,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Too narrow for everything on one row: drop the clock first, then if it's
   // still wrapped drop the window buttons too (keep just the start button +
-  // notice), then if even THAT still wraps, shrink what's left - the notice
-  // is exempt from every stage here, it always stays.
+  // notice), then shrink what's left. Hide the notice if it still needs a
+  // second row after shrinking.
   function updateTaskbarLayout() {
     const bar = document.getElementById('window-taskbar');
     if (!bar) return;
-    bar.classList.remove('taskbar-hide-clock', 'taskbar-hide-windows', 'taskbar-shrink');
+    bar.classList.remove('taskbar-hide-clock', 'taskbar-hide-windows', 'taskbar-shrink', 'taskbar-hide-notice');
 
     if (isTaskbarWrapped(bar)) {
       bar.classList.add('taskbar-hide-clock');
@@ -215,6 +215,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (isTaskbarWrapped(bar)) {
       bar.classList.add('taskbar-shrink');
+    }
+    if (isTaskbarWrapped(bar)) {
+      bar.classList.add('taskbar-hide-notice');
     }
   }
 
