@@ -1,7 +1,5 @@
 ---
-import pfp from '../assets/pfp.jpeg';
 import '../styles/kangel.css';
-import Greeting from '../components/Greeting.astro';
 import { getEntry, render } from 'astro:content';
 
 const portfolioEntry = await getEntry('portfolio', 'portfolio');
@@ -14,7 +12,7 @@ const { Content } = await render(portfolioEntry);
     <div class="window hoverable-window">
       <div class="title-bar">
         <div class="btn box"></div>
-        <div class="title">portfolio.txt</div>
+        <div class="title">experience.txt</div>
         <div class="window-controls">
           <div class="btn close"></div>
           <div class="btn minimize"></div>
@@ -23,7 +21,8 @@ const { Content } = await render(portfolioEntry);
       </div>
 
       <div class="content">
-        <section id="portfolio">
+        <section id="experience" aria-label="Experience, research, education, and CTFs">
+          <span id="portfolio" aria-hidden="true"></span>
           <Content />
         </section>
       </div>
@@ -37,3 +36,36 @@ const { Content } = await render(portfolioEntry);
     </div>
   </div>
 </div>
+
+<style>
+  #experience { overflow-wrap: anywhere; }
+  #experience :global(h2) {
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--shadow);
+  }
+  #experience :global(h2:first-of-type) { margin-top: 0; }
+  #experience :global(h3) {
+    margin: 1.25rem 0 0.25rem;
+    font-size: 1.15rem;
+  }
+  #experience :global(p) { margin: 0.35rem 0 0.75rem; }
+  #experience :global(p:has(.experience-date)) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem 1.5rem;
+  }
+  #experience :global(.experience-date) {
+    flex-shrink: 0;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  #experience :global(li) { margin-bottom: 0.4rem; }
+  @media (max-width: 600px) {
+    #experience :global(p:has(.experience-date)) {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+  }
+</style>

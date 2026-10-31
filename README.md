@@ -59,6 +59,6 @@ All commands run from the project root:
 - **CTF categories**: local posts in `src/content/ctfblog/` use `type: "created"` for challenges I made or `type: "solved"` for challenges I solved (including future Flare-On writeups). The default is `solved`. Prime and the challenge-authoring repository writeups appear under created challenges. Post URLs stay the same when their type changes. General posts go in the main blog.
 - **Directory links** use `src/components/DirectoryLinks.astro` immediately below the page heading, before dates, descriptions, and body text. Creative writing titles are supplied by the page template.
 
-- **Portfolio** (`src/content/portfolio`) and **welcome blurb** (`src/content/welcome`) are plain Markdown.
+- **Experience** (`src/content/portfolio/portfolio.md`) and **welcome blurb** (`src/content/welcome`) are plain Markdown. Experience entries are grouped into experience, research, education, CTF, and awards/certifications; dates use an inline `experience-date` span that stacks beneath the role on mobile.
 - **CTF writeups** are pulled at build time from GitHub via `src/content/loaders/githubWriteups.ts`, grouped by competition.
 - **Creative writing** (`/writing/`) lives in `src/content/writing`.
