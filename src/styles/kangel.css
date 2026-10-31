@@ -1047,7 +1047,7 @@ body.nav-collapsed .welcome-body > .welcome-contact {
 
 body.nav-collapsed .welcome-contact p {
   white-space: nowrap;
-  font-size: clamp(0.65rem, 3.4vw, 0.875rem);
+  font-size: var(--contact-font-size, 1rem);
 }
 
 body.nav-collapsed .welcome-contact a {

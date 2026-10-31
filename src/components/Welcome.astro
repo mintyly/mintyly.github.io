@@ -49,6 +49,34 @@ const { Content } = await render(welcomeEntry);
   </div>
 </div>
 
+<script>
+  const contactRow = document.querySelector<HTMLElement>('.welcome-contact p');
+  if (contactRow) {
+    const fitContactLinks = () => {
+      contactRow.style.removeProperty('--contact-font-size');
+      if (!document.body.classList.contains('nav-collapsed')) return;
+      const availableWidth = contactRow.clientWidth;
+      if (!availableWidth) return;
+      const textRange = document.createRange();
+      textRange.selectNodeContents(contactRow);
+      const textWidth = textRange.getBoundingClientRect().width;
+      if (textWidth > availableWidth) {
+        const normalSize = parseFloat(getComputedStyle(contactRow).fontSize);
+        contactRow.style.setProperty('--contact-font-size', `${normalSize * (availableWidth - 1) / textWidth}px`);
+      }
+    };
+    let previousWidth = -1;
+    new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width === previousWidth) return;
+      previousWidth = entry.contentRect.width;
+      fitContactLinks();
+    }).observe(contactRow);
+    window.addEventListener('resize', fitContactLinks);
+    document.fonts.ready.then(fitContactLinks);
+    fitContactLinks();
+  }
+</script>
+
 <style>
   .intro-flex .pfp {
     width: var(--profile-size, 160px);
