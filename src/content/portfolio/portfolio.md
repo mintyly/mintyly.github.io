@@ -21,7 +21,7 @@ Presented [Sombra](https://github.com/mintyly/Sombra), an open-source harness I 
 
 ## Education
 
-### Information Security
+### Bachelor of Computing in Information Security
 
 **National University of Singapore** <span class="experience-date">Present</span>
 
