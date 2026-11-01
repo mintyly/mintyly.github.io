@@ -1010,6 +1010,14 @@ code {
   color: var(--accent);
 }
 
+/* Let long inline flags wrap on phones; fenced code keeps its own scroll. */
+body.nav-collapsed .content :not(pre) > code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 /* Make sure scrollbar fits pastel aesthetic (for WebKit browsers) */
 pre::-webkit-scrollbar {
   height: 8px;
