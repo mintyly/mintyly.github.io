@@ -41,6 +41,7 @@ Presented [Sombra](https://github.com/mintyly/Sombra), an open-source harness I 
 
 ### Competition results
 
+- **YBN CTF 2023** — 4th (2023)
 - **Lag and Crash** — 4th with fate fairy poultry (2022)
 - **YCEP@TP** — 3rd (2021)
 - **YCEP@NP** — 4th (2021), 1st (2020)
