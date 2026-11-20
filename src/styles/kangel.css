@@ -1052,15 +1052,6 @@ body.nav-collapsed .welcome-body > .welcome-contact {
   order: -1;
 }
 
-body.nav-collapsed .welcome-contact p {
-  white-space: nowrap;
-  font-size: var(--contact-font-size, 1rem);
-}
-
-body.nav-collapsed .welcome-contact a {
-  font-size: inherit;
-}
-
 body.nav-collapsed .intro-flex {
   flex-direction: column;
   align-items: center;
@@ -1225,4 +1216,54 @@ body.nav-collapsed #lastfm-window .title-bar {
 
 body.nav-collapsed .taskbar-mobile-notice {
   display: flex;
+}
+
+/* Fine CRT scanlines, without a frame or screen curvature. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom,
+    transparent 0 2px,
+    rgba(51, 29, 91, .065) 2px 3px,
+    transparent 3px 4px);
+}
+
+.welcome-contact .contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .55rem;
+  margin: .75rem 0 0;
+  white-space: normal;
+}
+
+.welcome-contact .contact-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 2.35rem;
+  padding: .3rem .55rem;
+  border: 1px solid var(--accent);
+  background: #fff8;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.welcome-contact .contact-links a:hover,
+.welcome-contact .contact-links a:focus-visible {
+  background: var(--highlight);
+  color: #211960;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.welcome-contact .contact-links svg {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: none;
 }

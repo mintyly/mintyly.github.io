@@ -23,7 +23,7 @@ so yea! there is now an overwatch reference attached to my first conference talk
 
 ## How I ended up here
 
-After finishing my first year at NUS, I signed up for an introductory research project, *Cyberattack Experimentation and Risk Analysis*, under Anis Yusof. I had a cybersecurity background, but no previous experience building LLM agents or automated pentesting systems.
+After finishing my first year at NUS, I signed up for an introductory research project, *Cyberattack Experimentation and Risk Analysis*, under Prof Anis Yusof. I had a cybersecurity background, but no previous experience building LLM agents or automated pentesting systems.
 
 The task was to build an agent that could operate against a cyber range: a disposable lab network built to be attacked. It needed to discover machines, work out what they were running, exploit something useful, and retrieve a flag.
 
@@ -63,7 +63,7 @@ I'm glad I took on the project. I started without much idea of how these agents 
 
 Getting to give that talk was a pretty big deal to me. Whatever I end up working on next, I'm happy this was my first conference talk, and that I got to share something I'd spent so much time working on.
 
-Thanks to Anis Yusof for supervising the project, and to the N0H4TS team for having me at STANDCON. The [code is still up on GitHub](https://github.com/mintyly/Sombra) if you'd like to have a look.
+Thanks to Prof Anis Yusof for supervising the project, and to the N0H4TS team for having me at STANDCON. The [code is still up on GitHub](https://github.com/mintyly/Sombra) if you'd like to have a look.
 
 Special thanks to [Mai](https://maisie.ng), [Xiner](https://meowbreadmeow.com), and [Ray](https://hopelesscaffeineaddict.com) for giving me the confidence to submit in the first place, go check out their blogs as well :>
 
